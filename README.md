@@ -1,4 +1,4 @@
-Plugin Name
+Bootstrap
 ====================================
 
 ![Screenshot1](url_to_image1)
