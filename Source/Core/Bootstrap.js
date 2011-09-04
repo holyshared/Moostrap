@@ -11,6 +11,8 @@ authors:
 
 requires:
   - Core/Core
+  - Core/Options
+  - Core/Events
 
 provides:
   - Bootstrap
@@ -19,7 +21,10 @@ provides:
 
 (function(){
 
+var Bootstrap = this.Bootstrap = new Class({
 
+	Implements: [Options, Events]
 
+});
 
 }());
