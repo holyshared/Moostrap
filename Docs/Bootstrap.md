@@ -49,7 +49,7 @@ Class: Bootstrap.Bootstrapper
 
 var MyBootstrapper = new Bootstrap.Bootstrapper({
 
-	options: {
+	params: {
 		key1: 'key1_value',
 		key2: 'key2_value'
 	},
@@ -67,9 +67,9 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 
 
 
+
 ### Methods
 
-* bootstrap
 * notifySuccess
 * notifyFailure
 * setResultStatus
@@ -77,6 +77,11 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 * isFailureed
 * isCompleted
 * isStarted
+* execute
+* setResource
+* getResource
+* bootstrap - abstract
+
 
 Class: Bootstrap.Strategy
 --------------------------------------------------------------
