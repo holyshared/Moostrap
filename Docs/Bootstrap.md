@@ -126,6 +126,7 @@ strategy.bootstrap('MyReqource2');
 * getBootstrapper
 * getBootstrappers
 * getBootstrapperKeys
+* getLength
 * isCompleted
 * isStarted
 * bootstrap
