@@ -11,6 +11,9 @@ license: "[MIT License](http://sharedhat.com/mit-license.txt)"
 copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
+  - Source/Core/Bootstrap.js
+  - Source/Strategy/Strategy.js
+  - Source/Strategy/Simple.js
 
 author: holyshared
 

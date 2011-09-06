@@ -72,15 +72,90 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 
 * notifySuccess
 * notifyFailure
-* setResultStatus
+* getResultStatus
 * isSuccessed
-* isFailureed
+* isFailured
 * isCompleted
 * isStarted
 * execute
 * setResource
 * getResource
+* setParams
+* getParams
 * bootstrap - abstract
+
+
+### Events
+
+* onStart
+* onComplete
+* onSuccess
+* onFailure
+
+
+Class: Bootstrap.Bootstrappers
+--------------------------------------------------------------
+
+var bootstrapper = new Bootstrap.Bootstrapper({
+
+	params: {
+	},
+
+	bootstrap: function(resource, options){
+	}
+
+});
+
+var bootstrappers = new Bootstrap.Bootstrappers();
+
+bootstrappers.addBootstrapper(bootstrapper);
+
+bootstrappers.addBootstrappers(bootstrappers);
+
+
+bootstrappers.addEvent('start', function(){
+
+});
+bootstrappers.addEvent('success', function(){
+
+});
+bootstrappers.addEvent('failure', function(){
+
+});
+bootstrappers.addEvent('complete', function(){
+
+});
+
+
+bootstrappers.execute();
+
+
+### Methods
+
+* addBootstrapper
+* addBootstrappers
+* removeBootstrapper
+* removeBootstrappers
+* getBootstrapper
+* getBootstrappers
+* hasBootstrapper
+* getLength
+* isSuccessed
+* isFailureed
+* isCompleted
+* execute
+* setResource
+
+
+### Events
+
+* onStart
+* onComplete
+* onSuccess
+* onFailure
+
+
+
 
 
 Class: Bootstrap.Strategy
