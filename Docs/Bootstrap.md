@@ -140,11 +140,12 @@ bootstrappers.execute();
 * getBootstrappers
 * hasBootstrapper
 * getLength
-* isSuccessed
-* isFailureed
-* isCompleted
+//* isSuccessed
+//* isFailureed
+//* isCompleted
 * execute
 * setResource
+* setParams
 
 
 ### Events
