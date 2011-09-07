@@ -183,10 +183,10 @@ var MyStrategy = new Class({
 
 var resource = new MyClass();
 
-var bootstrap = new Bootstrap();
+var collection = new Bootstrap.Bootstrappers();
 
 var strategy = new MyStrategy();
-strategy.setBootstrap(bootstrap)
+strategy.setBootstrappers(collection)
 	.setResource(resource);
 
 strategy.bootstrap('MyReqource1');
@@ -195,12 +195,11 @@ strategy.bootstrap('MyReqource2');
 
 ### Methods
 
-* setBootstrap
-* getBootstrap
 * setResource
 * getResource
-* getBootstrapper
+* setBootstrappers
 * getBootstrappers
+* getBootstrapper
 * getBootstrapperKeys
 * getLength
 * isCompleted

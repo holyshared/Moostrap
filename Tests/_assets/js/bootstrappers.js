@@ -78,8 +78,8 @@
 
 				var collection = bootstrappers.getBootstrappers('b2', 'b3');
 
-				log( (collection.shift() == b2) ? 'assert OK.' : 'getBootstrappers at first NG.' );
-				log( (collection.shift() == b3) ? 'assert OK.' : 'getBootstrappers at second NG.' );
+				log( (collection['b2'] == b2) ? 'assert OK.' : 'getBootstrappers at first NG.' );
+				log( (collection['b3'] == b3) ? 'assert OK.' : 'getBootstrappers at second NG.' );
 
 			}
 
@@ -106,11 +106,11 @@
 
 				var collection = bootstrappers.getBootstrappers('b1', 'b2');
 
-				log( (collection[0].getResource() == resource) ? 'assert OK.' : 'getResource at first NG.' );
-				log( (collection[1].getResource() == resource) ? 'assert OK.' : 'getResource at second NG.' );
+				log( (collection['b1'].getResource() == resource) ? 'assert OK.' : 'getResource at first NG.' );
+				log( (collection['b2'].getResource() == resource) ? 'assert OK.' : 'getResource at second NG.' );
 
-				log( (collection[0].getParams().name == params.name) ? 'assert OK.' : 'getParams at first NG.' );
-				log( (collection[1].getParams().name == params.name) ? 'assert OK.' : 'getParams at second NG.' );
+				log( (collection['b1'].getParams().name == params.name) ? 'assert OK.' : 'getParams at first NG.' );
+				log( (collection['b2'].getParams().name == params.name) ? 'assert OK.' : 'getParams at second NG.' );
 
 			}
 

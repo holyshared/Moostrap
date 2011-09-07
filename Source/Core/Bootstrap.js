@@ -118,7 +118,7 @@ BootstrapperType.mirror(function(name){
         var args = arguments;
         var items = this.getBootstrappers();
         var results = [];
-        items.each(function(item, key){
+        Object.each(items, function(item, key){
 
             var result = item[name].apply(item, args);
 			if ((typeOf(result) != 'bootstrapper')) {
@@ -142,6 +142,7 @@ Bootstrap.Bootstrappers = new Class({
 			throw new TypeError('invalid bootstrap.');
 		}
 		this._bootstrappers[key] = bootstrap;
+		return this;
     },
 
     addBootstrappers: function(bootstrappers){
@@ -151,6 +152,7 @@ Bootstrap.Bootstrappers = new Class({
 		Object.each(bootstrappers, function(bootstrap, key){
 			this.addBootstrapper(key, bootstrap);
 		}, this);
+		return this;
     },
 
     removeBootstrapper: function(key){
@@ -158,6 +160,7 @@ Bootstrap.Bootstrappers = new Class({
 			throw new Error('not found key'); 
 		}
 		delete this._bootstrappers[key];
+		return this;
     },
 
     removeBootstrappers: function(){
@@ -168,6 +171,7 @@ Bootstrap.Bootstrappers = new Class({
 		keys.each(function(key, index){
 			this.removeBootstrapper(key);
 		}, this);
+		return this;
     },
 
     getBootstrapper: function(key){
@@ -182,10 +186,10 @@ Bootstrap.Bootstrappers = new Class({
 		? Object.keys(this._bootstrappers)
 		: Array.from(arguments);
 
-		var collection = [];
+		var collection = {};
 
 		keys.each(function(key, index){
-			collection.push(this.getBootstrapper(key));
+			collection[key] = this.getBootstrapper(key);
 		}, this);
 		return collection;
     },
@@ -196,7 +200,11 @@ Bootstrap.Bootstrappers = new Class({
 
     getLength: function(){
 		return Object.getLength(this._bootstrappers);
-    }
+    },
+
+	getKeys: function(){
+		return Object.keys(this._bootstrappers);
+	}
 
 });
 
