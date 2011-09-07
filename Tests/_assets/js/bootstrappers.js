@@ -58,6 +58,7 @@
 
 		});
 
+
 		testcases.push({
 
 			title: 'getBootstrapper/getBootstrappers/hasBootstrapper',
@@ -85,7 +86,6 @@
 		});
 
 
-
 		testcases.push({
 
 			title: 'setResource/setParams',
@@ -106,7 +106,6 @@
 
 				var collection = bootstrappers.getBootstrappers('b1', 'b2');
 
-
 				log( (collection[0].getResource() == resource) ? 'assert OK.' : 'getResource at first NG.' );
 				log( (collection[1].getResource() == resource) ? 'assert OK.' : 'getResource at second NG.' );
 
@@ -117,6 +116,65 @@
 
 		});
 
+
+
+
+
+
+		testcases.push({
+
+			title: 'execute',
+			description : 'execute testcase.',
+			fn: function(){
+
+				var b1 = new Bootstrap.Bootstrapper({
+					bootstrap: function(resource, params){
+						this.notifySuccess();
+					}
+				});
+
+				var b2 = new Bootstrap.Bootstrapper({
+					bootstrap: function(resource, params){
+						this.notifyFailure();
+					}
+				});
+
+				var b3 = new Bootstrap.Bootstrapper({
+					bootstrap: function(resource, params){
+						this.notifyFailure();
+					}
+				});
+
+				var bootstrappers = new Bootstrap.Bootstrappers();
+				bootstrappers.addBootstrappers({
+					b1: b1,
+					b2: b2,
+					b3: b3
+				});
+
+
+				var success = 0, failure = 0, complete = 0;
+
+				bootstrappers.addEvent('success', function(){
+					success++;
+				});
+
+				bootstrappers.addEvent('failure', function(){
+					failure++;
+				});
+
+				bootstrappers.addEvent('complete', function(){
+					complete++;
+				});
+				bootstrappers.execute();
+
+				log((complete >= 3) ? 'assert OK' : 'complete OK');
+				log((success >= 1) ? 'assert OK' : 'success OK');
+				log((failure >= 2) ? 'assert OK' : 'failure OK');
+
+			}
+
+		});
 
 		makeActions(testcases);
 
