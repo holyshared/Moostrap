@@ -159,7 +159,7 @@ bootstrappers.execute();
 
 
 
-Class: Bootstrap.Strategy
+Class: Bootstrap.BootstrapStrategy
 --------------------------------------------------------------
 
 
@@ -177,7 +177,7 @@ var MyClass = new Class({
 
 var MyStrategy = new Class({
 
-	Extends: Bootstrap.Strategy
+	Extends: Bootstrap.BootstrapStrategy
 
 });
 
@@ -214,7 +214,7 @@ strategy.bootstrap('MyReqource2');
 * onComplete
 
 
-Class: Bootstrap.Strategy.Simple
+Class: Bootstrap.Strategy.Asynchronous
 --------------------------------------------------------------
 
 
@@ -232,7 +232,7 @@ var MyClass = new Class({
 
 var resource = new MyClass();
 
-var simpleBootstrapper = Bootstrap.create(resource, 'Simple', {
+var simpleBootstrapper = Bootstrap.create(resource, 'Asynchronous', {
 	onBeforeBootstrap: function(resource){
 		//do something
 	},

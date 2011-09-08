@@ -11,6 +11,8 @@ authors:
 
 requires:
   - Core/Core
+  - Core/Object
+  - Core/Type
   - Core/Options
   - Core/Events
 
@@ -18,6 +20,7 @@ provides:
   - Bootstrap
   - Bootstrap.Bootstrapper
   - Bootstrap.Bootstrappers
+  - Bootstrap.Strategy
 ...
 */
 
@@ -25,19 +28,32 @@ provides:
 
 var Bootstrap = this.Bootstrap = new Class({
 
-	register: function(){
+	initialize:function(){
+		this._collection = new Bootstrap.Bootstrappers();
 	},
 
-	unregister: function(){
+	register: function(name, options){
+		this._collection.addBootstrapper(name, options);
 	},
 
-	isRegistered: function(){
+	unregister: function(name){
+		this._collection.removeBootstrapper(name);
 	},
 
-	create: function(){
+	isRegistered: function(name){
+		return this._collection.hasBootstrapper(name);
+	},
+
+	create: function(resource, type, options){
+		if (!Bootstrap.Strategy[type]) {
+			throw new Error(type + 'is not found');
+		}
+		var Strategy = Bootstrap.Strategy[type];
+		return new Strategy(Object.merge(options, resource));
 	}
 
 });
+Bootstrap.Strategy = {};
 
 Bootstrap.NONE = 0;
 Bootstrap.SUCCESS = 1;
@@ -54,8 +70,14 @@ Bootstrap.Bootstrapper = new Class({
 	_bootstrap: null,
 
 	initialize: function(options){
-		this._params = options.params;
-		this._bootstrap = options.bootstrap;
+		var setter;
+		for (var key in options){
+			property = '_' + key;
+			if (this[property]) {
+				this[property] = options[key];
+				delete options[key];
+			}
+		}
 	},
 
 	notifySuccess: function(){
@@ -256,6 +278,48 @@ Bootstrap.Bootstrapper.implement({
 });
 
 Bootstrap.Bootstrapper.implement(new Events());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

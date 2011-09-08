@@ -13,7 +13,7 @@ copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 sources:
   - Source/Core/Bootstrap.js
   - Source/Strategy/Strategy.js
-  - Source/Strategy/Simple.js
+  - Source/Strategy/Asynchronous.js
 
 author: holyshared
 

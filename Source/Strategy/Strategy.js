@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.Strategy
+name: Bootstrap.BootstrapStrategy
 
 description: 
 
@@ -11,16 +11,16 @@ authors:
 
 requires:
   - Bootstrap.Bootstrappers
+  - Bootstrap.Strategy
 
 provides:
-  - Bootstrap.Strategy
+  - Bootstrap.BootstrapStrategy
 ...
 */
 
-(function(Bootstrap){
+(function(StrategyNamespace){
 
-
-Bootstrap.Strategy = new Class({
+StrategyNamespace.BootstrapStrategy = new Class({
 
 	Implements: [Events],
 
@@ -28,6 +28,17 @@ Bootstrap.Strategy = new Class({
 	_bootstrappers: null,
     _started: false,
     _completed: false,
+
+	initialize: function(options){
+		var setter;
+		for (var key in options){
+			setter = 'set' + key.capitalize();
+			if (this[setter]) {
+				this[setter].call(this, options[key]);
+				delete options[key];
+			}
+		}
+	},
 
     setBootstrappers: function(bootstrappers){
 		if (!Type.isBootstrappers(bootstrappers)){
@@ -102,4 +113,4 @@ Bootstrap.Strategy = new Class({
 
 });
 
-}(Bootstrap));
+}(Bootstrap.Strategy));

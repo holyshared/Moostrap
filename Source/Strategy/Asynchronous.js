@@ -1,6 +1,25 @@
+/*
+---
+name: Bootstrap.Strategy.Asynchronous
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Bootstrap.BootstrapStrategy
+
+provides:
+  - Bootstrap.Strategy.Asynchronous
+...
+*/
+
 (function(StrategyNamespace){
 
-var StrategyMock = this.StrategyMock = new Class({
+StrategyNamespace.Asynchronous = new Class({
 
 	Extends: StrategyNamespace.BootstrapStrategy,
 
