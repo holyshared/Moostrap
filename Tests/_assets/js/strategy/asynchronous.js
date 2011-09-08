@@ -8,6 +8,20 @@
 		},
 
 		_bootstrap: function(){
+			var req = new Request.JSON({
+				method: 'get',
+				url: '/echo/json/',
+				data:{
+					json: '{ "name" : "a", "value" : "b" }'
+				},
+				onSuccess: function(response){
+					this.notifySuccess();
+				},
+				onFailture: function(response){
+					this.notifyFailture();
+				}
+			});
+			req.send();
 		}
 
 	});
@@ -21,10 +35,25 @@
 		},
 
 		_bootstrap: function(){
+
+			var request = new Request.JSON({
+				method: 'get',
+				url: '/echo/json/',
+				data:{
+					json: '{ "name" : "a", "value" : "b" }'
+				},
+				onSuccess: function(response){
+					this.notifySuccess();
+				},
+				onFailture: function(response){
+					this.notifyFailture();
+				}
+			});
+			request.send();
+
 		}
 
 	});
-
 
 
 
