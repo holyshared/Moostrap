@@ -14,6 +14,7 @@ sources:
   - Source/Core/Bootstrap.js
   - Source/Strategy/Strategy.js
   - Source/Strategy/Asynchronous.js
+  - Source/Strategy/Synchronize.js
 
 author: holyshared
 
