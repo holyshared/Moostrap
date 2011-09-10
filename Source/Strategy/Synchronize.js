@@ -43,11 +43,11 @@ StrategyNamespace.Synchronize = new Class({
 
         this.fireEvent('start');
 
-		this._initStrategy();
+//		this._initStrategy();
 		this._nextBoostrap();
 	},
 
-	_initStrategy: function(){
+	init: function(){
 		var collection = this.getBootstrappers();
 		collection.setResource(this.getResource());
 

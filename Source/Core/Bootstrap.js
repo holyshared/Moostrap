@@ -33,15 +33,15 @@ var Bootstrap = this.Bootstrap = new Class({
 	},
 
 	register: function(name, options){
-		this._collection.addBootstrapper(name, options);
+		this._collection.addItem(name, options);
 	},
 
 	unregister: function(name){
-		this._collection.removeBootstrapper(name);
+		this._collection.removeItem(name);
 	},
 
 	isRegistered: function(name){
-		return this._collection.hasBootstrapper(name);
+		return this._collection.hasItem(name);
 	},
 
 	create: function(resource, type, options){
@@ -49,7 +49,10 @@ var Bootstrap = this.Bootstrap = new Class({
 			throw new Error(type + 'is not found');
 		}
 		var Strategy = Bootstrap.Strategy[type];
-		return new Strategy(Object.merge(options, resource));
+		var strategy = new Strategy(Object.merge(options, resource));
+		strategy.init();
+		return strategy;
+//		return new Strategy(Object.merge(options, resource));
 	}
 
 });
