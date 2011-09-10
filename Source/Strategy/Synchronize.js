@@ -47,9 +47,14 @@ StrategyNamespace.Synchronize = new Class({
 
         this.fireEvent('start');
 
+
+		this._initBoostrapper();
+		this.next();
+	},
+
+	_initBoostrapper: function(){
 		var boostrappers = this.getBootstrappers();
 		boostrappers.setResource(this.getResource());
-
 		this.keys = boostrappers.getKeys();
 
 		var collection = boostrappers.getBootstrappers();
@@ -61,10 +66,15 @@ StrategyNamespace.Synchronize = new Class({
 	        };
 			boostrapper.addEvent(events);
 		}, this);
+	},
 
+	next: function(){
+		var boostrappers = this.getBootstrappers();
+		var collection = boostrappers.getBootstrappers();
 		collection[this.keys.shift()].execute();
-    }
+	}
 
 });
+
 
 }(Bootstrap.Strategy));
