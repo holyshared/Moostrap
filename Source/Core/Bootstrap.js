@@ -157,8 +157,10 @@ BootstrapperType.mirror(function(name){
 
 Bootstrap.Bootstrappers = new Class({
 
+	_keys: [],
 	_bootstrappers: {},
 
+	/* old methods */
     addBootstrapper: function(key, bootstrap){
 		if (!Type.isBootstrapper(bootstrap)){ 
 			throw new TypeError('invalid bootstrap.');
@@ -219,19 +221,106 @@ Bootstrap.Bootstrappers = new Class({
     hasBootstrapper: function(key){
 		return (this._bootstrappers[key]) ? true : false;
     },
+	/* old methods */
 
     getLength: function(){
-		return Object.getLength(this._bootstrappers);
+		return this._keys.length;
     },
 
 	getKeys: function(){
-		return Object.keys(this._bootstrappers);
+		return this._keys;
+	},
+
+
+
+    getItem: function(key){
+		if (!this.hasItem(key)){
+			throw new Error('not found key'); 
+		}
+		return this._bootstrappers[key];
+    },
+
+    getItems: function(){
+//		var keys = (arguments.length <= 0)
+	//	? Object.keys(this._bootstrappers)
+		//: Array.from(arguments);
+
+
+		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
+		var collection = {};
+
+		keys.each(function(key, index){
+			collection[key] = this.getItem(key);
+		}, this);
+		return collection;
+    },
+
+
+    hasItem: function(key){
+		return this._keys.contains(key);
+    },
+
+	addItem: function(key, bootstrap){
+		if (!Type.isBootstrapper(bootstrap)){ 
+			throw new TypeError('invalid bootstrap.');
+		}
+		this._keys.push(key);
+		this._bootstrappers[key] = bootstrap;
+		return this;
+	},
+
+	addItems: function(bootstrappers){
+		if (!Type.isObject(bootstrappers)) {
+			throw new TypeError('invalid bootstrappers.');
+		}
+		Object.each(bootstrappers, function(bootstrap, key){
+			this.addItem(key, bootstrap);
+		}, this);
+		return this;
+	},
+
+	removeItem: function(key){
+		if (!this.hasItem(key)){
+			throw new Error('not found key'); 
+		}
+		this._keys.erase(key);
+		delete this._bootstrappers[key];
+		return this;
+	},
+
+	removeItems: function(){
+		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
+		keys.each(function(key, index){
+			this.removeItem(key);
+		}, this);
+		return this;
+	},
+
+	hasNext: function(){
+		var length = this._keys.length - 1;
+		return (length > this._cursor + 1) ? true : false;
+	},
+
+	next: function(){
+		if (!this.hasNext()){
+			return;
+		}
+		var key = this._keys[++this._cursor];
+		return this._bootstrappers[key];
+	},
+
+	rewind: function(){
+		this._cursor = 0;
+	},
+
+	each: function(handler){
+		Object.each(this._bootstrappers, handler);
 	}
 
 });
 
 var BootstrappersType = new Type('Bootstrappers', Bootstrap.Bootstrappers);
-
+//BootstrappersType.alias('each', Object.each);
 
 
 
