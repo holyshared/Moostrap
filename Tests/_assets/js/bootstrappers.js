@@ -11,22 +11,22 @@
 
 		testcases.push({
 
-			title: 'addBootstrapper/addBootstrappers/getLength',
-			description : 'addBootstrapper/addBootstrappers/getLength testcase.',
+			title: 'addItem/addItems/getLength',
+			description : 'addItem/addItems/getLength testcase.',
 			fn: function(){
 
-				var b1 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b2 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b3 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
+				var b1 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b2 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b3 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrapper('b1', b1);
+				bootstrappers.addItem('b1', b1);
 
-				log( (bootstrappers.getLength() == 1) ? 'assert OK.' : 'addBootstrapper NG.' );
+				log( (bootstrappers.getLength() == 1) ? 'assert OK.' : 'addItem NG.' );
 
-				bootstrappers.addBootstrappers({ b2: b2, b3: b3 });
+				bootstrappers.addItems({ b2: b2, b3: b3 });
 
-				log( (bootstrappers.getLength() == 3) ? 'assert OK.' : 'addBootstrappers NG.' );
+				log( (bootstrappers.getLength() == 3) ? 'assert OK.' : 'addItems NG.' );
 
 			}
 
@@ -35,24 +35,24 @@
 
 		testcases.push({
 
-			title: 'removeBootstrapper/removeBootstrappers',
-			description : 'removeBootstrapper/removeBootstrappers testcase.',
+			title: 'removeItem/removeItems',
+			description : 'removeItem/removeItems testcase.',
 			fn: function(){
 
-				var b1 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b2 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b3 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
+				var b1 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b2 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b3 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrappers({ b1: b1, b2: b2, b3: b3 });
+				bootstrappers.addItems({ b1: b1, b2: b2, b3: b3 });
 
-				bootstrappers.removeBootstrapper('b1');
+				bootstrappers.removeItem('b1');
 
-				log( (bootstrappers.getLength() == 2) ? 'assert OK.' : 'removeBootstrapper NG.' );
+				log( (bootstrappers.getLength() == 2) ? 'assert OK.' : 'removeItem NG.' );
 
-				bootstrappers.removeBootstrappers('b2', 'b3');
+				bootstrappers.removeItems('b2', 'b3');
 
-				log( (bootstrappers.getLength() == 0) ? 'assert OK.' : 'removeBootstrappers NG.' );
+				log( (bootstrappers.getLength() == 0) ? 'assert OK.' : 'removeItems NG.' );
 
 			}
 
@@ -61,25 +61,25 @@
 
 		testcases.push({
 
-			title: 'getBootstrapper/getBootstrappers/hasBootstrapper',
-			description : 'getBootstrapper/getBootstrappers/hasBootstrapper testcase.',
+			title: 'getItem/getItems/hasItem',
+			description : 'getItem/getItems/hasItem testcase.',
 			fn: function(){
 
-				var b1 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b2 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b3 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
+				var b1 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b2 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b3 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrappers({ b1: b1, b2: b2, b3: b3 });
+				bootstrappers.addItems({ b1: b1, b2: b2, b3: b3 });
 
-				log( (bootstrappers.hasBootstrapper('b1')) ? 'assert OK.' : 'hasBootstrapper NG.' );
+				log( (bootstrappers.hasItem('b1')) ? 'assert OK.' : 'hasItem NG.' );
 
-				log( (bootstrappers.getBootstrapper('b1') == b1) ? 'assert OK.' : 'getBootstrapper NG.' );
+				log( (bootstrappers.getItem('b1') == b1) ? 'assert OK.' : 'getItem NG.' );
 
-				var collection = bootstrappers.getBootstrappers('b2', 'b3');
+				var collection = bootstrappers.getItems('b2', 'b3');
 
-				log( (collection['b2'] == b2) ? 'assert OK.' : 'getBootstrappers at first NG.' );
-				log( (collection['b3'] == b3) ? 'assert OK.' : 'getBootstrappers at second NG.' );
+				log( (collection['b2'] == b2) ? 'assert OK.' : 'getItems at first NG.' );
+				log( (collection['b3'] == b3) ? 'assert OK.' : 'getItems at second NG.' );
 
 			}
 
@@ -89,28 +89,28 @@
 		testcases.push({
 
 			title: 'setResource/setParams',
-			description : 'setResource/setParams testcase.',
+			description : 'setResource/setOptions testcase.',
 			fn: function(){
 
-				var b1 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
-				var b2 = new Bootstrap.Bootstrapper({ bootstrap: function(resource, params){} });
+				var b1 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
+				var b2 = new Bootstrap.Bootstrapper({ handler: function(resource, params){} });
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrappers({ b1: b1, b2: b2 });
+				bootstrappers.addItems({ b1: b1, b2: b2 });
 
 				var resource = {};
 				var params = { name: 'foo' };
 
 				bootstrappers.setResource(resource)
-					.setParams(params);
+					.setOptions(params);
 
-				var collection = bootstrappers.getBootstrappers('b1', 'b2');
+				var collection = bootstrappers.getItems('b1', 'b2');
 
 				log( (collection['b1'].getResource() == resource) ? 'assert OK.' : 'getResource at first NG.' );
 				log( (collection['b2'].getResource() == resource) ? 'assert OK.' : 'getResource at second NG.' );
 
-				log( (collection['b1'].getParams().name == params.name) ? 'assert OK.' : 'getParams at first NG.' );
-				log( (collection['b2'].getParams().name == params.name) ? 'assert OK.' : 'getParams at second NG.' );
+				log( (collection['b1'].getOptions().name == params.name) ? 'assert OK.' : 'getOptions at first NG.' );
+				log( (collection['b2'].getOptions().name == params.name) ? 'assert OK.' : 'getOptions at second NG.' );
 
 			}
 
@@ -128,25 +128,25 @@
 			fn: function(){
 
 				var b1 = new Bootstrap.Bootstrapper({
-					bootstrap: function(resource, params){
-						this.notifySuccess();
+					handler: function(resource, params){
+						this.success();
 					}
 				});
 
 				var b2 = new Bootstrap.Bootstrapper({
-					bootstrap: function(resource, params){
-						this.notifyFailure();
+					handler: function(resource, params){
+						this.failure();
 					}
 				});
 
 				var b3 = new Bootstrap.Bootstrapper({
-					bootstrap: function(resource, params){
-						this.notifyFailure();
+					handler: function(resource, params){
+						this.failure();
 					}
 				});
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrappers({
+				bootstrappers.addItems({
 					b1: b1,
 					b2: b2,
 					b3: b3

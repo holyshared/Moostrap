@@ -59,8 +59,8 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 		//options.key2
 
 		//Notify to status
-		this.notifySuccess();
-		this.notifyFailure();
+		this.success();
+		this.failure();
 	}
 
 });
@@ -70,8 +70,8 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 
 ### Methods
 
-* notifySuccess
-* notifyFailure
+* success
+* failure
 * getResultStatus
 * isSuccessed
 * isFailured
@@ -80,9 +80,8 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 * execute
 * setResource
 * getResource
-* setParams
-* getParams
-* bootstrap - abstract
+* setOptions
+* getOptions
 
 
 ### Events
@@ -98,10 +97,10 @@ Class: Bootstrap.Bootstrappers
 
 var bootstrapper = new Bootstrap.Bootstrapper({
 
-	params: {
+	options: {
 	},
 
-	bootstrap: function(resource, options){
+	handler: function(resource, options){
 	}
 
 });
@@ -141,25 +140,6 @@ bootstrappers.each(function(queue, key){
 
 ### Methods
 
-* addBootstrapper
-* addBootstrappers
-* removeBootstrapper
-* removeBootstrappers
-* getBootstrapper
-* getBootstrappers
-* hasBootstrapper
-* getLength
-//* isSuccessed
-//* isFailureed
-//* isCompleted
-* execute
-* setResource
-* setParams
-
-
-
-### 1.0 new Methods 
-
 * addItem
 * addItems
 * removeItem
@@ -173,7 +153,7 @@ bootstrappers.each(function(queue, key){
 //* isCompleted
 * execute
 * setResource
-* setParams
+* setOptions
 
 * each
 * hasNext

@@ -64,32 +64,29 @@ Bootstrap.FAILURE = 2;
 
 Bootstrap.Bootstrapper = new Class({
 
-//	Implements: [Events],
-
 	_status: null,
 	_started: false,
+/*
 	_resource: null,
 	_params: null,
 	_bootstrap: null,
-
+*/
 	initialize: function(options){
-		var setter;
-		for (var key in options){
-			property = '_' + key;
-			if (this[property]) {
-				this[property] = options[key];
-				delete options[key];
-			}
+		var props = { resource: null, options: null, handler: null };
+		var opts = Object.merge(props, options);
+		for (var key in opts){
+			this['_' + key] = options[key];
+			delete opts[key];
 		}
 	},
 
-	notifySuccess: function(){
+	success: function(){
 		this._setResultStatus(Bootstrap.SUCCESS);
 		this.fireEvent('complete');
 		this.fireEvent('success');
 	},
 
-	notifyFailure: function(){
+	failure: function(){
 		this._setResultStatus(Bootstrap.FAILURE);
 		this.fireEvent('complete');
 		this.fireEvent('failure');
@@ -99,8 +96,8 @@ Bootstrap.Bootstrapper = new Class({
 		return this._resource;
 	},
 
-	getParams: function(){
-		return this._params;
+	getOptions: function(){
+		return this._options;
 	},
 
 	_setResultStatus: function(type){
@@ -141,10 +138,9 @@ BootstrapperType.mirror(function(name){
 
     hooks[name] = function(){
         var args = arguments;
-        var items = this.getBootstrappers();
+        var items = this.getItems();
         var results = [];
         Object.each(items, function(item, key){
-
             var result = item[name].apply(item, args);
 			if ((typeOf(result) != 'bootstrapper')) {
 				results.push(result);
@@ -164,6 +160,7 @@ Bootstrap.Bootstrappers = new Class({
 	_bootstrappers: {},
 
 	/* old methods */
+/*
     addBootstrapper: function(key, bootstrap){
 		if (!Type.isBootstrapper(bootstrap)){ 
 			throw new TypeError('invalid bootstrap.');
@@ -224,6 +221,7 @@ Bootstrap.Bootstrappers = new Class({
     hasBootstrapper: function(key){
 		return (this._bootstrappers[key]) ? true : false;
     },
+*/
 	/* old methods */
 
     getLength: function(){
@@ -234,8 +232,6 @@ Bootstrap.Bootstrappers = new Class({
 		return this._keys;
 	},
 
-
-
     getItem: function(key){
 		if (!this.hasItem(key)){
 			throw new Error('not found key'); 
@@ -244,14 +240,8 @@ Bootstrap.Bootstrappers = new Class({
     },
 
     getItems: function(){
-//		var keys = (arguments.length <= 0)
-	//	? Object.keys(this._bootstrappers)
-		//: Array.from(arguments);
-
-
-		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
 		var collection = {};
-
+		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
 		keys.each(function(key, index){
 			collection[key] = this.getItem(key);
 		}, this);
@@ -337,11 +327,11 @@ Bootstrap.Bootstrapper.implement({
         return this;
 	},
 
-    setParams: function(values){
+    setOptions: function(values){
         if (!Type.isObject(values)){
             throw new TypeError('invalid resurce');
         }
-		this._params = Object.merge(this._params || {}, values);
+		this._options = Object.merge(this._options || {}, values);
 		return this;
 	},
 /*
@@ -364,7 +354,7 @@ Bootstrap.Bootstrapper.implement({
 	execute: function(){
 		this._started = true;
 		this.fireEvent('start');
-		this._bootstrap.call(this, this.getResource(), this.getParams());
+		this._handler.call(this, this.getResource(), this.getOptions());
 	}
 
 });

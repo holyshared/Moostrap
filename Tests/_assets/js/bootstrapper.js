@@ -11,11 +11,11 @@
 			fn: function(){
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					params: {
+					options: {
 						name: 'foo',
 						value: 1
 					},
-					bootstrap: function(resource, params){
+					handler: function(resource, options){
 					}
 				});
 
@@ -33,27 +33,27 @@
 
 		testcases.push({
 			
-			title: 'setParams/getParams',
-			description : 'setParams/getParams testcase.',
+			title: 'setOptions/getOptions',
+			description : 'setOptions/getOptions testcase.',
 			fn: function(){
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					params: {
+					options: {
 						name: 'foo',
 						value: 1
 					},
-					bootstrap: function(resource, params){
+					handler: function(resource, options){
 					}
 				});
 
-				bootstrap.setParams({
+				bootstrap.setOptions({
 					name: 'bar',
 					value: 100
 				});
 
-				var result = (bootstrap.getParams().name == 'bar' && bootstrap.getParams().value == 100);
+				var result = (bootstrap.getOptions().name == 'bar' && bootstrap.getOptions().value == 100);
 
-				log( (result) ? 'assert OK.' : 'params setter/getter NG.' );
+				log( (result) ? 'assert OK.' : 'options setter/getter NG.' );
 
 			}
 
@@ -71,16 +71,16 @@
 				var mock = new Mock();
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					params: {
+					options: {
 						name: 'foo',
 						value: 1
 					},
-					bootstrap: function(resource, params){
+					handler: function(resource, options){
 
-						resource.setName(params.name);
-						resource.setValue(params.value);
+						resource.setName(options.name);
+						resource.setValue(options.value);
 
-						this.notifySuccess();
+						this.success();
 					}
 				});
 
@@ -106,7 +106,7 @@
 				});
 
 				bootstrap.setResource(mock)
-					.setParams({
+					.setOptions({
 						name: 'bar',
 						value: 2
 					})
@@ -131,16 +131,16 @@
 				var mock = new Mock();
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					params: {
+					options: {
 						name: 'foo',
 						value: 1
 					},
-					bootstrap: function(resource, params){
+					handler: function(resource, options){
 
-						resource.setName(params.name);
-						resource.setValue(params.value);
+						resource.setName(options.name);
+						resource.setValue(options.value);
 
-						this.notifyFailure();
+						this.failure();
 					}
 				});
 
@@ -165,7 +165,7 @@
 				});
 
 				bootstrap.setResource(mock)
-					.setParams({
+					.setOptions({
 						name: 'bar',
 						value: 2
 					})
