@@ -4,18 +4,17 @@ var StrategyMock = this.StrategyMock = new Class({
 
 	Extends: StrategyNamespace.BootstrapStrategy,
 
-    execute: function(){
-        if (this.isCompleted()){
-            return;
-        }
+	onSuccess: function(key){
+		this._progress(key);
+	},
 
-        if (!this.isStarted()){
-            this._started = true;
-        }
+	onFailture: function(key){
+		this._progress(key);
+	},
 
-        this.fireEvent('start');
+    bootstrap: function(){
         var boostrappers = this.getBootstrappers();
-        Object.each(boostrappers.getBootstrappers(), function(bootstrap, key){
+        boostrappers.each(function(bootstrap, key){
         	var args = [key];
             var events = {
                 onSuccess: this.onSuccess.bind(this, args),

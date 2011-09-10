@@ -63,7 +63,7 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
     getBootstrapper: function(key){
         var bootstrappers = this.getBootstrappers();
-        return bootstrappers.getBootstrapper(key);
+        return bootstrappers.getItem(key);
     },
 
     getBootstrapperKeys: function(){

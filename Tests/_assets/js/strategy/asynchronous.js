@@ -4,10 +4,10 @@
 
 		Extends: Bootstrap.Bootstrapper,
 
-		_params: {
+		_options: {
 		},
 
-		_bootstrap: function(){
+		_handler: function(){
 			var req = new Request.JSON({
 				method: 'get',
 				url: '/echo/json/',
@@ -15,10 +15,10 @@
 					json: '{ "name" : "a", "value" : "b" }'
 				},
 				onSuccess: function(response){
-					this.notifySuccess();
+					this.success();
 				},
 				onFailture: function(response){
-					this.notifyFailture();
+					this.failture();
 				}
 			});
 			req.send();
@@ -31,10 +31,10 @@
 
 		Extends: Bootstrap.Bootstrapper,
 
-		_params: {
+		_options: {
 		},
 
-		_bootstrap: function(){
+		_handler: function(){
 
 			var request = new Request.JSON({
 				method: 'get',
@@ -43,10 +43,10 @@
 					json: '{ "name" : "a", "value" : "b" }'
 				},
 				onSuccess: function(response){
-					this.notifySuccess();
+					this.success();
 				},
 				onFailture: function(response){
-					this.notifyFailture();
+					this.failture();
 				}
 			});
 			request.send();
@@ -68,16 +68,17 @@
 			fn: function(){
 
 				var resource = {};
-
+				var a = new BootstrapperA(), b = new BootstrapperB();
 				var collection = new Bootstrap.Bootstrappers();
 
-				collection.addBootstrapper('proccessA', new BootstrapperA())
-					.addBootstrapper('proccessB', new BootstrapperB());
+				collection.addItem('proccessA', a)
+					.addItem('proccessB', b);
 
 				var strategy = new Strategy.Asynchronous({
 					bootstrappers: collection,
 					resource: resource
 				});
+				strategy.init();
 				strategy.execute();
 
 			}

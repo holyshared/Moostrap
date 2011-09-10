@@ -27,28 +27,32 @@ StrategyNamespace.Synchronize = new Class({
 		var collection = this.getBootstrappers();
 		collection.setResource(this.getResource());
 
-		collection.each(function(boostrapper, key){
-			this._setupBoostrapper(key, boostrapper);
+		collection.each(function(bootstrapper, key){
+			this._setupBootstrapper(key, bootstrapper);
 		}, this);
 	},
 
     bootstrap: function(){
-		this._nextBoostrap();
+		var collection = this.getBootstrappers();
+		var bootstrapper = collection.current();
+		bootstrapper.execute();
 	},
 
-	_setupBoostrapper: function(key, boostrapper){
+	_setupBootstrapper: function(key, bootstrapper){
 		var args = [key];
 	    var events = {
 	    	onSuccess: this.onSuccess.bind(this, args),
 	        onFailture: this.onFailture.bind(this, args)
 	    };
-		boostrapper.addEvent(events);
+		bootstrapper.addEvents(events);
 	},
 
 	_nextBoostrap: function(){
 		var collection = this.getBootstrappers();
-		var boostrapper = collection.next();
-		boostrapper.execute();
+		if (collection.hasNext()){
+			var bootstrapper = collection.next();
+			bootstrapper.execute();
+		}
 	},
 
 	onSuccess: function(key){
