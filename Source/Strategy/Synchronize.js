@@ -25,15 +25,11 @@ StrategyNamespace.Synchronize = new Class({
 
 	onSuccess: function(key){
 		this._progress(key);
-
-		var boostrappers = this.getBootstrappers();
-		var key = this.keys.shift();
-
-		var bootstrapper = boostrappers.getBootstrapper(key);
-		bootstrapper.execute();
+		this._nextBoostrap();
 	},
 
-	onFailture: function(){
+	onFailture: function(key){
+		this._progress(key);
 	},
 
     execute: function(){
@@ -47,34 +43,34 @@ StrategyNamespace.Synchronize = new Class({
 
         this.fireEvent('start');
 
-
-		this._initBoostrapper();
-		this.next();
+		this._initStrategy();
+		this._nextBoostrap();
 	},
 
-	_initBoostrapper: function(){
-		var boostrappers = this.getBootstrappers();
-		boostrappers.setResource(this.getResource());
-		this.keys = boostrappers.getKeys();
+	_initStrategy: function(){
+		var collection = this.getBootstrappers();
+		collection.setResource(this.getResource());
 
-		var collection = boostrappers.getBootstrappers();
-		Object.each(collection, function(boostrapper, key){
-			var args = [key];
-	        var events = {
-	        	onSuccess: this.onSuccess.bind(this, args),
-	            onFailture: this.onFailture.bind(this, args)
-	        };
-			boostrapper.addEvent(events);
+		collection.each(function(boostrapper, key){
+			this._setupBoostrapper(key, boostrapper);
 		}, this);
 	},
 
-	next: function(){
-		var boostrappers = this.getBootstrappers();
-		var collection = boostrappers.getBootstrappers();
-		collection[this.keys.shift()].execute();
+	_setupBoostrapper: function(key, boostrapper){
+		var args = [key];
+	    var events = {
+	    	onSuccess: this.onSuccess.bind(this, args),
+	        onFailture: this.onFailture.bind(this, args)
+	    };
+		boostrapper.addEvent(events);
+	},
+
+	_nextBoostrap: function(){
+		var collection = this.getBootstrappers();
+		var boostrapper = collection.next();
+		boostrapper.execute();
 	}
 
 });
-
 
 }(Bootstrap.Strategy));

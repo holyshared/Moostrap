@@ -108,9 +108,9 @@ var bootstrapper = new Bootstrap.Bootstrapper({
 
 var bootstrappers = new Bootstrap.Bootstrappers();
 
-bootstrappers.addBootstrapper(bootstrapper);
+bootstrappers.addItem(bootstrapper);
 
-bootstrappers.addBootstrappers(bootstrappers);
+bootstrappers.addItems(bootstrappers);
 
 
 bootstrappers.addEvent('start', function(){
@@ -126,8 +126,17 @@ bootstrappers.addEvent('complete', function(){
 
 });
 
-
 bootstrappers.execute();
+
+if (bootstrappers.hasNext()){
+	var nextBootstrapper = bootstrappers.next();
+	nextBootstrapper.execute();
+}
+
+bootstrappers.each(function(queue, key){
+	queue.execute();
+});
+
 
 
 ### Methods
@@ -146,6 +155,32 @@ bootstrappers.execute();
 * execute
 * setResource
 * setParams
+
+
+
+### 1.0 new Methods 
+
+* addItem
+* addItems
+* removeItem
+* removeItems
+* getItem
+* getItems
+* hasItem
+* getLength
+//* isSuccessed
+//* isFailureed
+//* isCompleted
+* execute
+* setResource
+* setParams
+
+* each
+* hasNext
+* next
+* rewind
+
+
 
 
 ### Events
