@@ -23,30 +23,6 @@ StrategyNamespace.Synchronize = new Class({
 
 	Extends: StrategyNamespace.BootstrapStrategy,
 
-	onSuccess: function(key){
-		this._progress(key);
-		this._nextBoostrap();
-	},
-
-	onFailture: function(key){
-		this._progress(key);
-	},
-
-    execute: function(){
-        if (this.isCompleted()){
-            return;
-        }
-
-        if (!this.isStarted()){
-            this._started = true;
-        }
-
-        this.fireEvent('start');
-
-//		this._initStrategy();
-		this._nextBoostrap();
-	},
-
 	init: function(){
 		var collection = this.getBootstrappers();
 		collection.setResource(this.getResource());
@@ -54,6 +30,10 @@ StrategyNamespace.Synchronize = new Class({
 		collection.each(function(boostrapper, key){
 			this._setupBoostrapper(key, boostrapper);
 		}, this);
+	},
+
+    bootstrap: function(){
+		this._nextBoostrap();
 	},
 
 	_setupBoostrapper: function(key, boostrapper){
@@ -69,6 +49,15 @@ StrategyNamespace.Synchronize = new Class({
 		var collection = this.getBootstrappers();
 		var boostrapper = collection.next();
 		boostrapper.execute();
+	},
+
+	onSuccess: function(key){
+		this._progress(key);
+		this._nextBoostrap();
+	},
+
+	onFailture: function(key){
+		this._progress(key);
 	}
 
 });

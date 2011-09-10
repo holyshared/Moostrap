@@ -99,17 +99,21 @@ StrategyNamespace.BootstrapStrategy = new Class({
         }
     },
 
-    onSuccess: function(key){
-        this._progress(key);
-    },
+    execute: function(){
+        if (this.isCompleted()){
+            return;
+        }
 
-    onFailture: function(key){
-        this._progress(key);
-    },
+        if (!this.isStarted()){
+            this._started = true;
+        }
+		this.fireEvent('start');
+		this.bootstrap();
+	},
 
 	//abstract
-    execute: function(){
-    }
+    bootstrap: function(){
+	}
 
 });
 
