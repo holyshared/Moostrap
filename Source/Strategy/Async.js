@@ -32,7 +32,7 @@ StrategyNamespace.Async = new Class({
 		}, this);
 	},
 
-    bootstrap: function(){
+	bootstrap: function(){
 		var collection = this.getBootstrappers();
 		collection.each(function(bootstrapper, key){
 			if (this.isCompleted()){
@@ -40,22 +40,22 @@ StrategyNamespace.Async = new Class({
 			}
 			bootstrapper.execute();
 		}, this);
-    },
+	},
 
 	_setupBootstrapper: function(key, bootstrapper){
 		var args = [key];
-	    var events = {
-	    	success: this.onSuccess.bind(this, args),
-	        failure: this.onFailture.bind(this, args)
-	    };
-	    var options = this.getConfiguration(key) || {};
-	    bootstrapper.setOptions(options)
+		var events = {
+			success: this.onSuccess.bind(this, args),
+			failure: this.onFailture.bind(this, args)
+		};
+		var options = this.getConfiguration(key) || {};
+		bootstrapper.setOptions(options)
 			.addEvents(events);
 	},
 
-    onSuccess: function(key){
+	onSuccess: function(key){
 		this._progress(key);
-    }
+	}
 
 });
 

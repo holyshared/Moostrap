@@ -32,7 +32,7 @@ StrategyNamespace.Sync = new Class({
 		}, this);
 	},
 
-    bootstrap: function(){
+	bootstrap: function(){
 		var collection = this.getBootstrappers();
 		var bootstrapper = collection.current();
 		bootstrapper.execute();
@@ -40,12 +40,12 @@ StrategyNamespace.Sync = new Class({
 
 	_setupBootstrapper: function(key, bootstrapper){
 		var args = [key];
-	    var events = {
-	    	success: this.onSuccess.bind(this, args),
-	        failure: this.onFailture.bind(this, args)
-	    };
-	    var options = this.getConfiguration(key) || {};
-	    bootstrapper.setOptions(options)
+		var events = {
+			success: this.onSuccess.bind(this, args),
+			failure: this.onFailture.bind(this, args)
+		};
+		var options = this.getConfiguration(key) || {};
+		bootstrapper.setOptions(options)
 			.addEvents(events);
 	},
 

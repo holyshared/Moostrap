@@ -24,11 +24,10 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
 	Implements: [Events, Options],
 
-    _counter: 0,
+	_counter: 0,
 	_bootstrappers: null,
 	_configurations: null,
-    _started: false,
-//    _completed: false,
+	_started: false,
 	_status: Bootstrap.NONE,
 
 	initialize: function(options){
@@ -43,54 +42,54 @@ StrategyNamespace.BootstrapStrategy = new Class({
 		this.setOptions(options);
 	},
 
-    setBootstrappers: function(bootstrappers){
+	setBootstrappers: function(bootstrappers){
 		if (!Type.isBootstrappers(bootstrappers)){
 			throw new TypeError('invalid bootstrappers');
 		}
-        this._bootstrappers = bootstrappers;
-        return this;
-    },
+		this._bootstrappers = bootstrappers;
+		return this;
+	},
 
-    getBootstrappers: function(){
-        return this._bootstrappers;
-    },
+	getBootstrappers: function(){
+		return this._bootstrappers;
+	},
 
-    setResource: function(resource){
-        this.resource = resource;
-        return this;
-    },
+	setResource: function(resource){
+		this.resource = resource;
+		return this;
+	},
 
-    getResource: function(){
-        return this.resource;
-    },
+	getResource: function(){
+		return this.resource;
+	},
 
-    setConfigurations: function(configurations){
-        this.configurations = configurations;
-        return this;
-    },
+	setConfigurations: function(configurations){
+		this.configurations = configurations;
+		return this;
+	},
 
-    getConfigurations: function(){
-        return this.configurations;
-    },
+	getConfigurations: function(){
+		return this.configurations;
+	},
 
-    getConfiguration: function(key){
-        return this.configurations[key];
-    },
+	getConfiguration: function(key){
+		return this.configurations[key];
+	},
 
-    getBootstrapper: function(key){
-        var bootstrappers = this.getBootstrappers();
-        return bootstrappers.getItem(key);
-    },
+	getBootstrapper: function(key){
+		var bootstrappers = this.getBootstrappers();
+		return bootstrappers.getItem(key);
+	},
 
-    getBootstrapperKeys: function(){
+	getBootstrapperKeys: function(){
 		var bootstrappers = this.getBootstrappers();
 		return bootstrappers.getKeys();
-    },
+	},
 
-    getLength: function(){
-        var bootstrappers = this.getBootstrappers();
-        return bootstrappers.getLength();
-    },
+	getLength: function(){
+		var bootstrappers = this.getBootstrappers();
+		return bootstrappers.getLength();
+	},
 
 	_setResultStatus: function(type){
 		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
@@ -104,9 +103,9 @@ StrategyNamespace.BootstrapStrategy = new Class({
 		return this._status;
 	},
 
-    isStarted: function(){
-        return this._started;
-    },
+	isStarted: function(){
+		return this._started;
+	},
 
 	isSuccessed: function(){
 		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
@@ -120,44 +119,44 @@ StrategyNamespace.BootstrapStrategy = new Class({
 		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
 	},
 
-    _progress: function(bootstrapperName){
-        var args = [
-        	bootstrapperName,
-            this._counter + 1,
-            this.getLength()
-        ];
-        this.fireEvent('progress', args);
+	_progress: function(bootstrapperName){
+		var args = [
+			bootstrapperName,
+			this._counter + 1,
+			this.getLength()
+		];
+		this.fireEvent('progress', args);
 
-        if (this._counter++ >= this.getLength() - 1) {
+		if (this._counter++ >= this.getLength() - 1) {
 			if (this.isFailured()) {
 				return;
 			}
 			this._setResultStatus(Bootstrap.SUCCESS);
-            this.fireEvent('complete');
-            return;
-        }
-    },
+			this.fireEvent('complete');
+			return;
+		}
+	},
 
-    execute: function(){
-        if (this.isCompleted()){
-            return;
-        }
+	execute: function(){
+		if (this.isCompleted()){
+			return;
+		}
 
-        if (!this.isStarted()){
-            this._started = true;
-        }
+		if (!this.isStarted()){
+			this._started = true;
+		}
 		this.fireEvent('start');
 		this.bootstrap();
 	},
 
 	//abstract
-    bootstrap: function(){
+	bootstrap: function(){
 	},
 
 	onFailture: function(key){
 		this._setResultStatus(Bootstrap.FAILURE);
 //		this._progress(key);
-        this.fireEvent('complete');
+		this.fireEvent('complete');
 	}
 
 });

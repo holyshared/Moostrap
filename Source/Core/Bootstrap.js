@@ -134,20 +134,20 @@ Bootstrap.Bootstrapper = new Class({
 var BootstrapperType = new Type('Bootstrapper', Bootstrap.Bootstrapper);
 BootstrapperType.mirror(function(name){
 
-    var hooks = {};
+	var hooks = {};
 
-    hooks[name] = function(){
-        var args = arguments;
-        var items = this.getItems();
-        var results = [];
-        Object.each(items, function(item, key){
-            var result = item[name].apply(item, args);
+	hooks[name] = function(){
+		var args = arguments;
+		var items = this.getItems();
+		var results = [];
+		Object.each(items, function(item, key){
+			var result = item[name].apply(item, args);
 			if ((typeOf(result) != 'bootstrapper')) {
 				results.push(result);
 			}
-        });
+		});
 		return (results.length > 0 ) ? results : this;
-    };
+	};
 
 	Bootstrap.Bootstrappers.implement(hooks);
 
@@ -160,33 +160,33 @@ Bootstrap.Bootstrappers = new Class({
 	_keys: [],
 	_bootstrappers: {},
 
-    getLength: function(){
+	getLength: function(){
 		return this._keys.length;
-    },
+	},
 
 	getKeys: function(){
 		return this._keys;
 	},
 
-    getItem: function(key){
+	getItem: function(key){
 		if (!this.hasItem(key)){
 			throw new Error('not found key'); 
 		}
 		return this._bootstrappers[key];
-    },
+	},
 
-    getItems: function(){
+	getItems: function(){
 		var collection = {};
 		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
 		keys.each(function(key, index){
 			collection[key] = this.getItem(key);
 		}, this);
 		return collection;
-    },
+	},
 
-    hasItem: function(key){
+	hasItem: function(key){
 		return this._keys.contains(key);
-    },
+	},
 
 	addItem: function(key, bootstrap){
 		if (!Type.isBootstrapper(bootstrap)){ 
@@ -257,18 +257,18 @@ var BootstrappersType = new Type('Bootstrappers', Bootstrap.Bootstrappers);
 
 Bootstrap.Bootstrapper.implement({
 
-    setResource: function(resource){
-        if (!Type.isObject(resource)){
-        	throw new TypeError('invalid resurce');
-        }
-        this._resource = resource;
-        return this;
+	setResource: function(resource){
+		if (!Type.isObject(resource)){
+			throw new TypeError('invalid resurce');
+		}
+		this._resource = resource;
+		return this;
 	},
 
-    setOptions: function(values){
-        if (!Type.isObject(values)){
-            throw new TypeError('invalid resurce');
-        }
+	setOptions: function(values){
+		if (!Type.isObject(values)){
+			throw new TypeError('invalid resurce');
+		}
 		this._options = Object.merge(this._options || {}, values);
 		return this;
 	},
