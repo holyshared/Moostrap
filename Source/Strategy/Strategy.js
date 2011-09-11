@@ -22,7 +22,7 @@ provides:
 
 StrategyNamespace.BootstrapStrategy = new Class({
 
-	Implements: [Events],
+	Implements: [Events, Options],
 
     _counter: 0,
 	_bootstrappers: null,
@@ -39,6 +39,7 @@ StrategyNamespace.BootstrapStrategy = new Class({
 				delete options[key];
 			}
 		}
+		this.setOptions(options);
 	},
 
     setBootstrappers: function(bootstrappers){

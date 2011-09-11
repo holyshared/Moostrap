@@ -11,7 +11,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrapper = Application.Bootstrap.create('Sync', {
+				var bootstrapper = Application.Bootstrap.create('Async', {
 					resource: resource,
 					configurations: {
 						proccessA: {

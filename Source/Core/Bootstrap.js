@@ -33,7 +33,8 @@ var Bootstrap = this.Bootstrap = new Class({
 	},
 
 	register: function(name, options){
-		this._collection.addItem(name, options);
+		var bootstrapper = new Bootstrap.Bootstrapper(options);
+		this._collection.addItem(name, bootstrapper);
 	},
 
 	unregister: function(name){
@@ -49,11 +50,8 @@ var Bootstrap = this.Bootstrap = new Class({
 			throw new Error(type + 'is not found');
 		}
 		var Strategy = Bootstrap.Strategy[type];
-		var strategy = new Strategy({
-			resource: options.resource,
-			bootstrappers: this._collection,
-			configurations: options.configurations
-		});
+		var opts = Object.merge(options, { bootstrappers: this._collection }); 
+		var strategy = new Strategy(opts);
 		strategy.init();
 		return strategy;
 	}
