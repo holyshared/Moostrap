@@ -101,8 +101,8 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
     _progress: function(bootstrapperName){
         var args = [
-            this._counter,
-            this.getResource(),
+        	bootstrapperName,
+            this._counter + 1,
             this.getLength()
         ];
         this.fireEvent('progress', args);

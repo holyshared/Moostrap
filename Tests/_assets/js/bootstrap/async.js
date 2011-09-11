@@ -24,10 +24,13 @@
 						}
 					},
 					onStart: function(){
-alert('onStart');
+						log('start');
+					},
+					onProgress: function(key, index, total){
+						log('process: ' + key + ' ' + index + '/' + total);
 					},
 					onComplete: function(){
-alert('onComplete');
+						log('complete');
 					}
 				});
 				bootstrapper.execute();
