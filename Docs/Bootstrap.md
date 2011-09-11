@@ -7,32 +7,6 @@ Bootstrap
 Class: Bootstrap
 --------------------------------------------------------------
 
-### Example
-
-var Controller = {};
-
-Controller.Bootstrap = {
-	bootstrap: new Bootstrap();
-};
-
-Controller.Bootstrap.register('MyResource', {
-
-	options: {
-		key1: 'key1_value',
-		key2: 'key2_value'
-	},
-
-	bootstrap: function(resource, options){
-		//options.key1
-		//options.key2
-
-		//Notify to status
-		this.notifySuccess();
-		this.notifyFailure();
-	}
-
-});
-
 ### Methods
 
 * register
@@ -44,28 +18,6 @@ Controller.Bootstrap.register('MyResource', {
 
 Class: Bootstrap.Bootstrapper
 --------------------------------------------------------------
-
-### Example
-
-var MyBootstrapper = new Bootstrap.Bootstrapper({
-
-	params: {
-		key1: 'key1_value',
-		key2: 'key2_value'
-	},
-
-	bootstrap: function(resource, options){
-		//options.key1
-		//options.key2
-
-		//Notify to status
-		this.success();
-		this.failure();
-	}
-
-});
-
-
 
 
 ### Methods
@@ -95,49 +47,6 @@ var MyBootstrapper = new Bootstrap.Bootstrapper({
 Class: Bootstrap.Bootstrappers
 --------------------------------------------------------------
 
-var bootstrapper = new Bootstrap.Bootstrapper({
-
-	options: {
-	},
-
-	handler: function(resource, options){
-	}
-
-});
-
-var bootstrappers = new Bootstrap.Bootstrappers();
-
-bootstrappers.addItem(bootstrapper);
-
-bootstrappers.addItems(bootstrappers);
-
-
-bootstrappers.addEvent('start', function(){
-
-});
-bootstrappers.addEvent('success', function(){
-
-});
-bootstrappers.addEvent('failure', function(){
-
-});
-bootstrappers.addEvent('complete', function(){
-
-});
-
-bootstrappers.execute();
-
-if (bootstrappers.hasNext()){
-	var nextBootstrapper = bootstrappers.next();
-	nextBootstrapper.execute();
-}
-
-bootstrappers.each(function(queue, key){
-	queue.execute();
-});
-
-
-
 ### Methods
 
 * addItem
@@ -148,13 +57,9 @@ bootstrappers.each(function(queue, key){
 * getItems
 * hasItem
 * getLength
-//* isSuccessed
-//* isFailureed
-//* isCompleted
 * execute
 * setResource
 * setOptions
-
 * each
 * hasNext
 * next
@@ -162,56 +67,8 @@ bootstrappers.each(function(queue, key){
 
 
 
-
-### Events
-
-* onStart
-* onComplete
-* onSuccess
-* onFailure
-
-
-
-
-
 Class: Bootstrap.BootstrapStrategy
 --------------------------------------------------------------
-
-
-### Example
-
-var MyClass = new Class({
-
-	_id: null,
-	_name: 'resource',
-
-	someMethod: function(){
-	}
-
-});
-
-var MyStrategy = new Class({
-
-	Extends: Bootstrap.BootstrapStrategy
-
-});
-
-var resource = new MyClass();
-
-var collection = new Bootstrap.Bootstrappers();
-
-var strategy = new MyStrategy();
-strategy.setBootstrappers(collection)
-	.setResource(resource)
-	.setConfigurations({
-
-
-
-	});
-
-strategy.bootstrap('MyReqource1');
-strategy.bootstrap('MyReqource2');
-
 
 ### Methods
 
@@ -231,39 +88,27 @@ strategy.bootstrap('MyReqource2');
 
 ### Events
 
+* onStart
 * onProgress
-* onBeforeBootstrap
-* onAfterBootstrap
 * onComplete
 
 
-Class: Bootstrap.Strategy.Asynchronous
+Class: Bootstrap.Strategy.Async
 --------------------------------------------------------------
 
 
-### Example
 
-var MyClass = new Class({
+### Methods
 
-	_id: null,
-	_name: 'resource',
+* bootstrap
 
-	someMethod: function(){
-	}
 
-});
 
-var resource = new MyClass();
 
-var simpleBootstrapper = Bootstrap.create(resource, 'Asynchronous', {
-	onBeforeBootstrap: function(resource){
-		//do something
-	},
-	onAfterBootstrap: function(resource){
-		//do something
-	}
-});
-simpleBootstrapper.bootstrap();
+Class: Bootstrap.Strategy.Sync
+--------------------------------------------------------------
+
+
 
 ### Methods
 
