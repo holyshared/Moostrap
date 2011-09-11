@@ -26,6 +26,7 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
     _counter: 0,
 	_bootstrappers: null,
+	_configurations: null,
     _started: false,
     _completed: false,
 
@@ -59,6 +60,19 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
     getResource: function(){
         return this.resource;
+    },
+
+    setConfigurations: function(configurations){
+        this.configurations = configurations;
+        return this;
+    },
+
+    getConfigurations: function(){
+        return this.configurations;
+    },
+
+    getConfiguration: function(key){
+        return this.configurations[key];
     },
 
     getBootstrapper: function(key){

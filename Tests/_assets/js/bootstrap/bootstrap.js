@@ -1,8 +1,28 @@
-(function(win, doc, Bootstrap, Strategy){
+(function(win, doc, Bootstrap){
 
-	win.addEventListener('load', function(){
+	var Application = this.Application = function(){};
+	Application.Bootstrap = new Bootstrap();
 
+	Application.Bootstrap.register('Bootstrap proccess A', {
 
-	}, false);
+		options: {
+		},
 
-}(window, document, Bootstrap, Bootstrap.Strategy));
+		handler: function(resource, options){
+			this.success();
+		}
+
+	});
+
+	Application.Bootstrap.register('Bootstrap proccess B', {
+
+		options: {
+		},
+
+		handler: function(resource, options){
+			this.success();
+		}
+
+	});
+
+}(window, document, Bootstrap));

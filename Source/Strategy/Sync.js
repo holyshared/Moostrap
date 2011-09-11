@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.Strategy.Asynchronous
+name: Bootstrap.Strategy.Sync
 
 description: 
 
@@ -13,13 +13,13 @@ requires:
   - Bootstrap.BootstrapStrategy
 
 provides:
-  - Bootstrap.Strategy.Asynchronous
+  - Bootstrap.Strategy.Sync
 ...
 */
 
 (function(StrategyNamespace){
 
-StrategyNamespace.Asynchronous = new Class({
+StrategyNamespace.Sync = new Class({
 
 	Extends: StrategyNamespace.BootstrapStrategy,
 
@@ -34,10 +34,9 @@ StrategyNamespace.Asynchronous = new Class({
 
     bootstrap: function(){
 		var collection = this.getBootstrappers();
-		collection.each(function(bootstrapper, key){
-			bootstrapper.execute();
-		}, this);
-    },
+		var bootstrapper = collection.current();
+		bootstrapper.execute();
+	},
 
 	_setupBootstrapper: function(key, bootstrapper){
 		var args = [key];
@@ -45,16 +44,27 @@ StrategyNamespace.Asynchronous = new Class({
 	    	onSuccess: this.onSuccess.bind(this, args),
 	        onFailture: this.onFailture.bind(this, args)
 	    };
-		bootstrapper.addEvents(events);
+	    var options = this.getConfiguration(key) || {};
+	    bootstrapper.setOptions(options)
+			.addEvents(events);
 	},
 
-    onSuccess: function(key){
-        this._progress(key);
-    },
+	_nextBoostrap: function(){
+		var collection = this.getBootstrappers();
+		if (collection.hasNext()){
+			var bootstrapper = collection.next();
+			bootstrapper.execute();
+		}
+	},
 
-    onFailture: function(key){
-        this._progress(key);
-    }
+	onSuccess: function(key){
+		this._progress(key);
+		this._nextBoostrap();
+	},
+
+	onFailture: function(key){
+		this._progress(key);
+	}
 
 });
 

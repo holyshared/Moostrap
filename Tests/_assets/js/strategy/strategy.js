@@ -55,12 +55,12 @@
 			fn: function(){
 
 				var item = new Bootstrap.Bootstrapper({
-					bootstrap: function(){
+					handler: function(){
 					}
 				});
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrapper('item', item);
+				bootstrappers.addItem('item', item);
 
 				var mock = new StrategyMock();
 				mock.setBootstrappers(bootstrappers);
@@ -79,12 +79,12 @@
 			fn: function(){
 
 				var item = new Bootstrap.Bootstrapper({
-					bootstrap: function(){
+					handler: function(){
 					}
 				});
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrapper('item', item);
+				bootstrappers.addItem('item', item);
 
 				var mock = new StrategyMock();
 				mock.setBootstrappers(bootstrappers);
@@ -110,20 +110,20 @@
 				var progress = 0, complete = false;
 
 				var item1 = new Bootstrap.Bootstrapper({
-					bootstrap: function(){
-						this.notifySuccess();
+					handler: function(){
+						this.success();
 					}
 				});
 
 				var item2 = new Bootstrap.Bootstrapper({
-					bootstrap: function(){
-						this.notifySuccess();
+					handler: function(){
+						this.success();
 					}
 				});
 
 				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addBootstrapper('item', item1)
-					.addBootstrapper('item2', item2);
+				bootstrappers.addItem('item', item1)
+					.addItem('item2', item2);
 
 				var mock = new StrategyMock();
 				mock.setResource(resource)
@@ -147,11 +147,6 @@
 			}
 
 		});
-
-
-
-
-
 
 		makeActions(testcases);
 

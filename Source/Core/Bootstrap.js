@@ -44,15 +44,18 @@ var Bootstrap = this.Bootstrap = new Class({
 		return this._collection.hasItem(name);
 	},
 
-	create: function(resource, type, options){
+	create: function(type, options){
 		if (!Bootstrap.Strategy[type]) {
 			throw new Error(type + 'is not found');
 		}
 		var Strategy = Bootstrap.Strategy[type];
-		var strategy = new Strategy(Object.merge(options, resource));
+		var strategy = new Strategy({
+			resource: options.resource,
+			bootstrappers: this._collection,
+			configurations: options.configurations
+		});
 		strategy.init();
 		return strategy;
-//		return new Strategy(Object.merge(options, resource));
 	}
 
 });

@@ -202,7 +202,12 @@ var collection = new Bootstrap.Bootstrappers();
 
 var strategy = new MyStrategy();
 strategy.setBootstrappers(collection)
-	.setResource(resource);
+	.setResource(resource)
+	.setConfigurations({
+
+
+
+	});
 
 strategy.bootstrap('MyReqource1');
 strategy.bootstrap('MyReqource2');
@@ -214,6 +219,9 @@ strategy.bootstrap('MyReqource2');
 * getResource
 * setBootstrappers
 * getBootstrappers
+* getConfigurations
+* setConfigurations
+* getConfiguration
 * getBootstrapper
 * getBootstrapperKeys
 * getLength
