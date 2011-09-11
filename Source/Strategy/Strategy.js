@@ -156,7 +156,7 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
 	onFailture: function(key){
 		this._setResultStatus(Bootstrap.FAILURE);
-		this._progress(key);
+//		this._progress(key);
         this.fireEvent('complete');
 	}
 

@@ -6,12 +6,12 @@
 
 		testcases.push({
 
-			title: 'bootstrap',
-			description : 'bootstrap sync testcase.',
+			title: 'bootstrap - success',
+			description : 'bootstrap async testcase - success',
 			fn: function(){
 				var resource = {};
 
-				var bootstrapper = Application.Bootstrap.create('Async', {
+				var bootstrapper = App.SuccessBootstrap.create('Async', {
 					resource: resource,
 					configurations: {
 						proccessA: {
@@ -38,6 +38,48 @@
 			}
 
 		});
+
+
+
+
+		testcases.push({
+
+			title: 'bootstrap - failture',
+			description : 'bootstrap async testcase - failture.',
+			fn: function(){
+				var resource = {};
+
+				var bootstrapper = App.FailureBootstrap.create('Async', {
+					resource: resource,
+					configurations: {
+						proccessA: {
+							key1: 'key1',
+							key2: 'key2'
+						},
+						proccessB: {
+							key1: 'key1',
+							key2: 'key2'
+						}
+					},
+					onStart: function(){
+						log('start');
+					},
+					onProgress: function(key, index, total){
+						log('process: ' + key + ' ' + index + '/' + total);
+					},
+					onComplete: function(){
+						log('complete');
+					}
+				});
+				bootstrapper.execute();
+
+			}
+
+		});
+
+
+
+
 
 		makeActions(testcases);
 

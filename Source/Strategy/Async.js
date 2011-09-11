@@ -45,8 +45,8 @@ StrategyNamespace.Async = new Class({
 	_setupBootstrapper: function(key, bootstrapper){
 		var args = [key];
 	    var events = {
-	    	onSuccess: this.onSuccess.bind(this, args),
-	        onFailture: this.onFailture.bind(this, args)
+	    	success: this.onSuccess.bind(this, args),
+	        failure: this.onFailture.bind(this, args)
 	    };
 	    var options = this.getConfiguration(key) || {};
 	    bootstrapper.setOptions(options)

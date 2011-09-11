@@ -1,9 +1,10 @@
 (function(win, doc, Bootstrap){
 
-	var Application = this.Application = function(){};
-	Application.Bootstrap = new Bootstrap();
+	var App = this.App = function(){};
+	App.SuccessBootstrap = new Bootstrap();
+	App.FailureBootstrap = new Bootstrap();
 
-	Application.Bootstrap.register('Bootstrap proccess A', {
+	App.SuccessBootstrap.register('Bootstrap proccess A', {
 
 		options: {
 		},
@@ -14,13 +15,35 @@
 
 	});
 
-	Application.Bootstrap.register('Bootstrap proccess B', {
+	App.SuccessBootstrap.register('Bootstrap proccess B', {
 
 		options: {
 		},
 
 		handler: function(resource, options){
 			this.success();
+		}
+
+	});
+
+	App.FailureBootstrap.register('Bootstrap proccess A', {
+
+		options: {
+		},
+
+		handler: function(resource, options){
+			this.success();
+		}
+
+	});
+
+	App.FailureBootstrap.register('Bootstrap proccess B', {
+
+		options: {
+		},
+
+		handler: function(resource, options){
+			this.failure();
 		}
 
 	});
