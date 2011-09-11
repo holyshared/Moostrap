@@ -60,10 +60,6 @@ StrategyNamespace.Sync = new Class({
 	onSuccess: function(key){
 		this._progress(key);
 		this._nextBoostrap();
-	},
-
-	onFailture: function(key){
-		this._progress(key);
 	}
 
 });

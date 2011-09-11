@@ -28,7 +28,8 @@ StrategyNamespace.BootstrapStrategy = new Class({
 	_bootstrappers: null,
 	_configurations: null,
     _started: false,
-    _completed: false,
+//    _completed: false,
+	_status: Bootstrap.NONE,
 
 	initialize: function(options){
 		var setter;
@@ -91,13 +92,33 @@ StrategyNamespace.BootstrapStrategy = new Class({
         return bootstrappers.getLength();
     },
 
-    isCompleted: function(){
-        return this._completed;
-    },
+	_setResultStatus: function(type){
+		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
+		if (!status.contains(type)) {
+			throw new TypeError('invalid status');
+		}
+		this._status = type;
+	},
+
+	getResultStatus: function(){
+		return this._status;
+	},
 
     isStarted: function(){
         return this._started;
     },
+
+	isSuccessed: function(){
+		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
+	},
+
+	isFailured: function(){
+		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
+	},
+
+	isCompleted: function(){
+		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
+	},
 
     _progress: function(bootstrapperName){
         var args = [
@@ -108,7 +129,10 @@ StrategyNamespace.BootstrapStrategy = new Class({
         this.fireEvent('progress', args);
 
         if (this._counter++ >= this.getLength() - 1) {
-            this._completed = true;
+			if (this.isFailured()) {
+				return;
+			}
+			this._setResultStatus(Bootstrap.SUCCESS);
             this.fireEvent('complete');
             return;
         }
@@ -128,6 +152,12 @@ StrategyNamespace.BootstrapStrategy = new Class({
 
 	//abstract
     bootstrap: function(){
+	},
+
+	onFailture: function(key){
+		this._setResultStatus(Bootstrap.FAILURE);
+		this._progress(key);
+        this.fireEvent('complete');
 	}
 
 });

@@ -35,6 +35,9 @@ StrategyNamespace.Async = new Class({
     bootstrap: function(){
 		var collection = this.getBootstrappers();
 		collection.each(function(bootstrapper, key){
+			if (this.isCompleted()){
+				return;
+			}
 			bootstrapper.execute();
 		}, this);
     },
@@ -51,11 +54,7 @@ StrategyNamespace.Async = new Class({
 	},
 
     onSuccess: function(key){
-        this._progress(key);
-    },
-
-    onFailture: function(key){
-        this._progress(key);
+		this._progress(key);
     }
 
 });

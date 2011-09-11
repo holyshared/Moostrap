@@ -254,9 +254,6 @@ Bootstrap.Bootstrappers = new Class({
 });
 
 var BootstrappersType = new Type('Bootstrappers', Bootstrap.Bootstrappers);
-//BootstrappersType.alias('each', Object.each);
-
-
 
 Bootstrap.Bootstrapper.implement({
 
@@ -275,23 +272,7 @@ Bootstrap.Bootstrapper.implement({
 		this._options = Object.merge(this._options || {}, values);
 		return this;
 	},
-/*
-	isSuccessed: function(){
-		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
-	},
 
-	isFailured: function(){
-		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
-	},
-
-	isCompleted: function(){
-		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
-	},
-
-	isStarted: function(){
-		return this._started;
-	},
-*/
 	execute: function(){
 		this._started = true;
 		this.fireEvent('start');
