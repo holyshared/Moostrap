@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.BootstrapStrategy
+name: Bootstrap.Strategy.Executer
 
 description: 
 
@@ -14,13 +14,13 @@ requires:
   - Bootstrap.Strategy
 
 provides:
-  - Bootstrap.BootstrapStrategy
+  - Bootstrap.Strategy.Executer
 ...
 */
 
 (function(StrategyNamespace){
 
-StrategyNamespace.BootstrapStrategy = new Class({
+StrategyNamespace.Executer = new Class({
 
 	Implements: [Events, Options],
 

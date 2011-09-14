@@ -10,7 +10,7 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.BootstrapStrategy
+  - Bootstrap.Strategy.Executer
 
 provides:
   - Bootstrap.Strategy.Sync
@@ -21,7 +21,7 @@ provides:
 
 StrategyNamespace.Sync = new Class({
 
-	Extends: StrategyNamespace.BootstrapStrategy,
+	Extends: StrategyNamespace.Executer,
 
 	init: function(){
 		var collection = this.getBootstrappers();
@@ -42,7 +42,7 @@ StrategyNamespace.Sync = new Class({
 		var args = [key];
 		var events = {
 			success: this.onSuccess.bind(this, args),
-			failure: this.onFailture.bind(this, args)
+			failure: this.onFailure.bind(this, args)
 		};
 		var options = this.getConfiguration(key) || {};
 		bootstrapper.setOptions(options)

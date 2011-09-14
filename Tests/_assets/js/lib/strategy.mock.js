@@ -2,7 +2,7 @@
 
 var StrategyMock = this.StrategyMock = new Class({
 
-	Extends: StrategyNamespace.BootstrapStrategy,
+	Extends: StrategyNamespace.Executer,
 
 	onSuccess: function(key){
 		this._progress(key);
