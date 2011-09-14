@@ -133,6 +133,7 @@ StrategyNamespace.BootstrapStrategy = new Class({
 			}
 			this._setResultStatus(Bootstrap.SUCCESS);
 			this.fireEvent('complete');
+			this.fireEvent('success');
 			return;
 		}
 	},
@@ -153,10 +154,10 @@ StrategyNamespace.BootstrapStrategy = new Class({
 	bootstrap: function(){
 	},
 
-	onFailture: function(key){
+	onFailure: function(key){
 		this._setResultStatus(Bootstrap.FAILURE);
-//		this._progress(key);
 		this.fireEvent('complete');
+		this.fireEvent('failure');
 	}
 
 });

@@ -1,13 +1,5 @@
 (function(win, doc){
 
-/*
-* 
-* getLength
-* isCompleted
-* isStarted
-* bootstrap
-*/
-
 	win.addEventListener('load', function(){
 
 		var testcases = [];
@@ -101,8 +93,8 @@
 
 		testcases.push({
 			
-			title: 'isCompleted/isStarted',
-			description : 'isCompleted/isStarted testcase.',
+			title: 'isCompleted/isStarted/isSuccessed',
+			description : 'isCompleted/isStarted/isSuccessed testcase.',
 			fn: function(){
 
 				var resource = {};
@@ -129,6 +121,9 @@
 				mock.setResource(resource)
 					.setBootstrappers(bootstrappers)
 					.addEvents({
+						success: function(){
+							log( (mock.isSuccessed()) ? 'assert OK' : 'isSuccessed NG' );
+						},
 						progress: function(counter, resource, total){
 							progress++;
 						},
@@ -143,6 +138,45 @@
 
 				log( (progress >= 2) ? 'assert OK' : 'progress NG' );
 				log( (complete) ? 'assert OK' : 'complete NG' );
+
+			}
+
+		});
+
+
+		testcases.push({
+			
+			title: 'isFailured',
+			description : 'isFailured testcase.',
+			fn: function(){
+
+				var resource = {};
+
+				var item1 = new Bootstrap.Bootstrapper({
+					handler: function(){
+						this.success();
+					}
+				});
+
+				var item2 = new Bootstrap.Bootstrapper({
+					handler: function(){
+						this.failure();
+					}
+				});
+
+				var bootstrappers = new Bootstrap.Bootstrappers();
+				bootstrappers.addItem('item', item1)
+					.addItem('item2', item2);
+
+				var mock = new StrategyMock();
+				mock.setResource(resource)
+					.setBootstrappers(bootstrappers)
+					.addEvents({
+						failure: function(){
+							log( (mock.isFailured()) ? 'assert OK' : 'isFailured NG' );
+						}
+					})
+					.execute();
 
 			}
 

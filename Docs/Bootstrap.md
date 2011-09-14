@@ -84,6 +84,8 @@ Class: Bootstrap.BootstrapStrategy
 * getLength
 * isCompleted
 * isStarted
+* isSuccessed
+* isFailured
 * bootstrap
 
 ### Events
