@@ -77,10 +77,6 @@
 
 		});
 
-
-
-
-
 		makeActions(testcases);
 
 	}, false);
