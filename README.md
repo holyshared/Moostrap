@@ -162,7 +162,7 @@ Initialization pattern
 The initialization processing using **Bootstrap.Strategy.Sync** performs processings in order one by one.  
 Initialization processing is performed whenever one processing is completed.
 
-![Bootstrap.Strategy.Sync](http://holyshared.github.com/Bootstrap/images/bootstrap-sync-flow.jpg "Bootstrap.Strategy.Sync")
+![Bootstrap.Strategy.Sync](http://holyshared.github.com/Bootstrap/images/bootstrap_sync_flow.jpg "Bootstrap.Strategy.Sync")
 
 
 #### The method of building 
@@ -175,7 +175,7 @@ packager Bootstrap/Bootstrap.Strategy.Sync +use-only Bootstrap
 The initialization processing using **Bootstrap.Strategy.Async** performs processings in order one by one.  
 A synchronization is not taken at this time.
 
-![Bootstrap.Strategy.Async](http://holyshared.github.com/Bootstrap/images/bootstrap-async-flow.jpg "Bootstrap.Strategy.Async")
+![Bootstrap.Strategy.Async](http://holyshared.github.com/Bootstrap/images/bootstrap_async_flow.jpg "Bootstrap.Strategy.Async")
 
 
 #### The method of building 
