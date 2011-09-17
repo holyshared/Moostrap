@@ -7,6 +7,8 @@ Bootstrap
 **Bootstrap** offers the initialization function of large-scale application from middle-scale.  
 Every one initialization processing is performed and it secures that initialization of application is ensured. 
 
+![Bootstrap package](http://holyshared.github.com/Bootstrap/images/package_image.jpg "Bootstrap package")
+
 
 How to use
 ------------------------------------------------------------------------
