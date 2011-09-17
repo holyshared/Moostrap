@@ -14,7 +14,7 @@ How to use
 ### 1. Creation of an initialization module
 
 In order to use Bootstrap, an initialization module is created first.  
-Using Bootstrap.Module, initialization processing is registered and it goes.  
+Using **Bootstrap.Module**, initialization processing is registered and it goes.  
 
 Two or more registration is possible for initialization processing.  
 
@@ -90,7 +90,7 @@ If processing goes wrong in the middle of initialization processing, processing 
 
 #### applicaton.js
 
-    (function(bootstrapper){
+    (function(module){
 
         var application = {
 
@@ -115,7 +115,7 @@ If processing goes wrong in the middle of initialization processing, processing 
                     strategy: 'sync',
 
                     //An initialization module is specified.
-                    bootstrapper: bootstrapper,
+                    module: module,
 
                     //A setup of an initialization module is specified.
                     //A setup here carries out the override of the default setup.
@@ -131,13 +131,14 @@ If processing goes wrong in the middle of initialization processing, processing 
                         bootstrapB: {
                             url: 'http://helloworld.com/images/'
                         }
+
                     },
                     onSuccess: app.start,
                     onFailture: app.abort
                 });
 
                 //Application is started.
-                bootstrapper.bootstrap(app);
+                bootstrapper.execute(app);
 
             }
 
@@ -146,7 +147,6 @@ If processing goes wrong in the middle of initialization processing, processing 
         application.run();
 
     }(Bootstrapper));
-
 
 
 

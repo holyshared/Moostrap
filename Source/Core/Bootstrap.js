@@ -20,15 +20,46 @@ provides:
   - Bootstrap
   - Bootstrap.Bootstrapper
   - Bootstrap.Bootstrappers
+  - Bootstrap.Module
   - Bootstrap.Strategy
 ...
 */
 
 (function(){
 
-var Bootstrap = this.Bootstrap = new Class({
+var Bootstrap = this.Bootstrap = function(opts){
 
-	initialize:function(){
+	var type, strategy, strategyKey, bootstrappers;
+	var optionalOptions = ['resource', 'configurations', 'onStart', 'onProgress', 'onComplete', 'onSuccess', 'onFailure'];
+	
+
+	type = (opts.strategy) ? opts.strategy : 'async';
+	strategyKey = type.capitalize(); 
+	if (!Bootstrap.Strategy[strategyKey]) {
+		throw new Error(strategyKey + ' is not found');
+	}
+	strategy = Bootstrap.Strategy[strategyKey];
+
+	if (!opts.module) {
+		throw new Error('module is not found');
+	}
+	bootstrappers = opts.module.getContainer();
+
+	var optionals = Object.subset(opts, optionalOptions);
+	var strategyOptions = Object.merge({
+		'strategy': strategy,
+		'bootstrappers': bootstrappers
+	}, optionals);
+
+	var boot = new strategy(strategyOptions);
+	boot.init();
+	return boot;
+
+};
+
+Bootstrap.Module = new Class({
+
+	initialize: function(){
 		this._collection = new Bootstrap.Bootstrappers();
 	},
 
@@ -45,18 +76,20 @@ var Bootstrap = this.Bootstrap = new Class({
 		return this._collection.hasItem(name);
 	},
 
-	create: function(type, options){
-		if (!Bootstrap.Strategy[type]) {
-			throw new Error(type + 'is not found');
+	getContainer: function(){
+		return this._collection;
+	},
+
+	setContainer: function(collection){
+		if (!Type.isBootstrappers()) {
+			throw new TypeError('invalid container');
 		}
-		var Strategy = Bootstrap.Strategy[type];
-		var opts = Object.merge(options, { bootstrappers: this._collection }); 
-		var strategy = new Strategy(opts);
-		strategy.init();
-		return strategy;
+		this._collection = collection;
 	}
 
 });
+
+
 Bootstrap.Strategy = {};
 
 Bootstrap.NONE = 0;

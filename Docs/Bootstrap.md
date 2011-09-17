@@ -7,13 +7,24 @@ Bootstrap
 Class: Bootstrap
 --------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+Class: Bootstrap.Module
+--------------------------------------------------------------
+
 ### Methods
 
 * register
 * unregister
 * isRegistered
-* create
-
+* getContainer
+* setContainer
 
 
 Class: Bootstrap.Bootstrapper

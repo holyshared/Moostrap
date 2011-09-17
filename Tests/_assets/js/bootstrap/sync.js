@@ -1,4 +1,4 @@
-(function(win, doc, Bootstrap){
+(function(win, doc, Bootstrap, SuccessTestModule, FailureTestModule){
 
 	win.addEventListener('load', function(){
 
@@ -11,16 +11,20 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrapper = App.SuccessBootstrap.create('Sync', {
-					resource: resource,
+				var bootstrap = new Bootstrap({
+
+                    strategy: 'sync',
+
+                    module: SuccessTestModule,
+
 					configurations: {
 						proccessA: {
-							key1: 'key1',
-							key2: 'key2'
+							key1: 'key1-value',
+							key2: 'key2-value'
 						},
 						proccessB: {
-							key1: 'key1',
-							key2: 'key2'
+							key3: 'key3-value',
+							key4: 'key4-value'
 						}
 					},
 					onStart: function(){
@@ -29,11 +33,20 @@
 					onProgress: function(key, index, total){
 						log('process: ' + key + ' ' + index + '/' + total);
 					},
+					onSuccess: function(){
+						log('success');
+
+						log( (resource.key1 == 'key1-value') ? 'resource.key1 OK' : 'resource.key1 NG' );
+						log( (resource.key2 == 'key2-value') ? 'resource.key2 OK' : 'resource.key2 NG' );
+						log( (resource.key3 == 'key3-value') ? 'resource.key3 OK' : 'resource.key3 NG' );
+						log( (resource.key4 == 'key4-value') ? 'resource.key4 OK' : 'resource.key4 NG' );
+
+					},
 					onComplete: function(){
 						log('complete');
 					}
 				});
-				bootstrapper.execute();
+				bootstrap.execute(resource);
 
 			}
 
@@ -47,16 +60,20 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrapper = App.FailureBootstrap.create('Sync', {
-					resource: resource,
+				var bootstrap = new Bootstrap({
+
+                    strategy: 'sync',
+
+                    module: FailureTestModule,
+
 					configurations: {
 						proccessA: {
-							key1: 'key1',
-							key2: 'key2'
+							key1: 'key1-value',
+							key2: 'key2-value'
 						},
 						proccessB: {
-							key1: 'key1',
-							key2: 'key2'
+							key3: 'key3-value',
+							key4: 'key4-value'
 						}
 					},
 					onStart: function(){
@@ -65,11 +82,19 @@
 					onProgress: function(key, index, total){
 						log('process: ' + key + ' ' + index + '/' + total);
 					},
+					onFailure: function(){
+						log('failure');
+
+						log( (resource.key1 == 'key1-value') ? 'resource.key1 OK' : 'resource.key1 NG' );
+						log( (resource.key2 == 'key2-value') ? 'resource.key2 OK' : 'resource.key2 NG' );
+						log( (!resource.key3) ? 'resource.key3 OK' : 'resource.key3 NG' );
+						log( (!resource.key4) ? 'resource.key4 OK' : 'resource.key4 NG' );
+					},
 					onComplete: function(){
 						log('complete');
 					}
 				});
-				bootstrapper.execute();
+				bootstrap.execute(resource);
 
 			}
 
@@ -79,4 +104,4 @@
 
 	}, false);
 
-}(window, document, Bootstrap));
+}(window, document, Bootstrap, SuccessTestModule, FailureTestModule));

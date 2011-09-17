@@ -25,8 +25,9 @@ StrategyNamespace.Async = new Class({
 
 	init: function(){
 		var collection = this.getBootstrappers();
-		collection.setResource(this.getResource());
-
+		if (this.getResource()) {
+			collection.setResource(this.getResource());
+		}
 		collection.each(function(bootstrapper, key){
 			this._setupBootstrapper(key, bootstrapper);
 		}, this);

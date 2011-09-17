@@ -138,7 +138,7 @@ StrategyNamespace.Executer = new Class({
 		}
 	},
 
-	execute: function(){
+	execute: function(resource){
 		if (this.isCompleted()){
 			return;
 		}
@@ -146,6 +146,12 @@ StrategyNamespace.Executer = new Class({
 		if (!this.isStarted()){
 			this._started = true;
 		}
+
+		if (resource){
+			this.setResource(resource);
+			this.getBootstrappers().setResource(resource);
+		}
+
 		this.fireEvent('start');
 		this.bootstrap();
 	},
