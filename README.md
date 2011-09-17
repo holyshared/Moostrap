@@ -2,7 +2,7 @@
 Bootstrap
 ====================================
 
-![Screenshot1](url_to_image1)
+![Bootstrap](http://holyshared.github.com/Bootstrap/images/logo.jpg "Bootstrap")
 
 **Bootstrap** offers the initialization function of large-scale application from middle-scale.  
 Every one initialization processing is performed and it secures that initialization of application is ensured. 
@@ -150,10 +150,33 @@ If processing goes wrong in the middle of initialization processing, processing 
 
 
 
-Screenshots
+
+
+Initialization pattern
 ------------------------------------------------------------------------
 
-![Screenshot2](url_to_image2)
-![Screenshot3](url_to_image3)
-![Screenshot4](url_to_image4)
-![Screenshot5](url_to_image5)
+### Synchronization
+
+The initialization processing using **Bootstrap.Strategy.Sync** performs processings in order one by one.  
+Initialization processing is performed whenever one processing is completed.
+
+![Bootstrap.Strategy.Sync](http://holyshared.github.com/Bootstrap/images/bootstrap-sync-flow.jpg "Bootstrap.Strategy.Sync")
+
+
+#### The method of building 
+
+packager Bootstrap/Bootstrap.Strategy.Sync +use-only Bootstrap
+
+
+### Asynchronous
+
+The initialization processing using **Bootstrap.Strategy.Async** performs processings in order one by one.  
+A synchronization is not taken at this time.
+
+![Bootstrap.Strategy.Async](http://holyshared.github.com/Bootstrap/images/bootstrap-async-flow.jpg "Bootstrap.Strategy.Async")
+
+
+#### The method of building 
+
+packager Bootstrap/Bootstrap.Strategy.Async +use-only Bootstrap
+
