@@ -9,10 +9,24 @@ bootstrap.register('proccessA', {
 
 	handler: function(resource, options){
 
-		resource['key1'] = options.key1;
-		resource['key2'] = options.key2;
+		var that = this;
+		var request = new Request.JSON({
+			method: 'get',
+			url: '/echo/json/',
+			data:{
+				json: '{ "key1" : "' + options.key1 + '", "key2": "' + options.key2 + '" }'
+			},
+			onSuccess: function(response){
+				resource['key1'] = response.key1;
+				resource['key2'] = response.key2;
+				that.success();
+			},
+			onFailture: function(response){
+				that.failture();
+			}
+		});
+		request.send();
 
-		this.success();
 	}
 
 });
@@ -26,10 +40,24 @@ bootstrap.register('proccessB', {
 
 	handler: function(resource, options){
 
-		resource['key3'] = options.key3;
-		resource['key4'] = options.key4;
+		var that = this;
+		var request = new Request.JSON({
+			method: 'get',
+			url: '/echo/json/',
+			data:{
+				json: '{ "key3" : "' + options.key3 + '", "key4": "' + options.key4 + '" }'
+			},
+			onSuccess: function(response){
+				resource['key3'] = response.key3;
+				resource['key4'] = response.key4;
+				that.success();
+			},
+			onFailture: function(response){
+				that.failture();
+			}
+		});
+		request.send();
 
-		this.success();
 	}
 
 });
@@ -51,10 +79,24 @@ bootstrap.register('proccessA', {
 
 	handler: function(resource, options){
 
-		resource['key1'] = options.key1;
-		resource['key2'] = options.key2;
+		var that = this;
+		var request = new Request.JSON({
+			method: 'get',
+			url: '/echo/json/',
+			data:{
+				json: '{ "key1" : "' + options.key1 + '", "key2": "' + options.key2 + '" }'
+			},
+			onSuccess: function(response){
+				resource['key1'] = response.key1;
+				resource['key2'] = response.key2;
+				that.success();
+			},
+			onFailture: function(response){
+				that.failture();
+			}
+		});
+		request.send();
 
-		this.success();
 	}
 
 });
