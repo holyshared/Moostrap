@@ -26,7 +26,7 @@ StrategyNamespace.Executer = new Class({
 
 	_counter: 0,
 	_bootstrappers: null,
-	_configurations: null,
+	_configurations: {},
 	_started: false,
 	_status: Bootstrap.NONE,
 
@@ -64,16 +64,19 @@ StrategyNamespace.Executer = new Class({
 	},
 
 	setConfigurations: function(configurations){
-		this.configurations = configurations;
+		this._configurations = configurations;
 		return this;
 	},
 
 	getConfigurations: function(){
-		return this.configurations;
+		return this._configurations;
 	},
 
 	getConfiguration: function(key){
-		return this.configurations[key];
+		if (!this._configurations[key]) {
+			return;
+		}
+		return this._configurations[key];
 	},
 
 	getBootstrapper: function(key){
