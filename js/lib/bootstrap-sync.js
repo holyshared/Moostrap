@@ -1,1 +1,566 @@
-(function(){var a=this.Bootstrap=function(d){var i,h,k,f;var e=["resource","configurations","onStart","onProgress","onComplete","onSuccess","onFailure"];i=(d.strategy)?d.strategy:"async";k=i.capitalize();if(!a.Strategy[k]){throw new Error(k+" is not found")}h=a.Strategy[k];if(!d.module){throw new Error("module is not found")}f=d.module.getContainer();var g=Object.subset(d,e);var j=Object.merge({strategy:h,bootstrappers:f},g);var l=new h(j);l.init();return l};a.Module=new Class({initialize:function(){this._collection=new a.Bootstrappers()},register:function(e,d){var f=new a.Bootstrapper(d);this._collection.addItem(e,f)},unregister:function(d){this._collection.removeItem(d)},isRegistered:function(d){return this._collection.hasItem(d)},getContainer:function(){return this._collection},setContainer:function(d){if(!Type.isBootstrappers()){throw new TypeError("invalid container")}this._collection=d}});a.Strategy={};a.NONE=0;a.SUCCESS=1;a.FAILURE=2;a.Bootstrapper=new Class({_status:null,_started:false,initialize:function(e){var g={resource:null,options:null,handler:null};var h=Object.merge(g,e);for(var f in h){var d="_"+f;if(h[f]){this[d]=h[f]}delete h[f]}},success:function(){this._setResultStatus(a.SUCCESS);this.fireEvent("complete");this.fireEvent("success")},failure:function(){this._setResultStatus(a.FAILURE);this.fireEvent("complete");this.fireEvent("failure")},getResource:function(){return this._resource},getOptions:function(){return this._options},_setResultStatus:function(e){var d=[a.NONE,a.SUCCESS,a.FAILURE];if(!d.contains(e)){throw new TypeError("invalid status")}this._status=e},getResultStatus:function(){return this._status},isSuccessed:function(){return(this.getResultStatus()==a.SUCCESS)?true:false},isFailured:function(){return(this.getResultStatus()==a.FAILURE)?true:false},isCompleted:function(){return(this.getResultStatus()!=a.NONE)?true:false},isStarted:function(){return this._started}});var c=new Type("Bootstrapper",a.Bootstrapper);c.mirror(function(e){var d={};d[e]=function(){var g=arguments;var f=this.getItems();var h=[];Object.each(f,function(k,j){var i=k[e].apply(k,g);if((typeOf(i)!="bootstrapper")){h.push(i)}});return(h.length>0)?h:this};a.Bootstrappers.implement(d)});a.Bootstrappers=new Class({_cursor:0,_keys:[],_bootstrappers:{},getLength:function(){return this._keys.length},getKeys:function(){return this._keys},getItem:function(d){if(!this.hasItem(d)){throw new Error("not found key")}return this._bootstrappers[d]},getItems:function(){var e={};var d=(arguments.length>0)?Array.from(arguments):this._keys;d.each(function(g,f){e[g]=this.getItem(g)},this);return e},hasItem:function(d){return this._keys.contains(d)},addItem:function(e,d){if(!Type.isBootstrapper(d)){throw new TypeError("invalid bootstrap.")}this._keys.push(e);this._bootstrappers[e]=d;return this},addItems:function(d){if(!Type.isObject(d)){throw new TypeError("invalid bootstrappers.")}Object.each(d,function(f,e){this.addItem(e,f)},this);return this},removeItem:function(d){if(!this.hasItem(d)){throw new Error("not found key")}this._keys.erase(d);delete this._bootstrappers[d];return this},removeItems:function(){var d=(arguments.length>0)?Array.from(arguments):this._keys;d.each(function(f,e){this.removeItem(f)},this);return this},hasNext:function(){var d=this._keys.length-1;return(d>=this._cursor+1)?true:false},next:function(){if(!this.hasNext()){return}var d=this._keys[++this._cursor];return this._bootstrappers[d]},current:function(){var d=this._keys[this._cursor];return this._bootstrappers[d]},rewind:function(){this._cursor=0},each:function(e,f){var d=[this._bootstrappers].append(Array.from(arguments));Object.each.apply(Object,d)}});var b=new Type("Bootstrappers",a.Bootstrappers);a.Bootstrapper.implement({setResource:function(d){if(!Type.isObject(d)){throw new TypeError("invalid resurce")}this._resource=d;return this},setOptions:function(d){if(!Type.isObject(d)){throw new TypeError("invalid resurce")}this._options=Object.merge(this._options||{},d);return this},execute:function(){this._started=true;this.fireEvent("start");this._handler.call(this,this.getResource(),this.getOptions())}});a.Bootstrapper.implement(new Events())}());(function(a){a.Executer=new Class({Implements:[Events,Options],_counter:0,_bootstrappers:null,_configurations:null,_started:false,_status:Bootstrap.NONE,initialize:function(b){var d;for(var c in b){d="set"+c.capitalize();if(this[d]){this[d].call(this,b[c]);delete b[c]}}this.setOptions(b)},setBootstrappers:function(b){if(!Type.isBootstrappers(b)){throw new TypeError("invalid bootstrappers")}this._bootstrappers=b;return this},getBootstrappers:function(){return this._bootstrappers},setResource:function(b){this.resource=b;return this},getResource:function(){return this.resource},setConfigurations:function(b){this.configurations=b;return this},getConfigurations:function(){return this.configurations},getConfiguration:function(b){return this.configurations[b]},getBootstrapper:function(c){var b=this.getBootstrappers();return b.getItem(c)},getBootstrapperKeys:function(){var b=this.getBootstrappers();return b.getKeys()},getLength:function(){var b=this.getBootstrappers();return b.getLength()},_setResultStatus:function(c){var b=[Bootstrap.NONE,Bootstrap.SUCCESS,Bootstrap.FAILURE];if(!b.contains(c)){throw new TypeError("invalid status")}this._status=c},getResultStatus:function(){return this._status},isStarted:function(){return this._started},isSuccessed:function(){return(this.getResultStatus()==Bootstrap.SUCCESS)?true:false},isFailured:function(){return(this.getResultStatus()==Bootstrap.FAILURE)?true:false},isCompleted:function(){return(this.getResultStatus()!=Bootstrap.NONE)?true:false},_progress:function(c){var b=[c,this._counter+1,this.getLength()];this.fireEvent("progress",b);if(this._counter++>=this.getLength()-1){if(this.isFailured()){return}this._setResultStatus(Bootstrap.SUCCESS);this.fireEvent("complete");this.fireEvent("success");return}},execute:function(b){if(this.isCompleted()){return}if(!this.isStarted()){this._started=true}if(b){this.setResource(b);this.getBootstrappers().setResource(b)}this.fireEvent("start");this.bootstrap()},bootstrap:function(){},onFailure:function(b){this._setResultStatus(Bootstrap.FAILURE);this.fireEvent("complete");this.fireEvent("failure")}})}(Bootstrap.Strategy));(function(a){a.Sync=new Class({Extends:a.Executer,init:function(){var b=this.getBootstrappers();if(this.getResource()){b.setResource(this.getResource())}b.each(function(d,c){this._setupBootstrapper(c,d)},this)},bootstrap:function(){var c=this.getBootstrappers();var b=c.current();b.execute()},_setupBootstrapper:function(e,f){var c=[e];var d={success:this.onSuccess.bind(this,c),failure:this.onFailure.bind(this,c)};var b=this.getConfiguration(e)||{};f.setOptions(b).addEvents(d)},_nextBoostrap:function(){var c=this.getBootstrappers();if(c.hasNext()){var b=c.next();b.execute()}},onSuccess:function(b){this._progress(b);this._nextBoostrap()}})}(Bootstrap.Strategy));
+/*
+---
+name: Bootstrap
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Core/Core
+  - Core/Object
+  - Core/Type
+  - Core/Options
+  - Core/Events
+
+provides:
+  - Bootstrap
+  - Bootstrap.Bootstrapper
+  - Bootstrap.Bootstrappers
+  - Bootstrap.Module
+  - Bootstrap.Strategy
+...
+*/
+
+(function(){
+
+var Bootstrap = this.Bootstrap = function(opts){
+
+	var type, strategy, strategyKey, bootstrappers;
+	var optionalOptions = ['resource', 'configurations', 'onStart', 'onProgress', 'onComplete', 'onSuccess', 'onFailure'];
+	
+
+	type = (opts.strategy) ? opts.strategy : 'async';
+	strategyKey = type.capitalize(); 
+	if (!Bootstrap.Strategy[strategyKey]) {
+		throw new Error(strategyKey + ' is not found');
+	}
+	strategy = Bootstrap.Strategy[strategyKey];
+
+	if (!opts.module) {
+		throw new Error('module is not found');
+	}
+	bootstrappers = opts.module.getContainer();
+
+	var optionals = Object.subset(opts, optionalOptions);
+	var strategyOptions = Object.merge({
+		'strategy': strategy,
+		'bootstrappers': bootstrappers
+	}, optionals);
+
+	var boot = new strategy(strategyOptions);
+	boot.init();
+	return boot;
+
+};
+
+Bootstrap.Module = new Class({
+
+	initialize: function(){
+		this._collection = new Bootstrap.Bootstrappers();
+	},
+
+	register: function(name, options){
+		var bootstrapper = new Bootstrap.Bootstrapper(options);
+		this._collection.addItem(name, bootstrapper);
+	},
+
+	unregister: function(name){
+		this._collection.removeItem(name);
+	},
+
+	isRegistered: function(name){
+		return this._collection.hasItem(name);
+	},
+
+	getContainer: function(){
+		return this._collection;
+	},
+
+	setContainer: function(collection){
+		if (!Type.isBootstrappers()) {
+			throw new TypeError('invalid container');
+		}
+		this._collection = collection;
+	}
+
+});
+
+
+Bootstrap.Strategy = {};
+
+Bootstrap.NONE = 0;
+Bootstrap.SUCCESS = 1;
+Bootstrap.FAILURE = 2;
+
+Bootstrap.Bootstrapper = new Class({
+
+	_status: null,
+	_started: false,
+
+	initialize: function(options){
+		var props = { resource: null, options: null, handler: null };
+		var opts = Object.merge(props, options);
+		for (var key in opts){
+			var name = '_' + key;
+			if (opts[key]){
+				this[name] = opts[key];
+			}
+			delete opts[key];
+		}
+	},
+
+	success: function(){
+		this._setResultStatus(Bootstrap.SUCCESS);
+		this.fireEvent('complete');
+		this.fireEvent('success');
+	},
+
+	failure: function(){
+		this._setResultStatus(Bootstrap.FAILURE);
+		this.fireEvent('complete');
+		this.fireEvent('failure');
+	},
+
+	getResource: function(){
+		return this._resource;
+	},
+
+	getOptions: function(){
+		return this._options;
+	},
+
+	_setResultStatus: function(type){
+		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
+		if (!status.contains(type)) {
+			throw new TypeError('invalid status');
+		}
+		this._status = type;
+	},
+
+	getResultStatus: function(){
+		return this._status;
+	},
+
+	isSuccessed: function(){
+		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
+	},
+
+	isFailured: function(){
+		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
+	},
+
+	isCompleted: function(){
+		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
+	},
+
+	isStarted: function(){
+		return this._started;
+	}
+
+});
+
+
+var BootstrapperType = new Type('Bootstrapper', Bootstrap.Bootstrapper);
+BootstrapperType.mirror(function(name){
+
+	var hooks = {};
+
+	hooks[name] = function(){
+		var args = arguments;
+		var items = this.getItems();
+		var results = [];
+		Object.each(items, function(item, key){
+			var result = item[name].apply(item, args);
+			if ((typeOf(result) != 'bootstrapper')) {
+				results.push(result);
+			}
+		});
+		return (results.length > 0 ) ? results : this;
+	};
+
+	Bootstrap.Bootstrappers.implement(hooks);
+
+});
+
+
+Bootstrap.Bootstrappers = new Class({
+
+	_cursor: 0,
+	_keys: [],
+	_bootstrappers: {},
+
+	getLength: function(){
+		return this._keys.length;
+	},
+
+	getKeys: function(){
+		return this._keys;
+	},
+
+	getItem: function(key){
+		if (!this.hasItem(key)){
+			throw new Error('not found key'); 
+		}
+		return this._bootstrappers[key];
+	},
+
+	getItems: function(){
+		var collection = {};
+		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
+		keys.each(function(key, index){
+			collection[key] = this.getItem(key);
+		}, this);
+		return collection;
+	},
+
+	hasItem: function(key){
+		return this._keys.contains(key);
+	},
+
+	addItem: function(key, bootstrap){
+		if (!Type.isBootstrapper(bootstrap)){ 
+			throw new TypeError('invalid bootstrap.');
+		}
+		this._keys.push(key);
+		this._bootstrappers[key] = bootstrap;
+		return this;
+	},
+
+	addItems: function(bootstrappers){
+		if (!Type.isObject(bootstrappers)) {
+			throw new TypeError('invalid bootstrappers.');
+		}
+		Object.each(bootstrappers, function(bootstrap, key){
+			this.addItem(key, bootstrap);
+		}, this);
+		return this;
+	},
+
+	removeItem: function(key){
+		if (!this.hasItem(key)){
+			throw new Error('not found key'); 
+		}
+		this._keys.erase(key);
+		delete this._bootstrappers[key];
+		return this;
+	},
+
+	removeItems: function(){
+		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
+		keys.each(function(key, index){
+			this.removeItem(key);
+		}, this);
+		return this;
+	},
+
+	hasNext: function(){
+		var length = this._keys.length - 1;
+		return (length >= this._cursor + 1) ? true : false;
+	},
+
+	next: function(){
+		if (!this.hasNext()){
+			return;
+		}
+		var key = this._keys[++this._cursor];
+		return this._bootstrappers[key];
+	},
+
+	current: function(){
+		var key = this._keys[this._cursor];
+		return this._bootstrappers[key];
+	},
+
+	rewind: function(){
+		this._cursor = 0;
+	},
+
+	each: function(handler, target){
+		var args = [this._bootstrappers].append(Array.from(arguments));
+		Object.each.apply(Object, args);
+	}
+
+});
+
+var BootstrappersType = new Type('Bootstrappers', Bootstrap.Bootstrappers);
+
+Bootstrap.Bootstrapper.implement({
+
+	setResource: function(resource){
+		if (!Type.isObject(resource)){
+			throw new TypeError('invalid resurce');
+		}
+		this._resource = resource;
+		return this;
+	},
+
+	setOptions: function(values){
+		if (!Type.isObject(values)){
+			throw new TypeError('invalid resurce');
+		}
+		this._options = Object.merge(this._options || {}, values);
+		return this;
+	},
+
+	execute: function(){
+		this._started = true;
+		this.fireEvent('start');
+
+		this._handler.call(this, this.getResource(), this.getOptions());
+	}
+
+});
+
+Bootstrap.Bootstrapper.implement(new Events());
+
+}());
+
+/*
+---
+name: Bootstrap.Strategy.Executer
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Bootstrap.Bootstrappers
+  - Bootstrap.Strategy
+
+provides:
+  - Bootstrap.Strategy.Executer
+...
+*/
+
+(function(StrategyNamespace){
+
+StrategyNamespace.Executer = new Class({
+
+	Implements: [Events, Options],
+
+	_counter: 0,
+	_bootstrappers: null,
+	_configurations: {},
+	_started: false,
+	_status: Bootstrap.NONE,
+
+	initialize: function(options){
+		var setter;
+		for (var key in options){
+			setter = 'set' + key.capitalize();
+			if (this[setter]) {
+				this[setter].call(this, options[key]);
+				delete options[key];
+			}
+		}
+		this.setOptions(options);
+	},
+
+	setBootstrappers: function(bootstrappers){
+		if (!Type.isBootstrappers(bootstrappers)){
+			throw new TypeError('invalid bootstrappers');
+		}
+		this._bootstrappers = bootstrappers;
+		return this;
+	},
+
+	getBootstrappers: function(){
+		return this._bootstrappers;
+	},
+
+	setResource: function(resource){
+		this.resource = resource;
+		return this;
+	},
+
+	getResource: function(){
+		return this.resource;
+	},
+
+	setConfigurations: function(configurations){
+		this._configurations = configurations;
+		return this;
+	},
+
+	getConfigurations: function(){
+		return this._configurations;
+	},
+
+	getConfiguration: function(key){
+		if (!this._configurations[key]) {
+			return;
+		}
+		return this._configurations[key];
+	},
+
+	getBootstrapper: function(key){
+		var bootstrappers = this.getBootstrappers();
+		return bootstrappers.getItem(key);
+	},
+
+	getBootstrapperKeys: function(){
+		var bootstrappers = this.getBootstrappers();
+		return bootstrappers.getKeys();
+	},
+
+	getLength: function(){
+		var bootstrappers = this.getBootstrappers();
+		return bootstrappers.getLength();
+	},
+
+	_setResultStatus: function(type){
+		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
+		if (!status.contains(type)) {
+			throw new TypeError('invalid status');
+		}
+		this._status = type;
+	},
+
+	getResultStatus: function(){
+		return this._status;
+	},
+
+	isStarted: function(){
+		return this._started;
+	},
+
+	isSuccessed: function(){
+		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
+	},
+
+	isFailured: function(){
+		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
+	},
+
+	isCompleted: function(){
+		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
+	},
+
+	_progress: function(bootstrapperName){
+		var args = [
+			bootstrapperName,
+			this._counter + 1,
+			this.getLength()
+		];
+		this.fireEvent('progress', args);
+
+		if (this._counter++ >= this.getLength() - 1) {
+			if (this.isFailured()) {
+				return;
+			}
+			this._setResultStatus(Bootstrap.SUCCESS);
+			this.fireEvent('complete');
+			this.fireEvent('success');
+			return;
+		}
+	},
+
+	execute: function(resource){
+		if (this.isCompleted()){
+			return;
+		}
+
+		if (!this.isStarted()){
+			this._started = true;
+		}
+
+		if (resource){
+			this.setResource(resource);
+			this.getBootstrappers().setResource(resource);
+		}
+
+		this.fireEvent('start');
+		this.bootstrap();
+	},
+
+	//abstract
+	bootstrap: function(){
+	},
+
+	onFailure: function(key){
+		this._setResultStatus(Bootstrap.FAILURE);
+		this.fireEvent('complete');
+		this.fireEvent('failure');
+	}
+
+});
+
+}(Bootstrap.Strategy));
+
+/*
+---
+name: Bootstrap.Strategy.Sync
+
+description: 
+
+license: MIT-style
+
+authors:
+- Noritaka Horio
+
+requires:
+  - Bootstrap.Strategy.Executer
+
+provides:
+  - Bootstrap.Strategy.Sync
+...
+*/
+
+(function(StrategyNamespace){
+
+StrategyNamespace.Sync = new Class({
+
+	Extends: StrategyNamespace.Executer,
+
+	init: function(){
+		var collection = this.getBootstrappers();
+		if (this.getResource()) {
+			collection.setResource(this.getResource());
+		}
+
+		collection.each(function(bootstrapper, key){
+			this._setupBootstrapper(key, bootstrapper);
+		}, this);
+	},
+
+	bootstrap: function(){
+		var collection = this.getBootstrappers();
+		var bootstrapper = collection.current();
+		bootstrapper.execute();
+	},
+
+	_setupBootstrapper: function(key, bootstrapper){
+		var args = [key];
+		var events = {
+			success: this.onSuccess.bind(this, args),
+			failure: this.onFailure.bind(this, args)
+		};
+		var options = this.getConfiguration(key) || {};
+		bootstrapper.setOptions(options)
+			.addEvents(events);
+	},
+
+	_nextBoostrap: function(){
+		var collection = this.getBootstrappers();
+		if (collection.hasNext()){
+			var bootstrapper = collection.next();
+			bootstrapper.execute();
+		}
+	},
+
+	onSuccess: function(key){
+		this._progress(key);
+		this._nextBoostrap();
+	}
+
+});
+
+}(Bootstrap.Strategy));
+
