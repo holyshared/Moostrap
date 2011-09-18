@@ -8,7 +8,7 @@
 		for (var key in this.messages){
 			decorater.applyDecorater(key, this.messages[key]);
 		}
-		this.status = new ProgressView();
+		this.status = new MessageList();
 	};
 
 	Application.implement({
@@ -36,8 +36,6 @@
 
 		run: function(){
 
-
-
             var bootstrapper = new Bootstrap({
             	strategy: this.strategy,
                 module: this.module,
@@ -60,7 +58,9 @@
 	global.Application = Application;
 
 
-
+	/**
+	 * MessageDecorator
+	 */
 	var MessageDecorator = function(target){
 		this.target = target;
 	}
@@ -81,6 +81,11 @@
 
 		stringDecorater: function(key, message){
 			var app = this.target;
+			var handler = this.check(key, message);
+			if (handler){
+				return handler;
+			}
+
 			var beforeHandler = this.target[key];
 			var handler = function(){
 				app.printMessage(message);
@@ -91,6 +96,11 @@
 
 		handlerDecorater: function(key, message){
 			var app = this.target;
+			var handler = this.check(key, message);
+			if (handler){
+				return handler;
+			}
+
 			var beforeHandler = this.target[key];
 			var handler = function(){
 				var output = message.apply(app, arguments);
@@ -98,18 +108,28 @@
 				beforeHandler.apply(app, arguments);
 			};
 			return handler;
+		},
+
+		check: function(key, message){
+			var app = this.target;
+			if (this.target[key]){
+				return;
+			}
+			return function(){
+				app.printMessage(message);
+			};
 		}
 
 	});
 
 
 	/**
-	 * ProgressView
+	 * MessageList
 	 */
-	var ProgressView = function(){
+	var MessageList = function(){
 		this._view = doc.getElementById('message');
 	}
-	ProgressView.implement({
+	MessageList.implement({
 
 		printMessage: function(message){
 			var li = doc.createElement('li');
