@@ -1,6 +1,5 @@
 (function(global, api, Bootstrapper){
 
-
 //New York ART BEAT Feed URL
 var artbeatURL = 'http://www.nyartbeat.com/list/feed/';
 
@@ -13,7 +12,6 @@ Bootstrapper.register('Most Popular', api.createLoadProcess({
 	id: 'mostPopular',
 	url: artbeatURL + 'event_mostpopular.en.rdf'
 }));
-
 
 Bootstrapper.register('Comingsoon',	api.createLoadProcess({
 	id: 'comingSoon',
@@ -30,13 +28,6 @@ Bootstrapper.register('Closing Soon', api.createLoadProcess({
 	url: artbeatURL + 'event_lastdays.en.rdf'
 }));
 
-
-/*
-Bootstrapper.register('Most Popular', api.createDummyProcess());
-Bootstrapper.register('Comingsoon',	api.createDummyProcess());
-Bootstrapper.register('Just Started', api.createDummyProcess());
-Bootstrapper.register('Closing Soon', api.createDummyProcess());
-*/
 global.Application.Module = Bootstrapper;
 
 }(this, FeedProcessCreater, new Bootstrap.Module()));
