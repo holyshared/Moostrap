@@ -59,15 +59,12 @@ Object.append(FeedProcessCreater, {
 console.log('APIProcess');
 console.log(options.version);
 				var that = this;
-				google.setOnLoadCallback(function(){
+				global.OnLoad = function(){
 console.log('success');
-
 					that.success();
-				});
-//				google.setOnLoadCallback(OnLoad.bind(that));
-
-//				google.load("feeds", options.version);
-				google.load("feeds", "1");
+				};
+				google.setOnLoadCallback(global.OnLoad);
+				google.load("feeds", options.version);
 			}
 		};
 		return process;
