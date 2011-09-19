@@ -8,32 +8,18 @@
 		for (var key in this.messages){
 			decorater.applyDecorater(key, this.messages[key]);
 		}
-		this.status = new MessageList();
+		this.dialog = new ProgressDialog();
 	};
 
 	Application.implement({
 
 		messages: {
-			boot: 'application boot.....',
+			boot: 'Application is initialized......',
 			progress: function(process, index, total){
-				return process + ' ' + index + '/' + total;
+				return index + '/' + total + ' ' + ' - Initialization of ' + process + ' was completed.';
 			},
-			start: 'application boot done',
-			abort: 'application abort'
-		},
-
-//		feeds: {},
-
-		boot: function(){
-		},
-
-		progress: function(process, index, total){
-		},
-
-		start: function(){
-		},
-
-		abort: function(){
+			start: 'Initialization of application was completed.',
+			abort: 'Initialization of application went wrong.'
 		},
 
 		getContainer: function(){
@@ -43,6 +29,10 @@
 		setContainer: function(container){
 			return this.container = container;
 		},
+
+		boot: function(){ this.dialog.open(); },
+		start: function(){ this.dialog.close(); },
+		abort: function(){ this.dialog.close(); },
 
 		run: function(){
 
@@ -60,11 +50,7 @@
 		},
 
 		print: function(message){
-			this.status.printMessage(message);
-		},
-
-		registerFeed: function(key, entries){
-			this.feeds[key] = entries;
+			this.dialog.print(message);
 		}
 
 	});

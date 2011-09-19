@@ -4,14 +4,14 @@ header, footer, article, section, aside {
 	display: block;
 }
 
-section{
-	margin-bottom: 20px;
+section {
+	margin-bottom: 30px;
 }
 
 p, ul, ol {
 	font-size: 108%;
+	margin-bottom: 15px;
 }
-
 
 h1 {
 	font-size: 230%;

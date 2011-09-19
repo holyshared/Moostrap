@@ -1,19 +1,16 @@
 @charset "utf-8";
 
-
-
 .global {
 	background-color: #333333;
 	border-radius: 5px;
-/*	background-color: #444444; */
 	border: 2px solid #cccccc;
-/*	padding: 10px 10px; */
 	margin-bottom: 30px;
 }
 
 .global ul {
 	overflow: hidden;
 	margin-left: 0px;
+	margin-bottom: 0px;
 }
 
 .global ul li {
@@ -38,7 +35,6 @@
 	border-right: none;
 
 }
-
 
 .global ul li a:hover {
 	background-color: #555555;
@@ -76,7 +72,8 @@
 .feedList li a {
 	color: #ffffff;
 	padding: 3px 10px;
-	display: inline-block;
+	display: block;
+	width: 215px;
 	border-radius: 5px;
 	background-color: #444444;
 	border: 2px solid #434343;
@@ -84,4 +81,19 @@
 
 .feedList li a:hover {
 	background-color: #555555;
+}
+
+
+.message {
+	padding: 15px;
+	color: #ffffff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border-radius: 5px;
+	background-color: #444444;
+	width: 600px;
+	height: 200px;
+	margin-left: -300px;
+	margin-top: -100px
 }
