@@ -59,16 +59,21 @@ Object.append(FeedProcessCreater, {
 				var script = doc.createElement('script');
 				script.src = 'https://www.google.com/jsapi?key=' + options.key;
 				script.type = "text/javascript";
+				script.onload = function(){
+
+					google.setOnLoadCallback(function(){
+						that.success();
+					});
+	
+	console.log('APIProcess');
+	console.log(options.version);
+	
+					google.load("feeds", options.version);
+
+
+				};
 				doc.getElementsByTagName("head")[0].appendChild(script);
 
-				google.setOnLoadCallback(function(){
-					that.success();
-				});
-
-console.log('APIProcess');
-console.log(options.version);
-
-				google.load("feeds", options.version);
 			}
 		};
 		return process;
