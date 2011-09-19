@@ -68,7 +68,7 @@ Object.append(FeedProcessCreater, {
 	console.log('APIProcess');
 	console.log(options.version);
 	
-//					google.load("feeds", options.version);
+					google.load("feeds", options.version);
 
 
 				};
