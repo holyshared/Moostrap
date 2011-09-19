@@ -1,49 +1,17 @@
-(function(global, Bootstrapper){
+(function(global, api, Bootstrapper){
 
-Bootstrapper.register('Proccess A', {
+//New York ART BEAT Feed URL
+var artbeatURL = 'http://www.nyartbeat.com/list/feed/';
 
-	options: {
-	},
+//Google Feed API Verson 
+var apiVersion = '1';
 
-	handler: function(app, options){
-		var that = this;
-		setTimeout(function(){
-			that.success();
-		}, 1000);
-	}
-
-});
-
-
-Bootstrapper.register('Proccess B', {
-
-	options: {
-	},
-
-	handler: function(application, options){
-		var that = this;
-		setTimeout(function(){
-			that.success();
-		}, 1000);
-	}
-
-});
-
-
-Bootstrapper.register('Proccess C', {
-
-	options: {
-	},
-
-	handler: function(application, options){
-		var that = this;
-		setTimeout(function(){
-			that.success();
-		}, 1000);
-	}
-
-});
+Bootstrapper.register('Loading of Google Feed API', api.createAPIProcess(apiVersion));
+Bootstrapper.register('Most Popular', api.createLoadProcess(artbeatURL + 'event_mostpopular.en.rdf'));
+Bootstrapper.register('Comingsoon',	api.createLoadProcess(artbeatURL + 'event_comingsoon.en.rdf'));
+Bootstrapper.register('Just Started', api.createLoadProcess(artbeatURL + 'event_juststarted.en.rdf'));
+Bootstrapper.register('Closing Soon', api.createLoadProcess(artbeatURL + 'event_lastdays.en.rdf'));
 
 global.Application.Module = Bootstrapper;
 
-}(this, new Bootstrap.Module()));
+}(this, FeedProcessCreater, new Bootstrap.Module()));

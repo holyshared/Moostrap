@@ -22,6 +22,8 @@
 			abort: 'application abort'
 		},
 
+		feeds: {},
+
 		boot: function(){
 		},
 
@@ -49,95 +51,16 @@
 
 		},
 
-		printMessage: function(message){
+		print: function(message){
 			this.status.printMessage(message);
+		},
+
+		registerFeed: function(key, entries){
+			this.feeds[key] = entries;
 		}
 
 	});
 
 	global.Application = Application;
-
-
-	/**
-	 * MessageDecorator
-	 */
-	var MessageDecorator = function(target){
-		this.target = target;
-	}
-
-	MessageDecorator.implement({
-
-		applyDecorater: function(key, message){
-			var handler = null;
-			var args = [key, message];
-			if (typeof message === 'string'){
-				handler = this.stringDecorater(key, message);
-			} else {
-				handler = this.handlerDecorater(key, message);
-
-			}
-			this.target[key] = handler;
-		},
-
-		stringDecorater: function(key, message){
-			var app = this.target;
-			var handler = this.check(key, message);
-			if (handler){
-				return handler;
-			}
-
-			var beforeHandler = this.target[key];
-			var handler = function(){
-				app.printMessage(message);
-				beforeHandler();
-			};
-			return handler;
-		},
-
-		handlerDecorater: function(key, message){
-			var app = this.target;
-			var handler = this.check(key, message);
-			if (handler){
-				return handler;
-			}
-
-			var beforeHandler = this.target[key];
-			var handler = function(){
-				var output = message.apply(app, arguments);
-				app.printMessage(output);
-				beforeHandler.apply(app, arguments);
-			};
-			return handler;
-		},
-
-		check: function(key, message){
-			var app = this.target;
-			if (this.target[key]){
-				return;
-			}
-			return function(){
-				app.printMessage(message);
-			};
-		}
-
-	});
-
-
-	/**
-	 * MessageList
-	 */
-	var MessageList = function(){
-		this._view = doc.getElementById('message');
-	}
-	MessageList.implement({
-
-		printMessage: function(message){
-			var li = doc.createElement('li');
-			var text = doc.createTextNode(message);
-			li.appendChild(text);
-			this._view.appendChild(li);
-		}
-
-	});
 
 }(this, document));
