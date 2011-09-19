@@ -61,14 +61,14 @@ Object.append(FeedProcessCreater, {
 				script.type = "text/javascript";
 				script.onload = function(){
 
-					google.setOnLoadCallback(function(){
-						that.success();
-					});
+					//google.setOnLoadCallback(function(){
+					//	that.success();
+					//});
 	
 	console.log('APIProcess');
 	console.log(options.version);
 	
-					google.load("feeds", options.version);
+//					google.load("feeds", options.version);
 
 
 				};
