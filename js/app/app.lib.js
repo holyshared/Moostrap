@@ -52,51 +52,32 @@ Object.append(FeedProcessCreater, {
 			},
 
 			handler: function(app, options){
-
-//<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA4_PHVZvjtJ3LjA7Nc-VYfxSl-lcegfuTtJRuZv_Q2Txf9JNAxhQ3jgWCcIrtkHE6yf0JWpdlIz5uVg"></script>
 				var that = this;
-/*
-				var script = doc.createElement('script');
-				script.src = 'https://www.google.com/jsapi?key=' + options.key;
-				script.type = "text/javascript";
-				script.onload = function(){
-
-					//google.setOnLoadCallback(function(){
-					//	that.success();
-					//});
-
-	console.log('APIProcess');
-	console.log(options.version);
-
-					//{"callback" : mapsLoaded}
-
-					google.load("feeds", options.version, {
-						callback: function(){
-							that.success();
-						}
-					});
+				var callback = function(){
+					that.success();
 				};
-				doc.getElementsByTagName("head")[0].appendChild(script);
-*/
-
 				google.load("feeds", options.version, {
-					callback: function(){
-						that.success();
-					}
+					callback: callback
 				});
 			}
 		};
 		return process;
 	},
 
-	createLoadProcess: function(url){
+	createLoadProcess: function(options){
 		var process = {
 			options: {
-				url: url
+				id: options.id,
+				url: options.url
 			},
 
 			handler: function(app, options){
 				var that = this;
+
+				var control = new GFdynamicFeedControl(options.url, options.id);
+				that.success();
+
+/*
 				var loader = new FeedLoader({
 					load: function(result){
 						if (!result.error){
@@ -108,6 +89,7 @@ Object.append(FeedProcessCreater, {
 					}
 				});
 				loader.load(options.url);
+*/
 			}
 		};
 		return process;
