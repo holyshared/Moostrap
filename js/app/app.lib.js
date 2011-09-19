@@ -68,7 +68,7 @@ Object.append(FeedProcessCreater, {
 	console.log('APIProcess');
 	console.log(options.version);
 
-					global.google.load("feeds", options.version);
+					//global.google.load("feeds", options.version);
 
 				};
 				doc.getElementsByTagName("head")[0].appendChild(script);
