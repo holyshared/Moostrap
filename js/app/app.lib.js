@@ -73,8 +73,9 @@ Object.append(FeedProcessCreater, {
 
 			handler: function(app, options){
 				var that = this;
-
-				var control = new GFdynamicFeedControl(options.url, options.id);
+				var control = new GFdynamicFeedControl(options.url, options.id, {
+					horizontal: true
+				});
 				that.success();
 
 /*
