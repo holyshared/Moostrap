@@ -8,7 +8,7 @@
 		<meta name="author" content="operator" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="css/control.css" media="screen,print" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen,print" />
 		<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA4_PHVZvjtJ3LjA7Nc-VYfxSl-lcegfuTtJRuZv_Q2Txf9JNAxhQ3jgWCcIrtkHE6yf0JWpdlIz5uVg"></script>
 		<script type="text/javascript" src="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.js"></script>
 		<script type="text/javascript" src="js/lib/mootools-core-1.4.0.js"></script>
@@ -21,27 +21,36 @@
 	<body>
 		<div class="page">
 			<header>
-		    	<h1>Bootstrap</h1>
+				<h1>Bootstrap - Feed list application</h1>
 		    </header>
-		    <nav>
+
+		    <nav class="global">
 				<ul>
 					<li><a title="Home" href="/">Home</a></li>
 					<li><a title="Asynchronous" href="async.html">Asynchronous</a></li>
-					<li><a title="Synchronization" href="sync.html">Synchronization</a></li>
+					<li><a title="Feed list application" href="feeds.html">Feed list application</a></li>
 				</ul>
 		    </nav>
 
 		    <div class="main">
-				<h2>List</h2>
-				<ul id="message">
-				</ul>
-
-<div id="mostPopular"></div>
-<div id="comingSoon"></div>
-<div id="justStarted"></div>
-<div id="closingSoon"></div>
-
+				<section>
+					<h2>New York ART BEAT Feeds</h2>
+					<p>aaaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaa aaaaaaa</p>
+					<p>aaaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaa aaaaaaa</p>
+					<p>aaaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaa aaaaaaa</p>
+					<p>aaaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaa aaaaaaa</p>
+					<p>aaaaaaaaaaaaa aaaaaaaaaa aaaaaaa aaaaaaaaa aaaaaaa</p>
+					<div class="feeds">
+						<aside id="mostPopular"></aside>
+						<aside id="comingSoon"></aside>
+						<aside id="justStarted"></aside>
+						<aside id="closingSoon"></aside>
+					</div>
+				</section>
 		    </div>
+
+			<ul id="message">
+			</ul>
 
 		    <footer>
 				<p>&copy; Copyright 2011 Noritaka Horio all rights reserved.</p>

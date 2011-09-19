@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+header, footer, article, section, aside {
+	display: block;
+}
+
+section{
+	margin-bottom: 20px;
+}
+
+p, ul, ol {
+	font-size: 108%;
+}
+
+
+h1 {
+	font-size: 230%;
+	margin-bottom: 20px;
+}
+
+h2 {
+	font-size: 192%;
+	margin-bottom: 10px;
+}
+
+h3 {
+	font-weight: bold;
+	font-size: 133%;
+}
+
+ul, ol {
+	line-height: 160%;
+	margin-left: 10px;
+}
+
+.page {
+	padding: 20px;
+}
+
+.main {
+	margin-bottom: 40px;
+}
+
+
+.copyright {
+	text-align: right;
+}
