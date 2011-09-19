@@ -42,6 +42,7 @@ FeedLoader.implement({
 function OnLoad(){
 	this.success();
 }
+global.OnLoad = OnLoad;
 
 function FeedProcessCreater(){};
 
