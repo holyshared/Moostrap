@@ -8,12 +8,7 @@ global.FeedLoader = FeedLoader;
 global.FeedProcessCreater = FeedProcessCreater;
 global.MessageDecorator = MessageDecorator;
 global.MessageList = MessageList;
-global.onLoad = function(){
 
-alert('aaa');
-
-};
-google.setOnLoadCallback(global.onLoad);
 
 function FeedLoader(strategey){
 	if (!(Type.isObject(strategey) && strategey.load)) {
@@ -43,12 +38,7 @@ FeedLoader.implement({
 	}
 
 });
-/*
-function OnLoad(){
-	this.success();
-}
-global.OnLoad = OnLoad;
-*/
+
 
 function FeedProcessCreater(){};
 
@@ -57,18 +47,27 @@ Object.append(FeedProcessCreater, {
 	createAPIProcess: function(version){
 		var process = {
 			options: {
+				key: 'ABQIAAAA4_PHVZvjtJ3LjA7Nc-VYfxSl-lcegfuTtJRuZv_Q2Txf9JNAxhQ3jgWCcIrtkHE6yf0JWpdlIz5uVg',
 				version: version
 			},
 
 			handler: function(app, options){
+
+//<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA4_PHVZvjtJ3LjA7Nc-VYfxSl-lcegfuTtJRuZv_Q2Txf9JNAxhQ3jgWCcIrtkHE6yf0JWpdlIz5uVg"></script>
+				var that = this;
+
+				var script = doc.createElement('script');
+				script.src = 'https://www.google.com/jsapi?key=' + options.key;
+				script.type = "text/javascript";
+				doc.getElementsByTagName("head")[0].appendChild(script);
+
+				google.setOnLoadCallback(function(){
+					that.success();
+				});
+
 console.log('APIProcess');
 console.log(options.version);
-				var that = this;
-	//			global.OnLoad = function(){
-//console.log('success');
-		//			that.success();
-			//	};
-				//google.setOnLoadCallback(global.onLoad);
+
 				google.load("feeds", options.version);
 			}
 		};
