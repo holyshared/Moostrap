@@ -64,12 +64,11 @@ Object.append(FeedProcessCreater, {
 					//google.setOnLoadCallback(function(){
 					//	that.success();
 					//});
-	
+
 	console.log('APIProcess');
 	console.log(options.version);
-	
-					google.load("feeds", options.version);
 
+					global.google.load("feeds", options.version);
 
 				};
 				doc.getElementsByTagName("head")[0].appendChild(script);
