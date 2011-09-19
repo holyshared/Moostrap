@@ -55,7 +55,7 @@ Object.append(FeedProcessCreater, {
 
 //<script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAA4_PHVZvjtJ3LjA7Nc-VYfxSl-lcegfuTtJRuZv_Q2Txf9JNAxhQ3jgWCcIrtkHE6yf0JWpdlIz5uVg"></script>
 				var that = this;
-
+/*
 				var script = doc.createElement('script');
 				script.src = 'https://www.google.com/jsapi?key=' + options.key;
 				script.type = "text/javascript";
@@ -77,7 +77,13 @@ Object.append(FeedProcessCreater, {
 					});
 				};
 				doc.getElementsByTagName("head")[0].appendChild(script);
+*/
 
+				google.load("feeds", options.version, {
+					callback: function(){
+						that.success();
+					}
+				});
 			}
 		};
 		return process;
