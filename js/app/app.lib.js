@@ -38,11 +38,12 @@ FeedLoader.implement({
 	}
 
 });
-
+/*
 function OnLoad(){
 	this.success();
 }
 global.OnLoad = OnLoad;
+*/
 
 function FeedProcessCreater(){};
 
@@ -58,13 +59,15 @@ Object.append(FeedProcessCreater, {
 console.log('APIProcess');
 console.log(options.version);
 				var that = this;
-/*				google.setOnLoadCallback(function(){
+				google.setOnLoadCallback(function(){
 console.log('success');
-					that.success();
-			}); */
-				google.setOnLoadCallback(OnLoad.bind(that));
 
-				google.load("feeds", options.version);
+					that.success();
+				});
+//				google.setOnLoadCallback(OnLoad.bind(that));
+
+//				google.load("feeds", options.version);
+				google.load("feeds", "1");
 			}
 		};
 		return process;
