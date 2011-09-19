@@ -22,7 +22,7 @@
 			abort: 'application abort'
 		},
 
-		feeds: {},
+//		feeds: {},
 
 		boot: function(){
 		},
@@ -34,6 +34,14 @@
 		},
 
 		abort: function(){
+		},
+
+		getContainer: function(){
+			return this.container;
+		},
+
+		setContainer: function(container){
+			return this.container = container;
 		},
 
 		run: function(){

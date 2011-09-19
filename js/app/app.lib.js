@@ -73,16 +73,26 @@ Object.append(FeedProcessCreater, {
 
 			handler: function(app, options){
 				var that = this;
-				var control = new GFdynamicFeedControl(options.url, options.id, {
-					horizontal: true
-				});
-				that.success();
+//				var control = new FeedPanel(options.url, options.id, {
+	//				horizontal: true
+		//		});
+			//	that.success();
 
-/*
+
+
+				var id = options.id;
+
+
 				var loader = new FeedLoader({
 					load: function(result){
 						if (!result.error){
-							app.registerFeed('comingsoon', result.feed.entries);
+							var feed = result.feed;
+							var panel = new FeedPanel({
+								id: id,
+								feed: feed
+							});
+							panel.render(app.getContainer());
+
 							that.success();
 						} else {
 							that.failure();
@@ -90,7 +100,7 @@ Object.append(FeedProcessCreater, {
 					}
 				});
 				loader.load(options.url);
-*/
+
 			}
 		};
 		return process;
@@ -176,10 +186,72 @@ MessageDecorator.implement({
 
 
 
+function FeedPanel(options){
+	var id = options.id;
+	var feed = options.feed;
+	if (feed.title && feed.entries){ 
+		throw new TypeError('invalid feed');
+	}
+	this.id = id;
+	this.title = feed.title;
+	this.entries = feed.entries;
+}
 
+FeedPanel.implement({
 
+	createContainer: function(){
+		var container = doc.createElement("div");
+		container.setAttribute('id', this.id);
+		container.setAttribute('class', 'feedList');
+		return container;
+	},
 
+	createHeader: function(){
+		var header = doc.createElement("h3");
+		var headerText = doc.createTextNode(this.title);
+		header.appendChild(headerText);
+		return header;
+	},
 
+	createList: function(){
+		var entries = this.entries;
+		var list = doc.createElement("ul");
+		for (var i = 0; i < entries.length; i++) {
+			var entry = entries[i];
+			var item = doc.createElement("li");
+
+			var link = doc.createElement("a");
+			var linkText = doc.createTextNode(entry.title);
+
+			var date = doc.createElement("span");
+			var dateText = doc.createTextNode(entry.publishedDate);
+			date.appendChild(dateText);
+
+			var separator = doc.createTextNode(' - ');
+			
+			link.setAttribute('title', entry.title);
+			link.setAttribute('href', entry.link);
+			link.appendChild(linkText);
+
+			item.appendChild(date);
+			item.appendChild(separator);
+			item.appendChild(link);
+
+			list.appendChild(item);
+		}
+		return list;
+	},
+
+	render: function(container){
+		var wrapper = this.createContainer();
+		var header = this.createHeader();
+		var feeds = this.createList();
+		wrapper.appendChild(header);
+		wrapper.appendChild(feeds);
+		container.appendChild(wrapper);
+	}
+
+});
 
 
 
