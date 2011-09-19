@@ -13,6 +13,7 @@ global.onLoad = function(){
 alert('aaa');
 
 };
+google.setOnLoadCallback(global.onLoad);
 
 function FeedLoader(strategey){
 	if (!(Type.isObject(strategey) && strategey.load)) {
@@ -67,7 +68,7 @@ console.log(options.version);
 //console.log('success');
 		//			that.success();
 			//	};
-				google.setOnLoadCallback(global.onLoad);
+				//google.setOnLoadCallback(global.onLoad);
 				google.load("feeds", options.version);
 			}
 		};
