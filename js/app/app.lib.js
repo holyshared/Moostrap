@@ -8,7 +8,11 @@ global.FeedLoader = FeedLoader;
 global.FeedProcessCreater = FeedProcessCreater;
 global.MessageDecorator = MessageDecorator;
 global.MessageList = MessageList;
+global.onLoad = function(){
 
+alert('aaa');
+
+};
 
 function FeedLoader(strategey){
 	if (!(Type.isObject(strategey) && strategey.load)) {
@@ -59,11 +63,11 @@ Object.append(FeedProcessCreater, {
 console.log('APIProcess');
 console.log(options.version);
 				var that = this;
-				global.OnLoad = function(){
-console.log('success');
-					that.success();
-				};
-				google.setOnLoadCallback(global.OnLoad);
+	//			global.OnLoad = function(){
+//console.log('success');
+		//			that.success();
+			//	};
+				google.setOnLoadCallback(global.onLoad);
 				google.load("feeds", options.version);
 			}
 		};
