@@ -1,4 +1,4 @@
-(function(global){
+(function(global, doc){
 
 /*
  * 
@@ -39,9 +39,10 @@ FeedLoader.implement({
 
 });
 
+
 function FeedProcessCreater(){};
 
-Object.extend(FeedProcessCreater, {
+Object.append(FeedProcessCreater, {
 
 	createAPIProcess: function(version){
 		var process = {
@@ -50,11 +51,14 @@ Object.extend(FeedProcessCreater, {
 			},
 
 			handler: function(app, options){
+console.log('APIProcess');
+console.log(options.version);
 				var that = this;
-				google.load("feeds", options.version);
 				google.setOnLoadCallback(function(){
+console.log('success');
 					that.success();
 				});
+				google.load("feeds", options.version);
 			}
 		};
 		return process;
@@ -82,15 +86,22 @@ Object.extend(FeedProcessCreater, {
 			}
 		};
 		return process;
+	},
+
+	createDummyProcess: function(){
+		var process = {
+			options: {},
+			handler: function(app, options){
+				var that = this;
+				that.success();
+			}
+		};
+		return process;
 	}
 
 });
-
-
-
-
-
-
+//console.log(FeedProcessCreater);
+//global.FeedProcessCreater = FeedProcessCreater;
 
 
 
@@ -148,7 +159,7 @@ MessageDecorator.implement({
 			return;
 		}
 		return function(){
-			app.printMessage(message);
+			app.print(message);
 		};
 	}
 });
@@ -181,4 +192,4 @@ MessageList.implement({
 
 });
 
-}(this));
+}(this, document));
