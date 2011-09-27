@@ -1,11 +1,13 @@
-(function(global, module){
+(function(global, doc, module){
 
 	global.addEventListener('load', function(){
+
 		var app = new Application({
 			strategy: 'async',
 			module: module
 		});
 		app.run();
+
 	}, false);
 
-}(this, Application.Module));
+}(this, document, Application.Module));
