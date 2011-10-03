@@ -3,19 +3,27 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>Bootstrap</title>
+		<title>Bootstrap - Gallery application</title>
 		<meta name="description" content="" />
 		<meta name="author" content="operator" />
 		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" media="screen,print" />
-		<script type="text/javascript" src="js/lib/mootools-core-1.4.0.js"></script>
+		<script type="text/javascript" src="js/lib/mootools-core.js"></script>
+		<script type="text/javascript" src="js/lib/mootools-more.js"></script>
+		<script type="text/javascript" src="js/lib/bootstrap-async.js"></script>
+		<script type="text/javascript" src="js/app/share/library.js"></script>
+		<script type="text/javascript" src="js/app/gallery/library.js"></script>
+		<script type="text/javascript" src="js/app/gallery/application.js"></script>
+		<script type="text/javascript" src="js/app/gallery/module.js"></script>
+		<script type="text/javascript" src="js/app/gallery/runner.js"></script>
 	</head>
 	<body>
 		<div class="page">
 		    <header>
-		    	<h1>Bootstrap</h1>
+		    	<h1>Bootstrap - Gallery application</h1>
 		    </header>
+
 		    <nav class="global">
 				<ul>
 					<li><a title="Home" href="index.html">Home</a></li>
@@ -25,18 +33,18 @@
 		    </nav>
 
 		    <div class="main">
-				<h2>Bootstrap demo applications</h2>
 				<section>
-					<h3>Gallery application</h3>
-					<p>Application which displays a photograph by asynchronous processing. <br />The photograph of four categories is read and displayed.</p>
-					<p><a title="Gallery application" href="gallery.html">Gallery application &gt;&gt;</a></p>
+					<h2>About</h2>
+					<p>
+This application shows the thumbnail of a photograph using API of Flickr.<br />
+The turn which reading of a photograph is performed by being asynchronous and is displayed may differ. 						
+					</p>
 				</section>
 
 				<section>
-					<h3>Feed list application</h3>
-					<p>Application which displays the feeding information on an event while taking a synchronization.<br />
-Four fade is read and displayed.</p>
-					<p><a title="Feed list application" href="feeds.html">Feed list application &gt;&gt;</a></p>
+					<h2>Flickr Photo Gallery</h2>
+					<div id="photos">
+					</div>
 				</section>
 		    </div>
 

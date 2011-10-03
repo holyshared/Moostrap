@@ -1,0 +1,115 @@
+@charset "utf-8";
+
+.global {
+	background-color: #333333;
+	border-radius: 5px;
+	border: 2px solid #cccccc;
+	margin-bottom: 30px;
+}
+
+.global ul {
+	overflow: hidden;
+	margin-left: 0px;
+	margin-bottom: 0px;
+}
+
+.global ul li {
+	float: left;
+}
+
+.global ul li a {
+	background-color: #444444;
+	text-decoration: none;
+	color: #ffffff;
+	padding: 8px 10px;
+	display: inline-block;
+	border-right: 1px solid #999;
+}
+
+.global ul li:first-child a {
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-bottomleft: 5px;
+}
+
+.global ul li:last-child a {
+	border-right: none;
+
+}
+
+.global ul li a:hover {
+	background-color: #555555;
+}
+
+
+.feeds {
+	overflow: hidden;
+}
+
+.feeds .feedList {
+	float: left;
+	margin-right: 15px;
+}
+
+.feedList {
+	padding: 0px 10px 10px 0px;
+	border-radius: 5px;
+	border: 2px solid #cccccc;
+	background-color: #333333;
+	width: 250px;
+}
+
+.feedList h3 {
+	color: #ffffff;
+	padding: 10px 0px 10px 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #444444;
+}
+
+.feedList li {
+	margin-bottom: 5px;
+}
+
+.feedList li a {
+	color: #ffffff;
+	padding: 3px 10px;
+	display: block;
+	width: 215px;
+	border-radius: 5px;
+	background-color: #444444;
+	border: 2px solid #434343;
+}
+
+.feedList li a:hover {
+	background-color: #555555;
+}
+
+
+.message {
+	padding: 15px;
+	color: #ffffff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border-radius: 5px;
+	background-color: #444444;
+	width: 600px;
+	height: 200px;
+	margin-left: -300px;
+	margin-top: -100px
+}
+
+.photos {
+	overflow: hidden;
+	margin-left: 0px;
+	padding: 10px;
+	background: #333333;
+}
+
+.photos li {
+	float: left;
+	margin-bottom: 0px;
+}
+
+.photos li img {
+	vertical-align: bottom;
+}
