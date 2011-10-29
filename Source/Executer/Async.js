@@ -58,7 +58,7 @@ namespace.Async = new Class({
 			failure: this.onFailure.bind(this, args)
 		};
 		var options = this.getConfiguration(key) || {};
-		bootstrapper.setOptions(options)
+		bootstrapper.setConfigurations(options)
 			.addEvents(events);
 	},
 

@@ -26,72 +26,21 @@ provides:
 
 (function(){
 
-var Bootstrap = this.Bootstrap = function(opts){
 
-	var type, strategy, strategyKey, bootstrappers;
-	var optionalOptions = ['resource', 'configurations', 'onStart', 'onProgress', 'onComplete', 'onSuccess', 'onFailure'];
-	
+var Bootstrap = this.Bootstrap = function(executer, module, options){
 
-	type = (opts.strategy) ? opts.strategy : 'async';
-	strategyKey = type.capitalize(); 
-	if (!Bootstrap.Strategy[strategyKey]) {
-		throw new Error(strategyKey + ' is not found');
+	var executerType = executer.capitalize();
+	if (!Bootstrap.Executer[executerType]){
+		throw new Error('not found excuter');
 	}
-	strategy = Bootstrap.Strategy[strategyKey];
+	var executerClass = Bootstrap.Executer[executerType];
+	var executer = new executerClass(options);
 
-	if (!opts.module) {
-		throw new Error('module is not found');
-	}
-	bootstrappers = opts.module.getContainer();
+	executer.setModule(module).init();
 
-	var optionals = Object.subset(opts, optionalOptions);
-	var strategyOptions = Object.merge({
-		'strategy': strategy,
-		'bootstrappers': bootstrappers
-	}, optionals);
-
-	var boot = new strategy(strategyOptions);
-	boot.init();
-	return boot;
+	return executer;
 
 };
-
-/*
- * var module = new Bootstrap.Module();
- * module.register('processe1', {
- * 	
- *     handler: function(resource, options){
- *     }
- * 
- * });
- * module.register('processe2', {
- * 	
- *     handler: function(resource, options){
- *     }
- * 
- * });
- * module.register('processe3', {
- * 	
- *     handler: function(resource, options){
- *     }
- * 
- * });
- * 
- * 
- * var executeOrder = module.getRegisteredKeys();
- * 
- * while(executeOrder.hasNext()) {
- * 
- *     var key = executeOrder.current();
- *     var bootstrapper = module.getBootstrapper(key);
- *     bootstrapper.execute();
-
- *     executeOrder.next();
- * }
- * 
- * 
- * 
- */
 
 Bootstrap.Module = new Class({
 
@@ -168,16 +117,6 @@ Bootstrap.Module = new Class({
 });
 
 
-
-
-
-
-
-
-
-
-
-
 Bootstrap.Executer = {};
 
 Bootstrap.NONE = 0;
@@ -186,21 +125,32 @@ Bootstrap.FAILURE = 2;
 
 Bootstrap.Bootstrapper = new Class({
 
-	Implements: [Events],
+	Implements: [Events, Options],
+
+	_resource: null,
+	_configurations: null,
+	_handler: null,
 
 	_status: null,
 	_started: false,
 
 	initialize: function(options){
-		var props = { resource: null, options: null, handler: null };
-		var opts = Object.merge(props, options);
-		for (var key in opts){
-			var name = '_' + key;
-			if (opts[key]){
-				this[name] = opts[key];
+		this.setOptions(this._prepare(options));
+	},
+
+	_prepare: function(options){
+		var that = this;
+		['resource', 'configurations', 'handler'].each(function(key){
+			if (!options[key]){
+				return;
 			}
-			delete opts[key];
-		}
+            var method = key.capitalize();
+            var setter = 'set' + method;
+			var handler = that[setter];
+            handler.call(that, options[key]);
+            delete options[key];
+		});
+		return options;
 	},
 
 	success: function(){
@@ -227,16 +177,20 @@ Bootstrap.Bootstrapper = new Class({
 		return this._resource;
 	},
 
-	getOptions: function(){
-		return this._options;
+	getConfigurations: function(){
+		return this._configurations;
 	},
 
-	setOptions: function(values){
+	setConfigurations: function(values){
 		if (!Type.isObject(values)){
 			throw new TypeError('invalid resurce');
 		}
-		this._options = Object.merge(this._options || {}, values);
+		this._configurations = Object.merge(this._configurations  || {}, values);
 		return this;
+	},
+
+	setHandler: function(handler){
+		this._handler = handler;
 	},
 
 	_setResultStatus: function(type){
@@ -271,7 +225,7 @@ Bootstrap.Bootstrapper = new Class({
 		this._started = true;
 		this.fireEvent('start');
 
-		this._handler.call(this, this.getResource(), this.getOptions());
+		this._handler.call(this, this.getResource(), this.getConfigurations());
 	}
 
 });

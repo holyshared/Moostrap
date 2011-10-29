@@ -78,7 +78,6 @@ bootstrap.register('proccessA', {
 	},
 
 	handler: function(resource, options){
-
 		var that = this;
 		var request = new Request.JSON({
 			method: 'get',
@@ -89,10 +88,11 @@ bootstrap.register('proccessA', {
 			onSuccess: function(response){
 				resource['key1'] = response.key1;
 				resource['key2'] = response.key2;
+
 				that.success();
 			},
 			onFailture: function(response){
-				that.failture();
+				that.failure();
 			}
 		});
 		request.send();

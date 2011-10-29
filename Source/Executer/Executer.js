@@ -24,22 +24,35 @@ namespace.Executer = new Class({
 
 	Implements: [Events, Options],
 
-	_completed: 0,
+	/* properties */
+	_resource: null,
 	_module: null,
 	_configurations: {},
+
+	_completed: 0,
 	_started: false,
 	_status: Bootstrap.NONE,
 
 	initialize: function(options){
-		var setter;
-		for (var key in options){
-			setter = 'set' + key.capitalize();
-			if (this[setter]) {
-				this[setter].call(this, options[key]);
-				delete options[key];
-			}
+		this.setOptions(this._prepare(options));
+	},
+
+	_prepare: function(options){
+		if (!options) {
+			return;
 		}
-		this.setOptions(options);
+		var that = this;
+		['resource', 'configurations', 'module'].each(function(key){
+			if (!options[key]){
+				return;
+			}
+            var method = key.capitalize();
+            var setter = 'set' + method;
+			var handler = that[setter];
+            handler.call(that, options[key]);
+            delete options[key];
+		});
+		return options;
 	},
 
 	setModule: function(module){
@@ -146,6 +159,11 @@ namespace.Executer = new Class({
 		}
 
 		if (resource){
+			var module = this.getModule();
+			var bootstrappers = module.getBootstrappers();
+			Object.each(bootstrappers, function(bootstrapper, key){
+				bootstrapper.setResource(resource);
+			});
 			this.setResource(resource);
 		}
 		this.fireEvent('start');

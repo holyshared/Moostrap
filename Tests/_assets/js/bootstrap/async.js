@@ -11,12 +11,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Bootstrap({
-
-                    strategy: 'async',
-
-                    module: SuccessTestModule,
-
+				var bootstrap = new Bootstrap('async', SuccessTestModule, {
 					configurations: {
 						proccessA: {
 							key1: 'key1-value',
@@ -60,11 +55,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Bootstrap({
-
-                    strategy: 'async',
-
-                    module: FailureTestModule,
+				var bootstrap = new Bootstrap('async', FailureTestModule, {
 
 					configurations: {
 						proccessA: {
@@ -85,8 +76,6 @@
 					onFailure: function(){
 						log('failure');
 
-						log( (resource.key1 == 'key1-value') ? 'resource.key1 OK' : 'resource.key1 NG' );
-						log( (resource.key2 == 'key2-value') ? 'resource.key2 OK' : 'resource.key2 NG' );
 						log( (!resource.key3) ? 'resource.key3 OK' : 'resource.key3 NG' );
 						log( (!resource.key4) ? 'resource.key4 OK' : 'resource.key4 NG' );
 					},

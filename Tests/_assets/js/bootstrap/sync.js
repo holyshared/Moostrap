@@ -11,11 +11,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Bootstrap({
-
-                    strategy: 'sync',
-
-                    module: SuccessTestModule,
+				var bootstrap = new Bootstrap('sync', SuccessTestModule, {
 
 					configurations: {
 						proccessA: {
@@ -60,11 +56,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Bootstrap({
-
-                    strategy: 'sync',
-
-                    module: FailureTestModule,
+				var bootstrap = new Bootstrap('sync', FailureTestModule, {
 
 					configurations: {
 						proccessA: {
