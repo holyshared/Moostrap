@@ -182,10 +182,22 @@ Bootstrap.Bootstrapper = new Class({
 	},
 
 	setConfigurations: function(values){
-		if (!Type.isObject(values)){
+		if (!(Type.isObject(values) || Type.isArray(values))){
 			throw new TypeError('invalid resurce');
 		}
-		this._configurations = Object.merge(this._configurations  || {}, values);
+		switch(typeOf(values)){
+			case 'object':
+				this._configurations = Object.merge(this._configurations || {}, values);
+				break;
+			case 'array':
+				if (!this._configurations){
+					this._configurations = [];
+				}
+				this._configurations.combine(values);
+				break;
+			default:
+				break;
+		}
 		return this;
 	},
 
