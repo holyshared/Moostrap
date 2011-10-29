@@ -1,65 +1,61 @@
-(function(win, doc, Bootstrap){
+(function(win, doc, TestModule){
 
-	var BootstrapperA = this.BootstrapperA = new Class({
+this.TestModule = TestModule;
 
-		Extends: Bootstrap.Bootstrapper,
+TestModule.register('proccessA', {
 
-		_options: {
-			key1: null,
-			key2: null
-		},
+	options: {
+		key1: null,
+		key2: null
+	},
 
-		_handler: function(resource, options){
-			var that = this;
-			var request = new Request.JSON({
-				method: 'get',
-				url: '/echo/json/',
-				data:{
-					json: '{ "name" : "a", "value" : "b" }'
-				},
-				onSuccess: function(response){
-					resource['bootstrapperA'] = response;
-					that.success();
-				},
-				onFailture: function(response){
-					that.failture();
-				}
-			});
-			request.send();
-		}
+	handler: function(resource, options){
+		var that = this;
+		var request = new Request.JSON({
+			method: 'get',
+			url: '/echo/json/',
+			data:{
+				json: '{ "name" : "a", "value" : "b" }'
+			},
+			onSuccess: function(response){
+				resource['bootstrapperA'] = response;
+				that.success();
+			},
+			onFailture: function(response){
+				that.failture();
+			}
+		});
+		request.send();
+	}
 
-	});
+});
 
+TestModule.register('proccessB', {
 
-	var BootstrapperB = this.BootstrapperB = new Class({
+	options: {
+		key1: null,
+		key2: null
+	},
 
-		Extends: Bootstrap.Bootstrapper,
+	handler: function(resource, options){
+		var that = this;
+		var request = new Request.JSON({
+			method: 'get',
+			url: '/echo/json/',
+			data:{
+				json: '{ "name" : "a", "value" : "b" }'
+			},
+			onSuccess: function(response){
+				resource['bootstrapperB'] = response;
+				that.success();
+			},
+			onFailture: function(response){
+				that.failture();
+			}
+		});
+		request.send();
+	}
 
-		_options: {
-			key1: null,
-			key2: null
-		},
+});
 
-		_handler: function(resource, options){
-			var that = this;
-			var request = new Request.JSON({
-				method: 'get',
-				url: '/echo/json/',
-				data:{
-					json: '{ "name" : "a", "value" : "b" }'
-				},
-				onSuccess: function(response){
-					resource['bootstrapperB'] = response;
-					that.success();
-				},
-				onFailture: function(response){
-					that.failture();
-				}
-			});
-			request.send();
-
-		}
-
-	});
-
-}(window, document, Bootstrap));
+}(window, document, new Bootstrap.Module()));

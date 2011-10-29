@@ -24,46 +24,46 @@
 
 		testcases.push({
 			
-			title: 'setBootstrappers/getBootstrappers',
-			description : 'setBootstrappers/getBootstrappers testcase.',
+			title: 'setModule/getModule',
+			description : 'setModule/getModule testcase.',
 			fn: function(){
 
-				var bootstrappers = new Bootstrap.Bootstrappers();
+				var module = new Bootstrap.Module();
 
 				var mock = new StrategyMock();
-				mock.setBootstrappers(bootstrappers);
+				mock.setModule(module);
 
-				log( (mock.getBootstrappers() == bootstrappers) ? 'assert OK' : 'bootstrappers setter/getter NG' );
+				log( (mock.getModule() == module) ? 'assert OK' : 'module setter/getter NG' );
 
 			}
 
 		});
 
-
+/*
 		testcases.push({
 			
 			title: 'getBootstrapper',
 			description : 'getBootstrapper testcase.',
 			fn: function(){
 
-				var item = new Bootstrap.Bootstrapper({
+				var module = new Bootstrap.Module();
+				module.register('item', {
+
 					handler: function(){
 					}
+
 				});
 
-				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addItem('item', item);
-
 				var mock = new StrategyMock();
-				mock.setBootstrappers(bootstrappers);
+				mock.setModule(module);
 
 				log( (mock.getBootstrapper('item') == item) ? 'assert OK' : 'getBootstrapper NG' );
 
 			}
 
 		});
-
-
+*/
+/*
 		testcases.push({
 			
 			title: 'getBootstrapperKeys',
@@ -86,7 +86,7 @@
 			}
 
 		});
-
+*/
 
 
 
@@ -100,7 +100,7 @@
 				var resource = {};
 
 				var progress = 0, complete = false;
-
+/*
 				var item1 = new Bootstrap.Bootstrapper({
 					handler: function(){
 						this.success();
@@ -113,16 +113,41 @@
 					}
 				});
 
-				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addItem('item', item1)
-					.addItem('item2', item2);
+*/
+
+				var module = new Bootstrap.Module();
+				module.register('item1', {
+
+					handler: function(){
+						this.success();
+					}
+
+				});
+				module.register('item2', {
+
+					handler: function(){
+						this.success();
+					}
+
+				});
+
+
+
+
+
+
+
+
+				//var bootstrappers = new Bootstrap.Bootstrappers();
+			////	bootstrappers.addItem('item', item1)
+				//	.addItem('item2', item2);
 
 				var mock = new StrategyMock();
 				mock.setResource(resource)
-					.setBootstrappers(bootstrappers)
+					.setModule(module)
 					.addEvents({
 						success: function(){
-							log( (mock.isSuccessed()) ? 'assert OK' : 'isSuccessed NG' );
+							log( (mock.isSuccessed()) ? 'isSuccessed OK' : 'isSuccessed NG' );
 						},
 						progress: function(counter, resource, total){
 							progress++;
@@ -130,14 +155,14 @@
 						complete: function(){
 							complete = true;
 
-							log( (mock.isCompleted()) ? 'assert OK' : 'isCompleted NG' );
-							log( (mock.isStarted()) ? 'assert OK' : 'isStarted NG' );
+							log( (mock.isCompleted()) ? 'isCompleted OK' : 'isCompleted NG' );
+							log( (mock.isStarted()) ? 'isStarted OK' : 'isStarted NG' );
 						}
 					})
 					.execute();
 
-				log( (progress >= 2) ? 'assert OK' : 'progress NG' );
-				log( (complete) ? 'assert OK' : 'complete NG' );
+				log( (progress >= 2) ? 'progress OK' : 'progress NG' );
+				log( (complete) ? 'complete OK' : 'complete NG' );
 
 			}
 
@@ -152,6 +177,26 @@
 
 				var resource = {};
 
+
+
+				var module = new Bootstrap.Module();
+				module.register('item1', {
+
+					handler: function(){
+						this.success();
+					}
+
+				});
+				module.register('item2', {
+
+					handler: function(){
+						this.failure();
+					}
+
+				});
+
+
+/*
 				var item1 = new Bootstrap.Bootstrapper({
 					handler: function(){
 						this.success();
@@ -163,17 +208,20 @@
 						this.failure();
 					}
 				});
+*/
 
-				var bootstrappers = new Bootstrap.Bootstrappers();
-				bootstrappers.addItem('item', item1)
-					.addItem('item2', item2);
+
+
+			//	var bootstrappers = new Bootstrap.Bootstrappers();
+			//	bootstrappers.addItem('item', item1)
+			//		.addItem('item2', item2);
 
 				var mock = new StrategyMock();
 				mock.setResource(resource)
-					.setBootstrappers(bootstrappers)
+					.setModule(module)
 					.addEvents({
 						failure: function(){
-							log( (mock.isFailured()) ? 'assert OK' : 'isFailured NG' );
+							log( (mock.isFailured()) ? 'isFailured OK' : 'isFailured NG' );
 						}
 					})
 					.execute();

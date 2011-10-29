@@ -1,4 +1,4 @@
-(function(win, doc, Bootstrap, Strategy){
+(function(win, doc, Bootstrap, Executer){
 
 	win.addEventListener('load', function(){
 
@@ -11,15 +11,10 @@
 			fn: function(){
 
 				var resource = {};
-				var a = new BootstrapperA(), b = new BootstrapperB();
-				var collection = new Bootstrap.Bootstrappers();
 
-				collection.addItem('proccessA', a)
-					.addItem('proccessB', b);
-
-				var strategy = new Strategy.Sync({
+				var strategy = new Executer.Sync({
+					module: TestModule,
 					resource: resource,
-					bootstrappers: collection,
 					configurations: {
 						proccessA: {
 							key1: 'key1',
@@ -32,16 +27,16 @@
 					}
 				});
 				strategy.addEvent('complete', function(){
-
-					log( (resource['bootstrapperA'].name == 'a') ? 'assert OK' : 'proccessA result NG - name' );
-					log( (resource['bootstrapperB'].name == 'a') ? 'assert OK' : 'proccessB result NG - name' );
-
+					log( (resource['bootstrapperA'].name == 'a') ? 'proccessA OK' : 'proccessA result NG - name' );
+					log( (resource['bootstrapperB'].name == 'a') ? 'proccessB OK' : 'proccessB result NG - name' );
 				});
 				strategy.init();
 				strategy.execute();
 
-				log( (a.getOptions().key1 == 'key1') ? 'assert OK' : 'proccessA configuration NG - key1' );
-				log( (a.getOptions().key2 == 'key2') ? 'assert OK' : 'proccessA configuration NG - key2' );
+				var a = TestModule.getBootstrapper('proccessA');
+
+				log( (a.getOptions().key1 == 'key1') ? 'proccessA configuration key1 OK' : 'proccessA configuration NG - key1' );
+				log( (a.getOptions().key2 == 'key2') ? 'proccessA configuration key2 OK' : 'proccessA configuration NG - key2' );
 
 			}
 
@@ -51,4 +46,4 @@
 
 	}, false);
 
-}(window, document, Bootstrap, Bootstrap.Strategy));
+}(window, document, Bootstrap, Bootstrap.Executer));

@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.Strategy.Executer
+name: Bootstrap.Executer.Executer
 
 description: 
 
@@ -10,22 +10,22 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.Bootstrappers
-  - Bootstrap.Strategy
+  - Bootstrap.Module
+  - Bootstrap.Executer
 
 provides:
-  - Bootstrap.Strategy.Executer
+  - Bootstrap.Executer.Executer
 ...
 */
 
-(function(StrategyNamespace){
+(function(namespace){
 
-StrategyNamespace.Executer = new Class({
+namespace.Executer = new Class({
 
 	Implements: [Events, Options],
 
-	_counter: 0,
-	_bootstrappers: null,
+	_completed: 0,
+	_module: null,
 	_configurations: {},
 	_started: false,
 	_status: Bootstrap.NONE,
@@ -42,25 +42,22 @@ StrategyNamespace.Executer = new Class({
 		this.setOptions(options);
 	},
 
-	setBootstrappers: function(bootstrappers){
-		if (!Type.isBootstrappers(bootstrappers)){
-			throw new TypeError('invalid bootstrappers');
-		}
-		this._bootstrappers = bootstrappers;
+	setModule: function(module){
+		this._module = module;
 		return this;
 	},
 
-	getBootstrappers: function(){
-		return this._bootstrappers;
+	getModule: function(){
+		return this._module;
 	},
 
 	setResource: function(resource){
-		this.resource = resource;
+		this._resource = resource;
 		return this;
 	},
 
 	getResource: function(){
-		return this.resource;
+		return this._resource;
 	},
 
 	setConfigurations: function(configurations){
@@ -79,19 +76,12 @@ StrategyNamespace.Executer = new Class({
 		return this._configurations[key];
 	},
 
-	getBootstrapper: function(key){
-		var bootstrappers = this.getBootstrappers();
-		return bootstrappers.getItem(key);
-	},
-
-	getBootstrapperKeys: function(){
-		var bootstrappers = this.getBootstrappers();
-		return bootstrappers.getKeys();
-	},
-
-	getLength: function(){
-		var bootstrappers = this.getBootstrappers();
-		return bootstrappers.getLength();
+	getExecuteOrder: function(){
+		if (this._executeOrder){
+			return this._executeOrder;
+		}
+		this._executeOrder = this.getModule().getRegisteredKeys();
+		return this._executeOrder;
 	},
 
 	_setResultStatus: function(type){
@@ -122,15 +112,20 @@ StrategyNamespace.Executer = new Class({
 		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
 	},
 
-	_progress: function(bootstrapperName){
-		var args = [
-			bootstrapperName,
-			this._counter + 1,
-			this.getLength()
-		];
+	getCompletedCount: function(){
+		return this._completed;
+	},
+
+	_progress: function(bootstrapperKey){
+
+		var completed = this.getCompletedCount();
+		var total = this.getModule().getLength();
+		var args = [ bootstrapperKey, completed, total ];
+
 		this.fireEvent('progress', args);
 
-		if (this._counter++ >= this.getLength() - 1) {
+		this._completed++;
+		if (completed >= total - 1) {
 			if (this.isFailured()) {
 				return;
 			}
@@ -152,9 +147,7 @@ StrategyNamespace.Executer = new Class({
 
 		if (resource){
 			this.setResource(resource);
-			this.getBootstrappers().setResource(resource);
 		}
-
 		this.fireEvent('start');
 		this.bootstrap();
 	},
@@ -171,4 +164,4 @@ StrategyNamespace.Executer = new Class({
 
 });
 
-}(Bootstrap.Strategy));
+}(Bootstrap.Executer));
