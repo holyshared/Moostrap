@@ -128,7 +128,7 @@ Bootstrap.Bootstrapper = new Class({
 	Implements: [Events, Options],
 
 	_resource: null,
-	_configurations: null,
+	_configuration: null,
 	_handler: null,
 
 	_status: null,
@@ -140,7 +140,7 @@ Bootstrap.Bootstrapper = new Class({
 
 	_prepare: function(options){
 		var that = this;
-		['resource', 'configurations', 'handler'].each(function(key){
+		['resource', 'configuration', 'handler'].each(function(key){
 			if (!options[key]){
 				return;
 			}
@@ -177,25 +177,27 @@ Bootstrap.Bootstrapper = new Class({
 		return this._resource;
 	},
 
-	getConfigurations: function(){
-		return this._configurations;
+	getConfiguration: function(){
+		return this._configuration;
 	},
 
-	setConfigurations: function(values){
-		if (!(Type.isObject(values) || Type.isArray(values))){
+	setConfiguration: function(value){
+		if (!value){
 			throw new TypeError('invalid resurce');
 		}
-		switch(typeOf(values)){
+
+		switch(typeOf(value)){
 			case 'object':
-				this._configurations = Object.merge(this._configurations || {}, values);
+				this._configuration = Object.merge(this._configuration || {}, value);
 				break;
 			case 'array':
-				if (!this._configurations){
-					this._configurations = [];
+				if (!this._configuration){
+					this._configuration = [];
 				}
-				this._configurations.combine(values);
+				this._configuration.combine(value);
 				break;
 			default:
+				this._configuration = value;
 				break;
 		}
 		return this;
@@ -237,7 +239,7 @@ Bootstrap.Bootstrapper = new Class({
 		this._started = true;
 		this.fireEvent('start');
 
-		this._handler.call(this, this.getResource(), this.getConfigurations());
+		this._handler.call(this, this.getResource(), this.getConfiguration());
 	}
 
 });

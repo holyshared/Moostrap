@@ -4,7 +4,7 @@ this.TestModule = TestModule;
 
 TestModule.register('proccessA', {
 
-	configurations: {
+	configuration: {
 		key1: null,
 		key2: null
 	},
@@ -32,7 +32,7 @@ TestModule.register('proccessA', {
 
 TestModule.register('proccessB', {
 
-	configurations: {
+	configuration: {
 		key1: null,
 		key2: null
 	},

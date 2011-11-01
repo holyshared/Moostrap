@@ -35,8 +35,8 @@
 
 				var a = TestModule.getBootstrapper('proccessA');
 
-				log( (a.getConfigurations().key1 == 'key1') ? 'proccessA configuration key1 OK' : 'proccessA configuration NG - key1' );
-				log( (a.getConfigurations().key2 == 'key2') ? 'proccessA configuration key2 OK' : 'proccessA configuration NG - key2' );
+				log( (a.getConfiguration().key1 == 'key1') ? 'proccessA configuration key1 OK' : 'proccessA configuration NG - key1' );
+				log( (a.getConfiguration().key2 == 'key2') ? 'proccessA configuration key2 OK' : 'proccessA configuration NG - key2' );
 
 			}
 

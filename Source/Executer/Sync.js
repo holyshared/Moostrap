@@ -52,7 +52,7 @@ namespace.Sync = new Class({
 			failure: this.onFailure.bind(this, args)
 		};
 		var options = this.getConfiguration(key) || {};
-		bootstrapper.setConfigurations(options)
+		bootstrapper.setConfiguration(options)
 			.addEvents(events);
 	},
 

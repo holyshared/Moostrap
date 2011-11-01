@@ -11,7 +11,7 @@
 			fn: function(){
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					configurations: {
+					configuration: {
 						name: 'foo',
 						value: 1
 					},
@@ -33,12 +33,12 @@
 
 		testcases.push({
 			
-			title: 'setConfigurations/getConfigurations',
-			description : 'setConfigurations/getConfigurations testcase.',
+			title: 'setConfiguration/getConfiguration',
+			description : 'setConfiguration/getConfiguration testcase.',
 			fn: function(){
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					configurations: {
+					configuration: {
 						name: 'foo',
 						value: 1
 					},
@@ -46,12 +46,12 @@
 					}
 				});
 
-				bootstrap.setConfigurations({
+				bootstrap.setConfiguration({
 					name: 'bar',
 					value: 100
 				});
 
-				var result = (bootstrap.getConfigurations().name == 'bar' && bootstrap.getConfigurations().value == 100);
+				var result = (bootstrap.getConfiguration().name == 'bar' && bootstrap.getConfiguration().value == 100);
 
 				log( (result) ? 'assert OK.' : 'options setter/getter NG.' );
 
@@ -71,7 +71,7 @@
 				var mock = new Mock();
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					configurations: {
+					configuration: {
 						name: 'foo',
 						value: 1
 					},
@@ -106,7 +106,7 @@
 				});
 
 				bootstrap.setResource(mock)
-					.setConfigurations({
+					.setConfiguration({
 						name: 'bar',
 						value: 2
 					})
@@ -131,7 +131,7 @@
 				var mock = new Mock();
 
 				var bootstrap = new Bootstrap.Bootstrapper({
-					configurations: {
+					configuration: {
 						name: 'foo',
 						value: 1
 					},
@@ -165,7 +165,7 @@
 				});
 
 				bootstrap.setResource(mock)
-					.setConfigurations({
+					.setConfiguration({
 						name: 'bar',
 						value: 2
 					})
