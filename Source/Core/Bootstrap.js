@@ -127,6 +127,7 @@ Bootstrap.Bootstrapper = new Class({
 
 	Implements: [Events, Options],
 
+	_name: null,
 	_resource: null,
 	_configuration: null,
 	_handler: null,
@@ -140,7 +141,7 @@ Bootstrap.Bootstrapper = new Class({
 
 	_prepare: function(options){
 		var that = this;
-		['resource', 'configuration', 'handler'].each(function(key){
+		['name', 'resource', 'configuration', 'handler'].each(function(key){
 			if (!options[key]){
 				return;
 			}
@@ -163,6 +164,14 @@ Bootstrap.Bootstrapper = new Class({
 		this._setResultStatus(Bootstrap.FAILURE);
 		this.fireEvent('complete');
 		this.fireEvent('failure');
+	},
+
+	setName: function(name){
+		this._name = name;
+	},
+
+	getName: function(){
+		return this._name;
 	},
 
 	setResource: function(resource){
