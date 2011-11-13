@@ -34,7 +34,9 @@ When it succeeds in processing, **success** is performed, and **failure** is per
         //A basic setup of application is performed.
         Bootstrapper.register('bootstrapA', {
 
-            options: {
+			title: 'bootstrapA',
+
+            configuration: {
                 name: 'bootstrap',
                 description: 'bootstrap description'
             },
@@ -57,7 +59,9 @@ When it succeeds in processing, **success** is performed, and **failure** is per
         //The URL list of pictures is acquired using Ajax. 
         Bootstrapper.register('bootstrapB', {
 
-            options: {
+			title: 'bootstrapB',
+
+            configuration: {
                 url: 'http://example.com/images/'
             },
 
@@ -111,14 +115,7 @@ If processing goes wrong in the middle of initialization processing, processing 
             run: function(){
 
                 var app = this;
-                var bootstrapper = new Bootstrap({
-
-                    //The real whereabouts method of initialization processing is specified.
-                    strategy: 'sync',
-
-                    //An initialization module is specified.
-                    module: module,
-
+                var bootstrapper = new Bootstrap('sync', module, {
                     //A setup of an initialization module is specified.
                     //A setup here carries out the override of the default setup.
                     configurations: {
@@ -133,7 +130,6 @@ If processing goes wrong in the middle of initialization processing, processing 
                         bootstrapB: {
                             url: 'http://helloworld.com/images/'
                         }
-
                     },
                     onSuccess: app.start,
                     onFailture: app.abort
@@ -159,26 +155,26 @@ Initialization pattern
 
 ### Synchronization
 
-The initialization processing using **Bootstrap.Strategy.Sync** performs processings in order one by one.  
+The initialization processing using **Bootstrap.Executer.Sync** performs processings in order one by one.  
 Initialization processing is performed whenever one processing is completed.
 
-![Bootstrap.Strategy.Sync](http://holyshared.github.com/Bootstrap/images/bootstrap_sync_flow.jpg "Bootstrap.Strategy.Sync")
+![Bootstrap.Executer.Sync](http://holyshared.github.com/Bootstrap/images/bootstrap_sync_flow.jpg "Bootstrap.Executer.Sync")
 
 
 #### The method of building 
 
-packager Bootstrap/Bootstrap.Strategy.Sync +use-only Bootstrap
+packager Bootstrap/Bootstrap.Executer.Sync +use-only Bootstrap
 
 
 ### Asynchronous
 
-The initialization processing using **Bootstrap.Strategy.Async** performs processings in order one by one.  
+The initialization processing using **Bootstrap.Executer.Async** performs processings in order one by one.  
 A synchronization is not taken at this time.
 
-![Bootstrap.Strategy.Async](http://holyshared.github.com/Bootstrap/images/bootstrap_async_flow.jpg "Bootstrap.Strategy.Async")
+![Bootstrap.Executer.Async](http://holyshared.github.com/Bootstrap/images/bootstrap_async_flow.jpg "Bootstrap.Executer.Async")
 
 
 #### The method of building 
 
-packager Bootstrap/Bootstrap.Strategy.Async +use-only Bootstrap
+packager Bootstrap/Bootstrap.Executer.Async +use-only Bootstrap
 

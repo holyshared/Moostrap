@@ -2,50 +2,41 @@
 Bootstrap
 ==============================================================
 
-
-
-Class: Bootstrap
---------------------------------------------------------------
-
-
-
-
-
-
-
-
-
 Class: Bootstrap.Module
 --------------------------------------------------------------
 
 ### Methods
 
-* register
-* unregister
-* isRegistered
-* getContainer
-* setContainer
+* register(key, options)
+* unregister(key)
+* isRegistered(key)
+* getBootstrapper(key)
+* getBootstrappers()
+* getLength()
+* getRegisteredKeys()
+
 
 
 Class: Bootstrap.Bootstrapper
 --------------------------------------------------------------
 
-
 ### Methods
 
-* success
-* failure
-* getResultStatus
-* isSuccessed
-* isFailured
-* isCompleted
-* isStarted
-* execute
-* setResource
-* getResource
-* setOptions
-* getOptions
-
+* success()
+* failure()
+* setTitle(title)
+* getTitle()
+* setResource(resource)
+* getResource()
+* getConfiguration()
+* setConfiguration(value)
+* setHandler(handler)
+* getResultStatus()
+* isSuccessed()
+* isFailured()
+* isCompleted()
+* isStarted()
+* execute()
 
 ### Events
 
@@ -55,61 +46,47 @@ Class: Bootstrap.Bootstrapper
 * onFailure
 
 
-Class: Bootstrap.Bootstrappers
+
+Class: Bootstrap.Executer.Executer
 --------------------------------------------------------------
 
 ### Methods
 
-* addItem
-* addItems
-* removeItem
-* removeItems
-* getItem
-* getItems
-* hasItem
-* getLength
-* execute
-* setResource
-* setOptions
-* each
-* hasNext
-* next
-* rewind
-
-
-
-Class: Bootstrap.BootstrapStrategy
---------------------------------------------------------------
-
-### Methods
-
-* setResource
-* getResource
-* setBootstrappers
-* getBootstrappers
-* getConfigurations
-* setConfigurations
-* getConfiguration
-* getBootstrapper
-* getBootstrapperKeys
-* getLength
-* isCompleted
-* isStarted
-* isSuccessed
-* isFailured
-* bootstrap
+* init()
+* setModule(module)
+* getModule()
+* setResource(resource)
+* getResource()
+* setConfigurations(configurations)
+* getConfigurations()
+* getConfiguration(key)
+* getExecuteOrder()
+* getResultStatus()
+* isStarted()
+* isSuccessed()
+* isFailured()
+* isCompleted()
+* getCompletedCount()
+* execute(resource)
+* bootstrap() - abstract method
 
 ### Events
 
 * onStart
-* onProgress
+* onBeforeBootstrap(key, title, current, total)
+* onAfterBootstrap(key, title, current, total)
 * onComplete
+* onSuccess
+* onFailure
 
 
-Class: Bootstrap.Strategy.Async
+
+Class: Bootstrap.Executer.Async
 --------------------------------------------------------------
 
+### Extends
 
+Bootstrap.Executer.Executer
 
 ### Methods
 
@@ -117,11 +94,12 @@ Class: Bootstrap.Strategy.Async
 
 
 
-
-Class: Bootstrap.Strategy.Sync
+Class: Bootstrap.Executer.Sync
 --------------------------------------------------------------
 
+### Extends
 
+Bootstrap.Executer.Executer
 
 ### Methods
 
