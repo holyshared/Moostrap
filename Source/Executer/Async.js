@@ -2,7 +2,7 @@
 ---
 name: Bootstrap.Executer.Async
 
-description: 
+description: The execution module which carries out asynchronous execution of the initialization module
 
 license: MIT-style
 

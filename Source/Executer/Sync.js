@@ -2,7 +2,7 @@
 ---
 name: Bootstrap.Executer.Sync
 
-description: 
+description: The execution module which carries out synchronous execution of the initialization module
 
 license: MIT-style
 

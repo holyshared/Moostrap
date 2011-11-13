@@ -2,7 +2,7 @@
 ---
 name: Bootstrap.Executer.Executer
 
-description: 
+description: The core class which performs an initialization module
 
 license: MIT-style
 
