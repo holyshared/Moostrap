@@ -38,24 +38,51 @@ namespace.Executer = new Class({
 	},
 
 	_prepare: function(options){
+		var executer = this,
+			method = '',
+			setter = '',
+			handler = null;
+
 		if (!options) {
 			return;
 		}
-		var that = this;
+
 		['resource', 'configurations', 'module'].each(function(key){
 			if (!options[key]){
 				return;
 			}
-            var method = key.capitalize();
-            var setter = 'set' + method;
-			var handler = that[setter];
-            handler.call(that, options[key]);
+            method = key.capitalize();
+            setter = 'set' + method;
+
+			handler = executer[setter];
+            handler.call(executer, options[key]);
+
             delete options[key];
 		});
 		return options;
 	},
 
+	init: function(){
+		var model = this,
+			module = this.getModule(),
+			bootstrappers = null;
+
+		bootstrappers = module.getBootstrappers();
+
+		if (model.getResource()) {
+			Object.each(bootstrappers, function(bootstrapper, key){
+				bootstrapper.setResource(model.getResource());
+			});
+		}
+		Object.each(bootstrappers, function(bootstrapper, key){
+			model._setupBootstrapper(key, bootstrapper);
+		});
+	},
+
 	setModule: function(module){
+		if (!Type.isBootstrapModule(module)) {
+			throw new TypeError('The specified module is not valid.');
+		}
 		this._module = module;
 		return this;
 	},
@@ -65,6 +92,9 @@ namespace.Executer = new Class({
 	},
 
 	setResource: function(resource){
+		if (!Type.isObject(resource)) {
+			throw new TypeError('The specified resource is not valid.');
+		}
 		this._resource = resource;
 		return this;
 	},
@@ -74,6 +104,9 @@ namespace.Executer = new Class({
 	},
 
 	setConfigurations: function(configurations){
+		if (!Type.isObject(configurations)) {
+			throw new TypeError('The specified configurations is not valid.');
+		}
 		this._configurations = configurations;
 		return this;
 	},
@@ -100,7 +133,7 @@ namespace.Executer = new Class({
 	_setResultStatus: function(type){
 		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
 		if (!status.contains(type)) {
-			throw new TypeError('invalid status');
+			throw new TypeError('The specified status is not valid.');
 		}
 		this._status = type;
 	},
@@ -129,16 +162,31 @@ namespace.Executer = new Class({
 		return this._completed;
 	},
 
-	_progress: function(bootstrapperKey){
+	_notifyBootstrap: function(type, key){
+		var args = [],
+			completed = 0,
+			module = this.getModule(),
+			handler = null;
 
-		var completed = this.getCompletedCount();
-		var total = this.getModule().getLength();
-		var args = [ bootstrapperKey, completed, total ];
+		handler = module.getBootstrapper(key);
+		completed = this.getCompletedCount() + 1;
 
-		this.fireEvent('progress', args);
+		args = [
+			key,
+			handler.getTitle(),
+			completed,
+			module.getLength()
+		];
+		this.fireEvent(type, args);
+	},
 
-		this._completed++;
-		if (completed >= total - 1) {
+	_beforeBootstrap: function(key){
+		this._notifyBootstrap('beforeBootstrap', key);
+	},
+
+	_afterBootstrap: function(key){
+		this._notifyBootstrap('afterBootstrap', key);
+		if (this.getCompletedCount() >= this.getModule().getLength() - 1) {
 			if (this.isFailured()) {
 				return;
 			}
@@ -147,9 +195,13 @@ namespace.Executer = new Class({
 			this.fireEvent('success');
 			return;
 		}
+		this._completed++;
 	},
 
 	execute: function(resource){
+		var module = this.getModule(),
+			bootstrappers = {};
+
 		if (this.isCompleted()){
 			return;
 		}
@@ -159,8 +211,7 @@ namespace.Executer = new Class({
 		}
 
 		if (resource){
-			var module = this.getModule();
-			var bootstrappers = module.getBootstrappers();
+			bootstrappers = module.getBootstrappers();
 			Object.each(bootstrappers, function(bootstrapper, key){
 				bootstrapper.setResource(resource);
 			});

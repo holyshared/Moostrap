@@ -26,19 +26,21 @@ provides:
 
 (function(){
 
-
 var Bootstrap = this.Bootstrap = function(executer, module, options){
 
 	var executerType = executer.capitalize();
+		executerClass = null;
+		instance = null;
+
 	if (!Bootstrap.Executer[executerType]){
 		throw new Error(executerType + 'is not found');
 	}
-	var executerClass = Bootstrap.Executer[executerType];
-	var executer = new executerClass(options);
+	executerClass = Bootstrap.Executer[executerType];
 
-	executer.setModule(module).init();
+	instance = new executerClass(options);
+	instance.setModule(module).init();
 
-	return executer;
+	return instance;
 
 };
 
@@ -116,6 +118,8 @@ Bootstrap.Module = new Class({
 
 });
 
+new Type('BootstrapModule', Bootstrap.Module);
+
 
 Bootstrap.Executer = {};
 
@@ -140,15 +144,22 @@ Bootstrap.Bootstrapper = new Class({
 	},
 
 	_prepare: function(options){
-		var that = this;
+		var bootstrapper = this;
+			method = null,
+            setter = null,
+			handler = null;
+
 		['title', 'resource', 'configuration', 'handler'].each(function(key){
 			if (!options[key]){
 				return;
 			}
-            var method = key.capitalize();
-            var setter = 'set' + method;
-			var handler = that[setter];
-            handler.call(that, options[key]);
+
+			method = key.capitalize();
+            setter = 'set' + method;
+
+			handler = bootstrapper[setter];
+            handler.call(bootstrapper, options[key]);
+
             delete options[key];
 		});
 		return options;
@@ -258,6 +269,6 @@ Bootstrap.Bootstrapper = new Class({
 
 });
 
-var BootstrapperType = new Type('Bootstrapper', Bootstrap.Bootstrapper);
+new Type('Bootstrapper', Bootstrap.Bootstrapper);
 
 }());

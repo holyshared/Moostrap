@@ -5,7 +5,7 @@ var StrategyMock = this.StrategyMock = new Class({
 	Extends: Executer.Executer,
 
 	onSuccess: function(key){
-		this._progress(key);
+		this._afterBootstrap(key);
 	},
 
     bootstrap: function(){
@@ -18,6 +18,7 @@ var StrategyMock = this.StrategyMock = new Class({
             };
             bootstrap.setResource(this.getResource());
             bootstrap.addEvents(events);
+			this._beforeBootstrap(key);
             bootstrap.execute();
         }, this);
 

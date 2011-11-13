@@ -23,52 +23,52 @@ namespace.Sync = new Class({
 
 	Extends: namespace.Executer,
 
-	init: function(){
-		var that = this;
-		var module = this.getModule();
-		var bootstrappers = module.getBootstrappers();
-		if (that.getResource()) {
-			Object.each(bootstrappers, function(bootstrapper, key){
-				bootstrapper.setResource(that.getResource());
-			});
-		}
-		Object.each(bootstrappers, function(bootstrapper, key){
-			this._setupBootstrapper(key, bootstrapper);
-		}, this);
-	},
-
 	bootstrap: function(){
-		var module = this.getModule();
-		var executeOrder = this.getExecuteOrder();
-		var bootstrapperKey = executeOrder.current();
-		var bootstrapper = module.getBootstrapper(bootstrapperKey);
-		bootstrapper.execute();
+		var key = null,
+			handler = null,
+			module = this.getModule(),
+			executeOrder = this.getExecuteOrder();
+
+		key = executeOrder.current();
+		handler = module.getBootstrapper(key);
+
+		this._beforeBootstrap(key);
+		handler.execute();
 	},
 
 	_setupBootstrapper: function(key, bootstrapper){
-		var args = [key];
-		var events = {
+		var args = [key],
+			events = {},
+			configuration = null;
+
+		Object.append(events, {
 			success: this.onSuccess.bind(this, args),
 			failure: this.onFailure.bind(this, args)
-		};
-		var options = this.getConfiguration(key) || {};
-		bootstrapper.setConfiguration(options)
+		});
+
+		configuration = this.getConfiguration(key) || {};
+
+		bootstrapper.setConfiguration(configuration)
 			.addEvents(events);
 	},
 
 	_nextBoostrap: function(){
-		var module = this.getModule();
-		var executeOrder = this.getExecuteOrder();
+		var key = null,
+			handler = null,
+			module = this.getModule(),
+			executeOrder = this.getExecuteOrder();
+
 		executeOrder.next();
 		if (executeOrder.hasNext()){
-			var bootstrapperKey = executeOrder.current();
-			var bootstrapper = module.getBootstrapper(bootstrapperKey);
-			bootstrapper.execute();
+			key = executeOrder.current();
+			this._beforeBootstrap(key);
+			handler = module.getBootstrapper(key);
+			handler.execute();
 		}
 	},
 
-	onSuccess: function(bootstrapperKey){
-		this._progress(bootstrapperKey);
+	onSuccess: function(key){
+		this._afterBootstrap(key);
 		this._nextBoostrap();
 	}
 
