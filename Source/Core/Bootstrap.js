@@ -31,7 +31,7 @@ var Bootstrap = this.Bootstrap = function(executer, module, options){
 
 	var executerType = executer.capitalize();
 	if (!Bootstrap.Executer[executerType]){
-		throw new Error('not found excuter');
+		throw new Error(executerType + 'is not found');
 	}
 	var executerClass = Bootstrap.Executer[executerType];
 	var executer = new executerClass(options);
@@ -127,7 +127,7 @@ Bootstrap.Bootstrapper = new Class({
 
 	Implements: [Events, Options],
 
-	_name: null,
+	_title: null,
 	_resource: null,
 	_configuration: null,
 	_handler: null,
@@ -141,7 +141,7 @@ Bootstrap.Bootstrapper = new Class({
 
 	_prepare: function(options){
 		var that = this;
-		['name', 'resource', 'configuration', 'handler'].each(function(key){
+		['title', 'resource', 'configuration', 'handler'].each(function(key){
 			if (!options[key]){
 				return;
 			}
@@ -166,17 +166,20 @@ Bootstrap.Bootstrapper = new Class({
 		this.fireEvent('failure');
 	},
 
-	setName: function(name){
-		this._name = name;
+	setTitle: function(title){
+		if (!Type.isString(title)){
+			throw new TypeError('The specified title is not valid.');
+		}
+		this._title = title;
 	},
 
-	getName: function(){
-		return this._name;
+	getTitle: function(){
+		return this._title;
 	},
 
 	setResource: function(resource){
 		if (!Type.isObject(resource)){
-			throw new TypeError('invalid resurce');
+			throw new TypeError('The specified resource is not valid.');
 		}
 		this._resource = resource;
 		return this;
@@ -192,9 +195,8 @@ Bootstrap.Bootstrapper = new Class({
 
 	setConfiguration: function(value){
 		if (!value){
-			throw new TypeError('invalid resurce');
+			throw new TypeError('The specified configuration is not valid.');
 		}
-
 		switch(typeOf(value)){
 			case 'object':
 				this._configuration = Object.merge(this._configuration || {}, value);
@@ -213,13 +215,16 @@ Bootstrap.Bootstrapper = new Class({
 	},
 
 	setHandler: function(handler){
+		if (!Type.isFunction(handler)){
+			throw new TypeError('The specified value is not function');
+		}
 		this._handler = handler;
 	},
 
 	_setResultStatus: function(type){
 		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
 		if (!status.contains(type)) {
-			throw new TypeError('invalid status');
+			throw new TypeError('The specified status is not valid.');
 		}
 		this._status = type;
 	},

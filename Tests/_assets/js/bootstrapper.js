@@ -5,6 +5,19 @@
 		var testcases = [];
 
 		testcases.push({
+			title: 'setTitle/getTitle',
+			description : 'setTitle/getTitle testcase.',
+			fn: function(){
+				var bootstrap1 = new Bootstrap.Bootstrapper({
+					title: 'title1',
+					handler: function(resource, options){}
+				});
+				log( (bootstrap1.getTitle() == 'title1') ? 'assert OK.' : 'title setter/getter NG.' );
+			}
+		});
+
+
+		testcases.push({
 			
 			title: 'setResource/getResource',
 			description : 'setResource/getResource testcase.',
