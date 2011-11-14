@@ -15,8 +15,11 @@
 
 		messages: {
 			boot: 'Application is initialized......',
-			progress: function(process, index, total){
-				return index + '/' + total + ' ' + ' - Initialization of ' + process + ' was completed.';
+			beforeBootstrap: function(key, title, index, total){
+				return index + '/' + total + ' ' + ' - Initialization of ' + key + ' was started.';
+			},
+			afterBootstrap: function(key, title, index, total){
+				return index + '/' + total + ' ' + ' - Initialization of ' + key + ' was completed.';
 			},
 			start: 'Initialization of application was completed.',
 			abort: 'Initialization of application went wrong.'
@@ -36,15 +39,13 @@
 
 		run: function(){
 
-            var bootstrapper = new Bootstrap({
-            	strategy: this.strategy,
-                module: this.module,
+            var bootstrapper = new Bootstrap(this.strategy, this.module, {
 				onStart: this.boot,
-				onProgress: this.progress,
+				onBeforeBootstrap: this.beforeBootstrap,
+				onAfterBootstrap: this.afterBootstrap,
 				onSuccess: this.start,
             	onFailture: this.abort
 			});
-
 			bootstrapper.execute(this);
 
 		},
