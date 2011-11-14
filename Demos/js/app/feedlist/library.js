@@ -39,7 +39,7 @@ Object.append(FeedProcessCreater, {
 
 	createAPIProcess: function(version){
 		var process = {
-			options: {
+			configuration: {
 				key: 'ABQIAAAA4_PHVZvjtJ3LjA7Nc-VYfxSl-lcegfuTtJRuZv_Q2Txf9JNAxhQ3jgWCcIrtkHE6yf0JWpdlIz5uVg',
 				version: version
 			},
@@ -59,7 +59,7 @@ Object.append(FeedProcessCreater, {
 
 	createLoadProcess: function(options){
 		var process = {
-			options: {
+			configuration: {
 				id: options.id,
 				url: options.url
 			},
@@ -91,7 +91,7 @@ Object.append(FeedProcessCreater, {
 
 	createDummyProcess: function(){
 		var process = {
-			options: {},
+			configuration: {},
 			handler: function(app, options){
 				var that = this;
 				that.success();

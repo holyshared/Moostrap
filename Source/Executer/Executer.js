@@ -164,17 +164,16 @@ namespace.Executer = new Class({
 
 	_notifyBootstrap: function(type, key){
 		var args = [],
-			completed = 0,
+			order = this.getExecuteOrder(),
 			module = this.getModule(),
 			handler = null;
 
 		handler = module.getBootstrapper(key);
-		completed = this.getCompletedCount() + 1;
 
 		args = [
 			key,
 			handler.getTitle(),
-			completed,
+			order.index() + 1,
 			module.getLength()
 		];
 		this.fireEvent(type, args);

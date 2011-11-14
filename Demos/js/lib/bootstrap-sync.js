@@ -2,7 +2,7 @@
 ---
 name: Bootstrap
 
-description: 
+description: The core module of Bootstrap
 
 license: MIT-style
 
@@ -19,78 +19,109 @@ requires:
 provides:
   - Bootstrap
   - Bootstrap.Bootstrapper
-  - Bootstrap.Bootstrappers
   - Bootstrap.Module
-  - Bootstrap.Strategy
+  - Bootstrap.Executer
 ...
 */
 
 (function(){
 
-var Bootstrap = this.Bootstrap = function(opts){
+var Bootstrap = this.Bootstrap = function(executer, module, options){
 
-	var type, strategy, strategyKey, bootstrappers;
-	var optionalOptions = ['resource', 'configurations', 'onStart', 'onProgress', 'onComplete', 'onSuccess', 'onFailure'];
-	
+	var executerType = executer.capitalize();
+		executerClass = null;
+		instance = null;
 
-	type = (opts.strategy) ? opts.strategy : 'async';
-	strategyKey = type.capitalize(); 
-	if (!Bootstrap.Strategy[strategyKey]) {
-		throw new Error(strategyKey + ' is not found');
+	if (!Bootstrap.Executer[executerType]){
+		throw new Error(executerType + 'is not found');
 	}
-	strategy = Bootstrap.Strategy[strategyKey];
+	executerClass = Bootstrap.Executer[executerType];
 
-	if (!opts.module) {
-		throw new Error('module is not found');
-	}
-	bootstrappers = opts.module.getContainer();
+	instance = new executerClass(options);
+	instance.setModule(module).init();
 
-	var optionals = Object.subset(opts, optionalOptions);
-	var strategyOptions = Object.merge({
-		'strategy': strategy,
-		'bootstrappers': bootstrappers
-	}, optionals);
-
-	var boot = new strategy(strategyOptions);
-	boot.init();
-	return boot;
+	return instance;
 
 };
 
 Bootstrap.Module = new Class({
 
-	initialize: function(){
-		this._collection = new Bootstrap.Bootstrappers();
-	},
+	_executeOrder: [],
+	_bootstrappers: {},
 
-	register: function(name, options){
-		var bootstrapper = new Bootstrap.Bootstrapper(options);
-		this._collection.addItem(name, bootstrapper);
-	},
-
-	unregister: function(name){
-		this._collection.removeItem(name);
-	},
-
-	isRegistered: function(name){
-		return this._collection.hasItem(name);
-	},
-
-	getContainer: function(){
-		return this._collection;
-	},
-
-	setContainer: function(collection){
-		if (!Type.isBootstrappers()) {
-			throw new TypeError('invalid container');
+	register: function(key, options){
+		if (this.isRegistered(key) === true){
+			throw new Error(key + ' is already registered');
 		}
-		this._collection = collection;
+		var bootstrapper = new Bootstrap.Bootstrapper(options);
+		this._bootstrappers[key] = bootstrapper;
+		this._executeOrder.push(key);
+		return this;
+	},
+
+	unregister: function(key){
+		if (this.isRegistered(key) === false){
+			throw new Error(key + ' is not registered');
+		}
+		delete this._bootstrappers[key];
+		this._executeOrder.erase(key);
+		return this;
+	},
+
+	isRegistered: function(key){
+		if (!this._bootstrappers[key]){
+			return false;
+		}
+		return true;
+	},
+
+	getBootstrapper: function(key){
+		if (this.isRegistered(key) === false){
+			throw new Error(key + ' is not registered');
+		}
+		return this._bootstrappers[key];
+	},
+
+	getBootstrappers: function(){
+		return this._bootstrappers;
+	},
+
+	getLength: function(){
+		return this._executeOrder.length;
+	},
+
+	getRegisteredKeys: function(){
+		var iterator = {
+			_cursor: 0,
+			_collection: this._executeOrder,
+			hasNext: function(){
+				return (this._collection.length - 1 >= this._cursor);
+			},
+			current: function(){
+				return this._collection[this._cursor];
+			},
+			next: function(){
+		        if (this.hasNext() === false){
+					return;
+		        }
+				this._cursor++;
+			},
+			index: function(){
+				return this._cursor;
+			},
+			length: function(){
+				return this._collection.length;
+			}
+		};
+		return iterator;
 	}
 
 });
 
+new Type('BootstrapModule', Bootstrap.Module);
 
-Bootstrap.Strategy = {};
+
+Bootstrap.Executer = {};
 
 Bootstrap.NONE = 0;
 Bootstrap.SUCCESS = 1;
@@ -98,19 +129,40 @@ Bootstrap.FAILURE = 2;
 
 Bootstrap.Bootstrapper = new Class({
 
+	Implements: [Events, Options],
+
+	_title: null,
+	_resource: null,
+	_configuration: null,
+	_handler: null,
+
 	_status: null,
 	_started: false,
 
 	initialize: function(options){
-		var props = { resource: null, options: null, handler: null };
-		var opts = Object.merge(props, options);
-		for (var key in opts){
-			var name = '_' + key;
-			if (opts[key]){
-				this[name] = opts[key];
+		this.setOptions(this._prepare(options));
+	},
+
+	_prepare: function(options){
+		var bootstrapper = this;
+			method = null,
+            setter = null,
+			handler = null;
+
+		['title', 'resource', 'configuration', 'handler'].each(function(key){
+			if (!options[key]){
+				return;
 			}
-			delete opts[key];
-		}
+
+			method = key.capitalize();
+            setter = 'set' + method;
+
+			handler = bootstrapper[setter];
+            handler.call(bootstrapper, options[key]);
+
+            delete options[key];
+		});
+		return options;
 	},
 
 	success: function(){
@@ -125,18 +177,65 @@ Bootstrap.Bootstrapper = new Class({
 		this.fireEvent('failure');
 	},
 
+	setTitle: function(title){
+		if (!Type.isString(title)){
+			throw new TypeError('The specified title is not valid.');
+		}
+		this._title = title;
+	},
+
+	getTitle: function(){
+		return this._title;
+	},
+
+	setResource: function(resource){
+		if (!Type.isObject(resource)){
+			throw new TypeError('The specified resource is not valid.');
+		}
+		this._resource = resource;
+		return this;
+	},
+
 	getResource: function(){
 		return this._resource;
 	},
 
-	getOptions: function(){
-		return this._options;
+	getConfiguration: function(){
+		return this._configuration;
+	},
+
+	setConfiguration: function(value){
+		if (!value){
+			throw new TypeError('The specified configuration is not valid.');
+		}
+		switch(typeOf(value)){
+			case 'object':
+				this._configuration = Object.merge(this._configuration || {}, value);
+				break;
+			case 'array':
+				if (!this._configuration){
+					this._configuration = [];
+				}
+				this._configuration.combine(value);
+				break;
+			default:
+				this._configuration = value;
+				break;
+		}
+		return this;
+	},
+
+	setHandler: function(handler){
+		if (!Type.isFunction(handler)){
+			throw new TypeError('The specified value is not function');
+		}
+		this._handler = handler;
 	},
 
 	_setResultStatus: function(type){
 		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
 		if (!status.contains(type)) {
-			throw new TypeError('invalid status');
+			throw new TypeError('The specified status is not valid.');
 		}
 		this._status = type;
 	},
@@ -159,171 +258,26 @@ Bootstrap.Bootstrapper = new Class({
 
 	isStarted: function(){
 		return this._started;
-	}
-
-});
-
-
-var BootstrapperType = new Type('Bootstrapper', Bootstrap.Bootstrapper);
-BootstrapperType.mirror(function(name){
-
-	var hooks = {};
-
-	hooks[name] = function(){
-		var args = arguments;
-		var items = this.getItems();
-		var results = [];
-		Object.each(items, function(item, key){
-			var result = item[name].apply(item, args);
-			if ((typeOf(result) != 'bootstrapper')) {
-				results.push(result);
-			}
-		});
-		return (results.length > 0 ) ? results : this;
-	};
-
-	Bootstrap.Bootstrappers.implement(hooks);
-
-});
-
-
-Bootstrap.Bootstrappers = new Class({
-
-	_cursor: 0,
-	_keys: [],
-	_bootstrappers: {},
-
-	getLength: function(){
-		return this._keys.length;
-	},
-
-	getKeys: function(){
-		return this._keys;
-	},
-
-	getItem: function(key){
-		if (!this.hasItem(key)){
-			throw new Error('not found key'); 
-		}
-		return this._bootstrappers[key];
-	},
-
-	getItems: function(){
-		var collection = {};
-		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
-		keys.each(function(key, index){
-			collection[key] = this.getItem(key);
-		}, this);
-		return collection;
-	},
-
-	hasItem: function(key){
-		return this._keys.contains(key);
-	},
-
-	addItem: function(key, bootstrap){
-		if (!Type.isBootstrapper(bootstrap)){ 
-			throw new TypeError('invalid bootstrap.');
-		}
-		this._keys.push(key);
-		this._bootstrappers[key] = bootstrap;
-		return this;
-	},
-
-	addItems: function(bootstrappers){
-		if (!Type.isObject(bootstrappers)) {
-			throw new TypeError('invalid bootstrappers.');
-		}
-		Object.each(bootstrappers, function(bootstrap, key){
-			this.addItem(key, bootstrap);
-		}, this);
-		return this;
-	},
-
-	removeItem: function(key){
-		if (!this.hasItem(key)){
-			throw new Error('not found key'); 
-		}
-		this._keys.erase(key);
-		delete this._bootstrappers[key];
-		return this;
-	},
-
-	removeItems: function(){
-		var keys = (arguments.length > 0) ? Array.from(arguments) : this._keys;
-		keys.each(function(key, index){
-			this.removeItem(key);
-		}, this);
-		return this;
-	},
-
-	hasNext: function(){
-		var length = this._keys.length - 1;
-		return (length >= this._cursor + 1) ? true : false;
-	},
-
-	next: function(){
-		if (!this.hasNext()){
-			return;
-		}
-		var key = this._keys[++this._cursor];
-		return this._bootstrappers[key];
-	},
-
-	current: function(){
-		var key = this._keys[this._cursor];
-		return this._bootstrappers[key];
-	},
-
-	rewind: function(){
-		this._cursor = 0;
-	},
-
-	each: function(handler, target){
-		var args = [this._bootstrappers].append(Array.from(arguments));
-		Object.each.apply(Object, args);
-	}
-
-});
-
-var BootstrappersType = new Type('Bootstrappers', Bootstrap.Bootstrappers);
-
-Bootstrap.Bootstrapper.implement({
-
-	setResource: function(resource){
-		if (!Type.isObject(resource)){
-			throw new TypeError('invalid resurce');
-		}
-		this._resource = resource;
-		return this;
-	},
-
-	setOptions: function(values){
-		if (!Type.isObject(values)){
-			throw new TypeError('invalid resurce');
-		}
-		this._options = Object.merge(this._options || {}, values);
-		return this;
 	},
 
 	execute: function(){
 		this._started = true;
 		this.fireEvent('start');
 
-		this._handler.call(this, this.getResource(), this.getOptions());
+		this._handler.call(this, this.getResource(), this.getConfiguration());
 	}
 
 });
 
-Bootstrap.Bootstrapper.implement(new Events());
+new Type('Bootstrapper', Bootstrap.Bootstrapper);
 
 }());
 
 /*
 ---
-name: Bootstrap.Strategy.Executer
+name: Bootstrap.Executer.Executer
 
-description: 
+description: The core class which performs an initialization module
 
 license: MIT-style
 
@@ -331,60 +285,103 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.Bootstrappers
-  - Bootstrap.Strategy
+  - Bootstrap.Module
+  - Bootstrap.Executer
 
 provides:
-  - Bootstrap.Strategy.Executer
+  - Bootstrap.Executer.Executer
 ...
 */
 
-(function(StrategyNamespace){
+(function(namespace){
 
-StrategyNamespace.Executer = new Class({
+namespace.Executer = new Class({
 
 	Implements: [Events, Options],
 
-	_counter: 0,
-	_bootstrappers: null,
+	/* properties */
+	_resource: null,
+	_module: null,
 	_configurations: {},
+
+	_completed: 0,
 	_started: false,
 	_status: Bootstrap.NONE,
 
 	initialize: function(options){
-		var setter;
-		for (var key in options){
-			setter = 'set' + key.capitalize();
-			if (this[setter]) {
-				this[setter].call(this, options[key]);
-				delete options[key];
-			}
-		}
-		this.setOptions(options);
+		this.setOptions(this._prepare(options));
 	},
 
-	setBootstrappers: function(bootstrappers){
-		if (!Type.isBootstrappers(bootstrappers)){
-			throw new TypeError('invalid bootstrappers');
+	_prepare: function(options){
+		var executer = this,
+			method = '',
+			setter = '',
+			handler = null;
+
+		if (!options) {
+			return;
 		}
-		this._bootstrappers = bootstrappers;
+
+		['resource', 'configurations', 'module'].each(function(key){
+			if (!options[key]){
+				return;
+			}
+            method = key.capitalize();
+            setter = 'set' + method;
+
+			handler = executer[setter];
+            handler.call(executer, options[key]);
+
+            delete options[key];
+		});
+		return options;
+	},
+
+	init: function(){
+		var model = this,
+			module = this.getModule(),
+			bootstrappers = null;
+
+		bootstrappers = module.getBootstrappers();
+
+		if (model.getResource()) {
+			Object.each(bootstrappers, function(bootstrapper, key){
+				bootstrapper.setResource(model.getResource());
+			});
+		}
+		Object.each(bootstrappers, function(bootstrapper, key){
+			model._setupBootstrapper(key, bootstrapper);
+		});
+	},
+
+	setModule: function(module){
+		if (!Type.isBootstrapModule(module)) {
+			throw new TypeError('The specified module is not valid.');
+		}
+		this._module = module;
 		return this;
 	},
 
-	getBootstrappers: function(){
-		return this._bootstrappers;
+	getModule: function(){
+		return this._module;
 	},
 
 	setResource: function(resource){
-		this.resource = resource;
+		if (!Type.isObject(resource)) {
+			throw new TypeError('The specified resource is not valid.');
+		}
+		this._resource = resource;
 		return this;
 	},
 
 	getResource: function(){
-		return this.resource;
+		return this._resource;
 	},
 
 	setConfigurations: function(configurations){
+		if (!Type.isObject(configurations)) {
+			throw new TypeError('The specified configurations is not valid.');
+		}
 		this._configurations = configurations;
 		return this;
 	},
@@ -400,25 +397,18 @@ StrategyNamespace.Executer = new Class({
 		return this._configurations[key];
 	},
 
-	getBootstrapper: function(key){
-		var bootstrappers = this.getBootstrappers();
-		return bootstrappers.getItem(key);
-	},
-
-	getBootstrapperKeys: function(){
-		var bootstrappers = this.getBootstrappers();
-		return bootstrappers.getKeys();
-	},
-
-	getLength: function(){
-		var bootstrappers = this.getBootstrappers();
-		return bootstrappers.getLength();
+	getExecuteOrder: function(){
+		if (this._executeOrder){
+			return this._executeOrder;
+		}
+		this._executeOrder = this.getModule().getRegisteredKeys();
+		return this._executeOrder;
 	},
 
 	_setResultStatus: function(type){
 		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
 		if (!status.contains(type)) {
-			throw new TypeError('invalid status');
+			throw new TypeError('The specified status is not valid.');
 		}
 		this._status = type;
 	},
@@ -443,15 +433,34 @@ StrategyNamespace.Executer = new Class({
 		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
 	},
 
-	_progress: function(bootstrapperName){
-		var args = [
-			bootstrapperName,
-			this._counter + 1,
-			this.getLength()
-		];
-		this.fireEvent('progress', args);
+	getCompletedCount: function(){
+		return this._completed;
+	},
 
-		if (this._counter++ >= this.getLength() - 1) {
+	_notifyBootstrap: function(type, key){
+		var args = [],
+			order = this.getExecuteOrder(),
+			module = this.getModule(),
+			handler = null;
+
+		handler = module.getBootstrapper(key);
+
+		args = [
+			key,
+			handler.getTitle(),
+			order.index() + 1,
+			module.getLength()
+		];
+		this.fireEvent(type, args);
+	},
+
+	_beforeBootstrap: function(key){
+		this._notifyBootstrap('beforeBootstrap', key);
+	},
+
+	_afterBootstrap: function(key){
+		this._notifyBootstrap('afterBootstrap', key);
+		if (this.getCompletedCount() >= this.getModule().getLength() - 1) {
 			if (this.isFailured()) {
 				return;
 			}
@@ -460,9 +469,13 @@ StrategyNamespace.Executer = new Class({
 			this.fireEvent('success');
 			return;
 		}
+		this._completed++;
 	},
 
 	execute: function(resource){
+		var module = this.getModule(),
+			bootstrappers = {};
+
 		if (this.isCompleted()){
 			return;
 		}
@@ -472,10 +485,12 @@ StrategyNamespace.Executer = new Class({
 		}
 
 		if (resource){
+			bootstrappers = module.getBootstrappers();
+			Object.each(bootstrappers, function(bootstrapper, key){
+				bootstrapper.setResource(resource);
+			});
 			this.setResource(resource);
-			this.getBootstrappers().setResource(resource);
 		}
-
 		this.fireEvent('start');
 		this.bootstrap();
 	},
@@ -492,13 +507,13 @@ StrategyNamespace.Executer = new Class({
 
 });
 
-}(Bootstrap.Strategy));
+}(Bootstrap.Executer));
 
 /*
 ---
-name: Bootstrap.Strategy.Sync
+name: Bootstrap.Executer.Sync
 
-description: 
+description: The execution module which carries out synchronous execution of the initialization module
 
 license: MIT-style
 
@@ -506,61 +521,68 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.Strategy.Executer
+  - Bootstrap.Executer.Executer
 
 provides:
-  - Bootstrap.Strategy.Sync
+  - Bootstrap.Executer.Sync
 ...
 */
 
-(function(StrategyNamespace){
+(function(namespace){
 
-StrategyNamespace.Sync = new Class({
+namespace.Sync = new Class({
 
-	Extends: StrategyNamespace.Executer,
-
-	init: function(){
-		var collection = this.getBootstrappers();
-		if (this.getResource()) {
-			collection.setResource(this.getResource());
-		}
-
-		collection.each(function(bootstrapper, key){
-			this._setupBootstrapper(key, bootstrapper);
-		}, this);
-	},
+	Extends: namespace.Executer,
 
 	bootstrap: function(){
-		var collection = this.getBootstrappers();
-		var bootstrapper = collection.current();
-		bootstrapper.execute();
+		var key = null,
+			handler = null,
+			module = this.getModule(),
+			executeOrder = this.getExecuteOrder();
+
+		key = executeOrder.current();
+		handler = module.getBootstrapper(key);
+
+		this._beforeBootstrap(key);
+		handler.execute();
 	},
 
 	_setupBootstrapper: function(key, bootstrapper){
-		var args = [key];
-		var events = {
+		var args = [key],
+			events = {},
+			configuration = null;
+
+		Object.append(events, {
 			success: this.onSuccess.bind(this, args),
 			failure: this.onFailure.bind(this, args)
-		};
-		var options = this.getConfiguration(key) || {};
-		bootstrapper.setOptions(options)
+		});
+
+		configuration = this.getConfiguration(key) || {};
+
+		bootstrapper.setConfiguration(configuration)
 			.addEvents(events);
 	},
 
 	_nextBoostrap: function(){
-		var collection = this.getBootstrappers();
-		if (collection.hasNext()){
-			var bootstrapper = collection.next();
-			bootstrapper.execute();
+		var key = null,
+			handler = null,
+			module = this.getModule(),
+			executeOrder = this.getExecuteOrder();
+
+		executeOrder.next();
+		if (executeOrder.hasNext()){
+			key = executeOrder.current();
+			this._beforeBootstrap(key);
+			handler = module.getBootstrapper(key);
+			handler.execute();
 		}
 	},
 
 	onSuccess: function(key){
-		this._progress(key);
+		this._afterBootstrap(key);
 		this._nextBoostrap();
 	}
 
 });
 
-}(Bootstrap.Strategy));
-
+}(Bootstrap.Executer));

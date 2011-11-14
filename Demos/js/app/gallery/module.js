@@ -13,7 +13,7 @@ for (var key in conditions) {
 
 	Bootstrapper.register(key, {
 
-		options: {
+		configuration: {
 			key: key,
 			text: defaultKeyword
 		},
@@ -26,7 +26,7 @@ for (var key in conditions) {
 					container.register(options.key, images);
 					that.success();
 				},
-				failure: function(){
+				failure: function(error){
 					that.failure();
 				}
 			});
