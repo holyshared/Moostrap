@@ -1,8 +1,8 @@
 /*
 ---
-name: Bootstrap
+name: Moostrap
 
-description: The core module of Bootstrap
+description: The core module of Moostrap
 
 license: MIT-style
 
@@ -17,25 +17,25 @@ requires:
   - Core/Events
 
 provides:
-  - Bootstrap
-  - Bootstrap.Bootstrapper
-  - Bootstrap.Module
-  - Bootstrap.Executer
+  - Moostrap
+  - Moostrap.Bootstrapper
+  - Moostrap.Module
+  - Moostrap.Executer
 ...
 */
 
 (function(){
 
-var Bootstrap = this.Bootstrap = function(executer, module, options){
+var Moostrap = this.Moostrap = function(executer, module, options){
 
 	var executerType = executer.capitalize();
 		executerClass = null;
 		instance = null;
 
-	if (!Bootstrap.Executer[executerType]){
+	if (!Moostrap.Executer[executerType]){
 		throw new Error(executerType + 'is not found');
 	}
-	executerClass = Bootstrap.Executer[executerType];
+	executerClass = Moostrap.Executer[executerType];
 
 	instance = new executerClass(options);
 	instance.setModule(module).init();
@@ -44,7 +44,7 @@ var Bootstrap = this.Bootstrap = function(executer, module, options){
 
 };
 
-Bootstrap.Module = new Class({
+Moostrap.Module = new Class({
 
 	_executeOrder: [],
 	_bootstrappers: {},
@@ -53,7 +53,7 @@ Bootstrap.Module = new Class({
 		if (this.isRegistered(key) === true){
 			throw new Error(key + ' is already registered');
 		}
-		var bootstrapper = new Bootstrap.Bootstrapper(options);
+		var bootstrapper = new Moostrap.Bootstrapper(options);
 		this._bootstrappers[key] = bootstrapper;
 		this._executeOrder.push(key);
 		return this;
@@ -118,16 +118,16 @@ Bootstrap.Module = new Class({
 
 });
 
-new Type('BootstrapModule', Bootstrap.Module);
+new Type('BootstrapModule', Moostrap.Module);
 
 
-Bootstrap.Executer = {};
+Moostrap.Executer = {};
 
-Bootstrap.NONE = 0;
-Bootstrap.SUCCESS = 1;
-Bootstrap.FAILURE = 2;
+Moostrap.NONE = 0;
+Moostrap.SUCCESS = 1;
+Moostrap.FAILURE = 2;
 
-Bootstrap.Bootstrapper = new Class({
+Moostrap.Bootstrapper = new Class({
 
 	Implements: [Events, Options],
 
@@ -166,13 +166,13 @@ Bootstrap.Bootstrapper = new Class({
 	},
 
 	success: function(){
-		this._setResultStatus(Bootstrap.SUCCESS);
+		this._setResultStatus(Moostrap.SUCCESS);
 		this.fireEvent('complete');
 		this.fireEvent('success');
 	},
 
 	failure: function(){
-		this._setResultStatus(Bootstrap.FAILURE);
+		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
 		this.fireEvent('failure');
 	},
@@ -233,7 +233,7 @@ Bootstrap.Bootstrapper = new Class({
 	},
 
 	_setResultStatus: function(type){
-		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
+		var status = [Moostrap.NONE, Moostrap.SUCCESS, Moostrap.FAILURE];
 		if (!status.contains(type)) {
 			throw new TypeError('The specified status is not valid.');
 		}
@@ -245,15 +245,15 @@ Bootstrap.Bootstrapper = new Class({
 	},
 
 	isSuccessed: function(){
-		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
+		return (this.getResultStatus() == Moostrap.SUCCESS) ? true : false;
 	},
 
 	isFailured: function(){
-		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
+		return (this.getResultStatus() == Moostrap.FAILURE) ? true : false;
 	},
 
 	isCompleted: function(){
-		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
+		return (this.getResultStatus() != Moostrap.NONE) ? true : false;
 	},
 
 	isStarted: function(){
@@ -269,6 +269,6 @@ Bootstrap.Bootstrapper = new Class({
 
 });
 
-new Type('Bootstrapper', Bootstrap.Bootstrapper);
+new Type('Bootstrapper', Moostrap.Bootstrapper);
 
 }());

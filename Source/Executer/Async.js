@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.Executer.Async
+name: Moostrap.Executer.Async
 
 description: The execution module which carries out asynchronous execution of the initialization module
 
@@ -10,10 +10,10 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.Executer.Executer
+  - Moostrap.Executer.Executer
 
 provides:
-  - Bootstrap.Executer.Async
+  - Moostrap.Executer.Async
 ...
 */
 
@@ -66,4 +66,4 @@ namespace.Async = new Class({
 
 });
 
-}(Bootstrap.Executer));
+}(Moostrap.Executer));

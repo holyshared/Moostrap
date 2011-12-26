@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.Executer.Sync
+name: Moostrap.Executer.Sync
 
 description: The execution module which carries out synchronous execution of the initialization module
 
@@ -10,10 +10,10 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.Executer.Executer
+  - Moostrap.Executer.Executer
 
 provides:
-  - Bootstrap.Executer.Sync
+  - Moostrap.Executer.Sync
 ...
 */
 
@@ -75,4 +75,4 @@ namespace.Sync = new Class({
 
 });
 
-}(Bootstrap.Executer));
+}(Moostrap.Executer));

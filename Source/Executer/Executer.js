@@ -1,6 +1,6 @@
 /*
 ---
-name: Bootstrap.Executer.Executer
+name: Moostrap.Executer.Executer
 
 description: The core class which performs an initialization module
 
@@ -10,11 +10,11 @@ authors:
 - Noritaka Horio
 
 requires:
-  - Bootstrap.Module
-  - Bootstrap.Executer
+  - Moostrap.Module
+  - Moostrap.Executer
 
 provides:
-  - Bootstrap.Executer.Executer
+  - Moostrap.Executer.Executer
 ...
 */
 
@@ -31,7 +31,7 @@ namespace.Executer = new Class({
 
 	_completed: 0,
 	_started: false,
-	_status: Bootstrap.NONE,
+	_status: Moostrap.NONE,
 
 	initialize: function(options){
 		this.setOptions(this._prepare(options));
@@ -131,7 +131,7 @@ namespace.Executer = new Class({
 	},
 
 	_setResultStatus: function(type){
-		var status = [Bootstrap.NONE, Bootstrap.SUCCESS, Bootstrap.FAILURE];
+		var status = [Moostrap.NONE, Moostrap.SUCCESS, Moostrap.FAILURE];
 		if (!status.contains(type)) {
 			throw new TypeError('The specified status is not valid.');
 		}
@@ -147,15 +147,15 @@ namespace.Executer = new Class({
 	},
 
 	isSuccessed: function(){
-		return (this.getResultStatus() == Bootstrap.SUCCESS) ? true : false;
+		return (this.getResultStatus() == Moostrap.SUCCESS) ? true : false;
 	},
 
 	isFailured: function(){
-		return (this.getResultStatus() == Bootstrap.FAILURE) ? true : false;
+		return (this.getResultStatus() == Moostrap.FAILURE) ? true : false;
 	},
 
 	isCompleted: function(){
-		return (this.getResultStatus() != Bootstrap.NONE) ? true : false;
+		return (this.getResultStatus() != Moostrap.NONE) ? true : false;
 	},
 
 	getCompletedCount: function(){
@@ -189,7 +189,7 @@ namespace.Executer = new Class({
 			if (this.isFailured()) {
 				return;
 			}
-			this._setResultStatus(Bootstrap.SUCCESS);
+			this._setResultStatus(Moostrap.SUCCESS);
 			this.fireEvent('complete');
 			this.fireEvent('success');
 			return;
@@ -225,11 +225,11 @@ namespace.Executer = new Class({
 	},
 
 	onFailure: function(key){
-		this._setResultStatus(Bootstrap.FAILURE);
+		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
 		this.fireEvent('failure');
 	}
 
 });
 
-}(Bootstrap.Executer));
+}(Moostrap.Executer));
