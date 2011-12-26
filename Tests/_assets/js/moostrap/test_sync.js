@@ -1,4 +1,4 @@
-(function(win, doc, Bootstrap, SuccessTestModule, FailureTestModule){
+(function(win, doc, Moostrap, SuccessTestModule, FailureTestModule){
 
 	win.addEventListener('load', function(){
 
@@ -7,11 +7,12 @@
 		testcases.push({
 
 			title: 'bootstrap - success',
-			description : 'bootstrap async testcase - success.',
+			description : 'bootstrap sync testcase - success.',
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Bootstrap('async', SuccessTestModule, {
+				var bootstrap = new Moostrap('sync', SuccessTestModule, {
+
 					configurations: {
 						proccessA: {
 							key1: 'key1-value',
@@ -51,11 +52,11 @@
 		testcases.push({
 
 			title: 'bootstrap - failture',
-			description : 'bootstrap async testcase - failture.',
+			description : 'bootstrap sync testcase - failture.',
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Bootstrap('async', FailureTestModule, {
+				var bootstrap = new Moostrap('sync', FailureTestModule, {
 
 					configurations: {
 						proccessA: {
@@ -76,6 +77,8 @@
 					onFailure: function(){
 						log('failure');
 
+						log( (resource.key1 == 'key1-value') ? 'resource.key1 OK' : 'resource.key1 NG' );
+						log( (resource.key2 == 'key2-value') ? 'resource.key2 OK' : 'resource.key2 NG' );
 						log( (!resource.key3) ? 'resource.key3 OK' : 'resource.key3 NG' );
 						log( (!resource.key4) ? 'resource.key4 OK' : 'resource.key4 NG' );
 					},
@@ -93,4 +96,4 @@
 
 	}, false);
 
-}(window, document, Bootstrap, SuccessTestModule, FailureTestModule));
+}(window, document, Moostrap, SuccessTestModule, FailureTestModule));

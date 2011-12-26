@@ -1,4 +1,4 @@
-(function(win, doc, Bootstrap, Executer){
+(function(win, doc, Moostrap, Executer){
 
 	win.addEventListener('load', function(){
 
@@ -46,4 +46,4 @@
 
 	}, false);
 
-}(window, document, Bootstrap, Bootstrap.Executer));
+}(window, document, Moostrap, Moostrap.Executer));

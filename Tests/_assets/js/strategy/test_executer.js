@@ -21,7 +21,7 @@
 			title: 'setModule/getModule',
 			description : 'setModule/getModule testcase.',
 			fn: function(){
-				var module = new Bootstrap.Module();
+				var module = new Moostrap.Module();
 
 				var mock = new StrategyMock();
 				mock.setModule(module);
@@ -41,7 +41,7 @@
 					after = 0,
 					complete = false;
 
-				var module = new Bootstrap.Module();
+				var module = new Moostrap.Module();
 				module.register('item1', {
 					title: 'item1 - title',
 					handler: function(){
@@ -95,7 +95,7 @@
 
 				var resource = {};
 
-				var module = new Bootstrap.Module();
+				var module = new Moostrap.Module();
 				module.register('item1', {
 					handler: function(){
 						this.success();

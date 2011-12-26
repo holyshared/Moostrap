@@ -8,7 +8,7 @@
 			title: 'setTitle/getTitle',
 			description : 'setTitle/getTitle testcase.',
 			fn: function(){
-				var bootstrap1 = new Bootstrap.Bootstrapper({
+				var bootstrap1 = new Moostrap.Bootstrapper({
 					title: 'title1',
 					handler: function(resource, options){}
 				});
@@ -23,7 +23,7 @@
 			description : 'setResource/getResource testcase.',
 			fn: function(){
 
-				var bootstrap = new Bootstrap.Bootstrapper({
+				var bootstrap = new Moostrap.Bootstrapper({
 					configuration: {
 						name: 'foo',
 						value: 1
@@ -50,7 +50,7 @@
 			description : 'setConfiguration/getConfiguration testcase.',
 			fn: function(){
 
-				var bootstrap = new Bootstrap.Bootstrapper({
+				var bootstrap = new Moostrap.Bootstrapper({
 					configuration: {
 						name: 'foo',
 						value: 1
@@ -83,7 +83,7 @@
 
 				var mock = new Mock();
 
-				var bootstrap = new Bootstrap.Bootstrapper({
+				var bootstrap = new Moostrap.Bootstrapper({
 					configuration: {
 						name: 'foo',
 						value: 1
@@ -143,7 +143,7 @@
 
 				var mock = new Mock();
 
-				var bootstrap = new Bootstrap.Bootstrapper({
+				var bootstrap = new Moostrap.Bootstrapper({
 					configuration: {
 						name: 'foo',
 						value: 1

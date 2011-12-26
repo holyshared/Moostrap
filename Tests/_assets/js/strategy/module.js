@@ -58,4 +58,4 @@ TestModule.register('proccessB', {
 
 });
 
-}(window, document, new Bootstrap.Module()));
+}(window, document, new Moostrap.Module()));

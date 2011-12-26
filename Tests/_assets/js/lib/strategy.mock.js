@@ -26,4 +26,4 @@ var StrategyMock = this.StrategyMock = new Class({
 
 });
 
-}(Bootstrap.Executer));
+}(Moostrap.Executer));
