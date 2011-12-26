@@ -46,10 +46,11 @@ namespace.Sync = new Class({
 			failure: this.onFailure.bind(this, args)
 		});
 
-		configuration = this.getConfiguration(key) || {};
-
-		bootstrapper.setConfiguration(configuration)
-			.addEvents(events);
+		configuration = this.getConfiguration(key) || null;
+		if (configuration){
+			bootstrapper.setConfiguration(configuration);
+		}
+		bootstrapper.addEvents(events);
 	},
 
 	_nextBoostrap: function(){
