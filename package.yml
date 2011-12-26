@@ -1,8 +1,8 @@
-name: Bootstrap
+name: Moostrap
 
-web: "[http://holyshared.github.com/Bootstrap](http://holyshared.github.com/Bootstrap)"
+web: "[http://holyshared.github.com/Moostrap](http://holyshared.github.com/Moostrap)"
 
-description: 
+description: "Moostrap offers the initialization function of large-scale application from middle-scale."
 
 authors: "[Noritaka Horio](http://sharedhat.com)"
 
@@ -11,7 +11,7 @@ license: "[MIT License](http://sharedhat.com/mit-license.txt)"
 copyright: "&copy; [Noritaka Horio](http://sharedhat.com)"
 
 sources:
-  - Source/Core/Bootstrap.js
+  - Source/Core/Moostrap.js
   - Source/Executer/Executer.js
   - Source/Executer/Async.js
   - Source/Executer/Sync.js
@@ -22,8 +22,8 @@ category: Utilities
 
 tags: [bootstrap, setup]
 
-current: 1.0
+current: 1.1.1
 
 #docs: http://url_to_plugin_docs
 
-demo: http://holyshared.github.com/Bootstrap/
+demo: http://holyshared.github.com/Moostrap/
