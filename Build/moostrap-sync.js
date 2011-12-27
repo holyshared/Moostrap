@@ -101,9 +101,9 @@ Moostrap.Module = new Class({
 				return this._collection[this._cursor];
 			},
 			next: function(){
-		        if (this.hasNext() === false){
+				if (this.hasNext() === false){
 					return;
-		        }
+				}
 				this._cursor++;
 			},
 			index: function(){
@@ -146,7 +146,7 @@ Moostrap.Bootstrapper = new Class({
 	_prepare: function(options){
 		var bootstrapper = this;
 			method = null,
-            setter = null,
+			setter = null,
 			handler = null;
 
 		['title', 'resource', 'configuration', 'handler'].each(function(key){
@@ -155,12 +155,12 @@ Moostrap.Bootstrapper = new Class({
 			}
 
 			method = key.capitalize();
-            setter = 'set' + method;
+			setter = 'set' + method;
 
 			handler = bootstrapper[setter];
-            handler.call(bootstrapper, options[key]);
+			handler.call(bootstrapper, options[key]);
 
-            delete options[key];
+			delete options[key];
 		});
 		return options;
 	},
@@ -326,13 +326,13 @@ namespace.Executer = new Class({
 			if (!options[key]){
 				return;
 			}
-            method = key.capitalize();
-            setter = 'set' + method;
+			method = key.capitalize();
+			setter = 'set' + method;
 
 			handler = executer[setter];
-            handler.call(executer, options[key]);
+			handler.call(executer, options[key]);
 
-            delete options[key];
+			delete options[key];
 		});
 		return options;
 	},
