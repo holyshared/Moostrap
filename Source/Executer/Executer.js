@@ -51,13 +51,13 @@ namespace.Executer = new Class({
 			if (!options[key]){
 				return;
 			}
-            method = key.capitalize();
-            setter = 'set' + method;
+			method = key.capitalize();
+			setter = 'set' + method;
 
 			handler = executer[setter];
-            handler.call(executer, options[key]);
+			handler.call(executer, options[key]);
 
-            delete options[key];
+			delete options[key];
 		});
 		return options;
 	},
