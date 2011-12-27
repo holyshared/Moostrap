@@ -39,4 +39,4 @@ for (var key in conditions) {
 
 global.Application.Module = Bootstrapper;
 
-}(this, new Bootstrap.Module()));
+}(this, new Moostrap.Module()));
