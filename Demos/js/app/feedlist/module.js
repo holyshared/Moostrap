@@ -30,4 +30,4 @@ Bootstrapper.register('Closing Soon', api.createLoadProcess({
 
 global.Application.Module = Bootstrapper;
 
-}(this, FeedProcessCreater, new Bootstrap.Module()));
+}(this, FeedProcessCreater, new Moostrap.Module()));

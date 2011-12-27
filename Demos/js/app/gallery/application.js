@@ -74,7 +74,7 @@
 
 		run: function(){
 
-            var bootstrapper = new Bootstrap(this.strategy, this.module, {
+            var bootstrapper = new Moostrap(this.strategy, this.module, {
 				onStart: this.boot,
 				onBeforeBootstrap: this.beforeBootstrap,
 				onAfterBootstrap: this.afterBootstrap,
