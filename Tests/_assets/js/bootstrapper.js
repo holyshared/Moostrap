@@ -109,7 +109,7 @@
 				bootstrap.addEvent('success', function(){
 
 					log( (bootstrap.isStarted()) ? 'assert OK' : 'SUCCESS - isStarted NG' );
-					log( (bootstrap.getResultStatus() == Bootstrap.SUCCESS) ? 'assert OK' : 'SUCCESS - getResultStatus NG' );
+					log( (bootstrap.getResultStatus() == Moostrap.SUCCESS) ? 'assert OK' : 'SUCCESS - getResultStatus NG' );
 					log( (bootstrap.isSuccessed()) ? 'assert OK' : 'SUCCESS - isSuccessed NG' );
 					log( (bootstrap.isCompleted()) ? 'assert OK' : 'SUCCESS - isCompleted NG' );
 
@@ -168,7 +168,7 @@
 				bootstrap.addEvent('failure', function(){
 
 					log( (bootstrap.isStarted()) ? 'assert OK' : 'FAILURE - isStarted NG' );
-					log( (bootstrap.getResultStatus() == Bootstrap.FAILURE) ? 'assert OK' : 'FAILURE - getResultStatus NG' );
+					log( (bootstrap.getResultStatus() == Moostrap.FAILURE) ? 'assert OK' : 'FAILURE - getResultStatus NG' );
 					log( (bootstrap.isFailured()) ? 'assert OK' : 'FAILURE - isFailured NG' );
 					log( (bootstrap.isCompleted()) ? 'assert OK' : 'FAILURE - isCompleted NG' );
 

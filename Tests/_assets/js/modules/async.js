@@ -64,7 +64,7 @@ bootstrap.register('proccessB', {
 
 this.SuccessTestModule = bootstrap;
 
-}(window, document, new Bootstrap.Module()));
+}(window, document, new Moostrap.Module()));
 
 
 
@@ -117,4 +117,4 @@ bootstrap.register('proccessB', {
 
 this.FailureTestModule = bootstrap;
 
-}(window, document, new Bootstrap.Module()));
+}(window, document, new Moostrap.Module()));

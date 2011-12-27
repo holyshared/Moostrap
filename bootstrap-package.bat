@@ -1,7 +1,7 @@
 cd C:\var\www\tools\packager
 
-php packager build Moostrap/Moostrap.Executer.Sync +use-only Moostrap > C:\var\www\git\Bootstrap\Build\moostrap-sync.js
-php packager build Moostrap/Moostrap.Executer.Async +use-only Moostrap > C:\var\www\git\Bootstrap\Build\moostrap-async.js
+php packager build Moostrap/Moostrap.Executer.Sync +use-only Moostrap > C:\var\www\git\Moostrap\Build\moostrap-sync.js
+php packager build Moostrap/Moostrap.Executer.Async +use-only Moostrap > C:\var\www\git\Moostrap\Build\moostrap-async.js
 
 cd C:\var\www\tools\yuicompressor\build
 
