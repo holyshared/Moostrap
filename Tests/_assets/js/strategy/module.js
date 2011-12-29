@@ -21,8 +21,8 @@ TestModule.register('proccessA', {
 				resource['bootstrapperA'] = response;
 				that.success();
 			},
-			onFailture: function(response){
-				that.failture();
+			onFailure: function(response){
+				that.failure();
 			}
 		});
 		request.send();
@@ -49,8 +49,8 @@ TestModule.register('proccessB', {
 				resource['bootstrapperB'] = response;
 				that.success();
 			},
-			onFailture: function(response){
-				that.failture();
+			onFailure: function(response){
+				that.failure();
 			}
 		});
 		request.send();

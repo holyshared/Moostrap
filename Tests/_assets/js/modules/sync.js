@@ -21,8 +21,8 @@ bootstrap.register('proccessA', {
 				resource['key2'] = response.key2;
 				that.success();
 			},
-			onFailture: function(response){
-				that.failture();
+			onFailure: function(response){
+				that.failure();
 			}
 		});
 		request.send();
@@ -52,8 +52,8 @@ bootstrap.register('proccessB', {
 				resource['key4'] = response.key4;
 				that.success();
 			},
-			onFailture: function(response){
-				that.failture();
+			onFailure: function(response){
+				that.failure();
 			}
 		});
 		request.send();
@@ -90,8 +90,8 @@ bootstrap.register('proccessA', {
 				resource['key2'] = response.key2;
 				that.success();
 			},
-			onFailture: function(response){
-				that.failture();
+			onFailure: function(response){
+				that.failure();
 			}
 		});
 		request.send();
