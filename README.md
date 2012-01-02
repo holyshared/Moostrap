@@ -147,9 +147,6 @@ If processing goes wrong in the middle of initialization processing, processing 
     }(Bootstrapper));
 
 
-
-
-
 Initialization pattern
 ------------------------------------------------------------------------
 
@@ -161,7 +158,7 @@ Initialization processing is performed whenever one processing is completed.
 ![Moostrap.Executer.Sync](http://holyshared.github.com/Mootstrap/images/bootstrap_sync_flow.jpg "Moostrap.Executer.Sync")
 
 
-#### The method of building 
+#### The method of building
 
 packager build Moostrap/Moostrap.Executer.Sync +use-only Moostrap > moostrap-sync.js
 
@@ -174,6 +171,6 @@ A synchronization is not taken at this time.
 ![Moostrap.Executer.Async](http://holyshared.github.com/Mootstrap/images/bootstrap_async_flow.jpg "Moostrap.Executer.Async")
 
 
-#### The method of building 
+#### The method of building
 
 packager build Moostrap/Moostrap.Executer.Async +use-only Moostrap > moostrap-async.js
