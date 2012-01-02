@@ -4,7 +4,7 @@
 		var container = doc.getElementById('feeds');
 		var app = new Application({
 			container: container,
-			strategy: 'sync',
+			strategy: Moostrap.SYNC_EXECUTER,
 			module: module
 		});
 		app.run();
