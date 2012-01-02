@@ -3,7 +3,7 @@
 	global.addEventListener('load', function(){
 
 		var app = new Application({
-			strategy: 'async',
+			strategy: Moostrap.ASYNC_EXECUTER,
 			module: module
 		});
 		app.run();
