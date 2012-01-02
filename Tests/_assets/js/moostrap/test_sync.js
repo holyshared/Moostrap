@@ -11,7 +11,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Moostrap('sync', SuccessTestModule, {
+				var bootstrap = new Moostrap(Moostrap.SYNC_EXECUTER, SuccessTestModule, {
 
 					configurations: {
 						proccessA: {
@@ -56,7 +56,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Moostrap('sync', FailureTestModule, {
+				var bootstrap = new Moostrap(Moostrap.SYNC_EXECUTER, FailureTestModule, {
 
 					configurations: {
 						proccessA: {

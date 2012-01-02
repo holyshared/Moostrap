@@ -28,12 +28,12 @@ provides:
 
 var Moostrap = this.Moostrap = function(executer, module, options){
 
-	var executerType = executer.capitalize();
-		executerClass = null;
+	var executerType = executer,
+		executerClass = null,
 		instance = null;
 
 	if (!Moostrap.Executer[executerType]){
-		throw new Error(executerType + 'is not found');
+		throw new Error(executerType + ' is not found');
 	}
 	executerClass = Moostrap.Executer[executerType];
 
@@ -144,7 +144,7 @@ Moostrap.Bootstrapper = new Class({
 	},
 
 	_prepare: function(options){
-		var bootstrapper = this;
+		var bootstrapper = this
 			method = null,
 			setter = null,
 			handler = null;
@@ -529,6 +529,8 @@ provides:
 */
 
 (function(namespace){
+
+Moostrap.SYNC_EXECUTER = 'Sync';
 
 namespace.Sync = new Class({
 

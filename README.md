@@ -158,12 +158,12 @@ Initialization pattern
 The initialization processing using **Moostrap.Executer.Sync** performs processings in order one by one.  
 Initialization processing is performed whenever one processing is completed.
 
-![Moostrap.Executer.Sync](http://holyshared.github.com/Bootstrap/images/bootstrap_sync_flow.jpg "Moostrap.Executer.Sync")
+![Moostrap.Executer.Sync](http://holyshared.github.com/Mootstrap/images/bootstrap_sync_flow.jpg "Moostrap.Executer.Sync")
 
 
 #### The method of building 
 
-packager Moostrap/Moostrap.Executer.Sync +use-only Moostrap
+packager build Moostrap/Moostrap.Executer.Sync +use-only Moostrap > moostrap-sync.js
 
 
 ### Asynchronous
@@ -171,9 +171,9 @@ packager Moostrap/Moostrap.Executer.Sync +use-only Moostrap
 The initialization processing using **Moostrap.Executer.Async** performs processings in order one by one.  
 A synchronization is not taken at this time.
 
-![Moostrap.Executer.Async](http://holyshared.github.com/Bootstrap/images/bootstrap_async_flow.jpg "Moostrap.Executer.Async")
+![Moostrap.Executer.Async](http://holyshared.github.com/Mootstrap/images/bootstrap_async_flow.jpg "Moostrap.Executer.Async")
 
 
 #### The method of building 
 
-packager Moostrap/Moostrap.Executer.Async +use-only Moostrap
+packager build Moostrap/Moostrap.Executer.Async +use-only Moostrap > moostrap-async.js

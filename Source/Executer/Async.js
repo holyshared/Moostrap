@@ -19,6 +19,8 @@ provides:
 
 (function(namespace){
 
+Moostrap.ASYNC_EXECUTER = 'Async';
+
 namespace.Async = new Class({
 
 	Extends: namespace.Executer,

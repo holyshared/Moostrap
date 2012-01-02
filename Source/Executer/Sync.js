@@ -19,6 +19,8 @@ provides:
 
 (function(namespace){
 
+Moostrap.SYNC_EXECUTER = 'Sync';
+
 namespace.Sync = new Class({
 
 	Extends: namespace.Executer,

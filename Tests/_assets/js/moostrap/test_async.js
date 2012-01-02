@@ -11,7 +11,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Moostrap('async', SuccessTestModule, {
+				var bootstrap = new Moostrap(Moostrap.ASYNC_EXECUTER, SuccessTestModule, {
 					configurations: {
 						proccessA: {
 							key1: 'key1-value',
@@ -55,7 +55,7 @@
 			fn: function(){
 				var resource = {};
 
-				var bootstrap = new Moostrap('async', FailureTestModule, {
+				var bootstrap = new Moostrap(Moostrap.ASYNC_EXECUTER, FailureTestModule, {
 
 					configurations: {
 						proccessA: {
