@@ -74,6 +74,7 @@ namespace.Executer = new Class({
 				bootstrapper.setResource(model.getResource());
 			});
 		}
+
 		Object.each(bootstrappers, function(bootstrapper, key){
 			model._setupBootstrapper(key, bootstrapper);
 		});
@@ -173,7 +174,7 @@ namespace.Executer = new Class({
 		args = [
 			key,
 			handler.getTitle(),
-			order.index() + 1,
+			handler.getOrder() + 1,
 			module.getLength()
 		];
 		this.fireEvent(type, args);

@@ -26,8 +26,11 @@
 					onStart: function(){
 						log('start');
 					},
-					onProgress: function(key, index, total){
-						log('process: ' + key + ' ' + index + '/' + total);
+					onBeforeBootstrap: function(key, title, index, total){
+						log('before: ' + key + ' ' + index + '/' + total);
+					},
+					onAfterBootstrap: function(key, title, index, total){
+						log('after: ' + key + ' ' + index + '/' + total);
 					},
 					onSuccess: function(){
 						log('success');
@@ -36,7 +39,6 @@
 						log( (resource.key2 == 'key2-value') ? 'resource.key2 OK' : 'resource.key2 NG' );
 						log( (resource.key3 == 'key3-value') ? 'resource.key3 OK' : 'resource.key3 NG' );
 						log( (resource.key4 == 'key4-value') ? 'resource.key4 OK' : 'resource.key4 NG' );
-
 					},
 					onComplete: function(){
 						log('complete');
@@ -71,8 +73,11 @@
 					onStart: function(){
 						log('start');
 					},
-					onProgress: function(key, index, total){
-						log('process: ' + key + ' ' + index + '/' + total);
+					onBeforeBootstrap: function(key, title, index, total){
+						log('before: ' + key + ' ' + index + '/' + total);
+					},
+					onAfterBootstrap: function(key, title, index, total){
+						log('after: ' + key + ' ' + index + '/' + total);
 					},
 					onFailure: function(){
 						log('failure');

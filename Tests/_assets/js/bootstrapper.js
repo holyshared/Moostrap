@@ -5,6 +5,18 @@
 		var testcases = [];
 
 		testcases.push({
+			title: 'setOrder/getOrder',
+			description : 'setOrder/getOrder testcase.',
+			fn: function(){
+				var bootstrap1 = new Moostrap.Bootstrapper({
+					handler: function(resource, options){}
+				});
+				bootstrap1.setOrder(100);
+				log( (bootstrap1.getOrder() == 100) ? 'assert OK.' : 'order setter/getter NG.' );
+			}
+		});
+
+		testcases.push({
 			title: 'setTitle/getTitle',
 			description : 'setTitle/getTitle testcase.',
 			fn: function(){

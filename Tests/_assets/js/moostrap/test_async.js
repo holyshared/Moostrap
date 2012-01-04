@@ -25,8 +25,11 @@
 					onStart: function(){
 						log('start');
 					},
-					onProgress: function(key, index, total){
-						log('process: ' + key + ' ' + index + '/' + total);
+					onBeforeBootstrap: function(key, title, index, total){
+						log('before: ' + key + ' ' + index + '/' + total);
+					},
+					onAfterBootstrap: function(key, title, index, total){
+						log('after: ' + key + ' ' + index + '/' + total);
 					},
 					onSuccess: function(){
 						log('success');
@@ -70,8 +73,11 @@
 					onStart: function(){
 						log('start');
 					},
-					onProgress: function(key, index, total){
-						log('process: ' + key + ' ' + index + '/' + total);
+					onBeforeBootstrap: function(key, title, index, total){
+						log('before: ' + key + ' ' + index + '/' + total);
+					},
+					onAfterBootstrap: function(key, title, index, total){
+						log('after: ' + key + ' ' + index + '/' + total);
 					},
 					onFailure: function(){
 						log('failure');
