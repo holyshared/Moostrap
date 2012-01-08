@@ -217,7 +217,7 @@ namespace.Executer = new Class({
 			});
 			this.setResource(resource);
 		}
-		this.fireEvent('start');
+		this.fireEvent('start', [module]);
 		this.bootstrap();
 	},
 
