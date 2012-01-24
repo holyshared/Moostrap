@@ -225,10 +225,11 @@ namespace.Executer = new Class({
 	bootstrap: function(){
 	},
 
-	onFailure: function(key){
+	onFailure: function(){
+		var args = Array.from(arguments);
 		this._setResultStatus(Moostrap.FAILURE);
 		this.fireEvent('complete');
-		this.fireEvent('failure');
+		this.fireEvent('failure', args);
 	}
 
 });

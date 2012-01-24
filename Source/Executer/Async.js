@@ -52,7 +52,7 @@ namespace.Async = new Class({
 
 		Object.append(events, {
 			success: this.onSuccess.bind(this, args),
-			failure: this.onFailure.bind(this, args)
+			failure: this.onFailure.bind(this)
 		});
 
 		configuration = this.getConfiguration(key) || null;
